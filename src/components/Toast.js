@@ -115,7 +115,7 @@ export class Toast extends Component {
     const progressBarHtml = this.duration > 0 && !this.persistent ? this.getProgressBarHtml() : '';
     
     return `
-      <div class="pointer-events-auto max-w-xl w-full bg-white shadow-lg rounded-lg overflow-hidden ${this.getTypeClasses().join(' ')}">
+      <div class="pointer-events-auto  w-full bg-white shadow-lg rounded-lg overflow-hidden ${this.getTypeClasses().join(' ')}">
         <div class="p-4">
           <div class="flex items-start">
             <div class="flex-shrink-0">
@@ -135,7 +135,6 @@ export class Toast extends Component {
 
   getToastClasses() {
     const classes = [
-      'max-w-lg',
       'bg-white',
       'shadow-lg',
       'rounded-lg',
@@ -417,7 +416,7 @@ export class Toast extends Component {
     if (!container) {
       container = document.createElement('div');
       container.id = containerId;
-      container.className = `aionda-toast-container fixed ${Toast.getPositionClasses(position)} z-50 p-4 space-y-4 pointer-events-none`;
+      container.className = `aionda-toast-container fixed ${Toast.getPositionClasses(position)} z-50 p-4 space-y-4 pointer-events-none w-[500px]`;
       document.body.appendChild(container);
     }
 

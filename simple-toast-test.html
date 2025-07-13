@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toast Width Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dist/aionda-webui.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Toast Width Test</h1>
+        
+        <div class="space-y-4">
+            <button id="shortToast" class="bg-blue-500 text-white px-4 py-2 rounded">
+                Show Short Toast
+            </button>
+            
+            <button id="longToast" class="bg-orange-500 text-white px-4 py-2 rounded">
+                Show Long Toast
+            </button>
+        </div>
+
+        <div class="mt-8 p-4 bg-white rounded border">
+            <h2 class="text-lg font-semibold mb-2">Expected Result:</h2>
+            <p>Toast notifications should be wide enough to display longer messages without excessive line wrapping.</p>
+        </div>
+    </div>
+
+    <script src="dist/aionda-webui.js"></script>
+    <script>
+        document.getElementById('shortToast').addEventListener('click', () => {
+            new AiondaWebUI.Toast({
+                title: 'Success',
+                message: 'Operation completed!',
+                type: 'success',
+                duration: 4000,
+                position: 'top-right'
+            }).show();
+        });
+
+        document.getElementById('longToast').addEventListener('click', () => {
+            new AiondaWebUI.Toast({
+                title: 'Warning - Important Notice',
+                message: 'This is a longer message to test how the wider toast displays with more content and multiple lines of text that should ideally not wrap too much.',
+                type: 'warning',
+                duration: 6000,
+                position: 'top-right'
+            }).show();
+        });
+    </script>
+</body>
+</html>

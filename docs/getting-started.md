@@ -242,10 +242,10 @@ const field = new AiondaWebUI.TextField({
 
 ## Next Steps
 
-- [Component Reference](components/index.md) - Detailed documentation for all components
-- [API Reference](api/index.md) - Core API documentation
-- [Examples](examples/index.md) - Working examples and demos
-- [Advanced Guides](guides/index.md) - Advanced usage patterns
+- [Component Reference](components/) - Detailed documentation for all components
+- [API Reference](api/) - Core API documentation
+- [Examples](examples/) - Working examples and demos
+- [Advanced Guides](guides/) - Advanced usage patterns
 
 ## Browser Support
 

@@ -690,6 +690,6 @@ slider.renderTo('#slider-container');
 ## See Also
 
 - [Getting Started](../getting-started.md) - Installation and basic usage
-- [Component Reference](../components/index.md) - Detailed component documentation
-- [API Reference](../api/index.md) - Core API documentation
-- [Advanced Guides](../guides/index.md) - Advanced usage patterns
+- [Component Reference](../components/) - Detailed component documentation
+- [API Reference](../api/) - Core API documentation
+- [Advanced Guides](../guides/) - Advanced usage patterns

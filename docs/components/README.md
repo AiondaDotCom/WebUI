@@ -142,4 +142,4 @@ Component (Base Class)
 
 ---
 
-[← Back to Documentation Home](../index.md)
+[← Back to Documentation Home](../)

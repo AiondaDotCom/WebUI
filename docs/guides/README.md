@@ -1392,6 +1392,6 @@ class OptimizedList extends AiondaWebUI.Component {
 ## See Also
 
 - [Getting Started](../getting-started.md) - Installation and basic usage
-- [Component Reference](../components/index.md) - Detailed component documentation
-- [API Reference](../api/index.md) - Core API documentation
-- [Examples](../examples/index.md) - Working examples and demos
+- [Component Reference](../components/) - Detailed component documentation
+- [API Reference](../api/) - Core API documentation
+- [Examples](../examples/) - Working examples and demos

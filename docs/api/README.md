@@ -336,6 +336,6 @@ declare namespace AiondaWebUI {
 ## See Also
 
 - [Getting Started](../getting-started.md) - Quick start guide
-- [Component Reference](../components/index.md) - All components
-- [Examples](../examples/index.md) - Working examples
-- [Advanced Guides](../guides/index.md) - Advanced usage patterns
+- [Component Reference](../components/) - All components
+- [Examples](../examples/) - Working examples
+- [Advanced Guides](../guides/) - Advanced usage patterns

@@ -240,10 +240,10 @@ class DocumentationGenerator {
     };
     
     const markdown = template(data);
-    const outputPath = path.join(this.outputDir, 'index.md');
+    const outputPath = path.join(this.outputDir, 'README.md');
     await fs.writeFile(outputPath, markdown);
     
-    console.log('   Generated index.md');
+    console.log('   Generated README.md');
   }
 
   /**
@@ -276,10 +276,10 @@ class DocumentationGenerator {
     };
     
     const markdown = template(data);
-    const outputPath = path.join(this.outputDir, 'components', 'index.md');
+    const outputPath = path.join(this.outputDir, 'components', 'README.md');
     await fs.writeFile(outputPath, markdown);
     
-    console.log('   Generated components/index.md');
+    console.log('   Generated components/README.md');
   }
 
   /**

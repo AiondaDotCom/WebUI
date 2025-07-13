@@ -69,20 +69,20 @@ button.renderTo('#app');
 ## Navigation
 
 - **[Getting Started](getting-started.md)** - Quick start guide and installation
-- **[Components](components/index.md)** - Complete component reference
-- **[API Reference](api/index.md)** - Core API documentation
-- **[Examples](examples/index.md)** - Working examples and demos
-- **[Guides](guides/index.md)** - Advanced usage guides
+- **[Components](components/)** - Complete component reference
+- **[API Reference](api/)** - Core API documentation
+- **[Examples](examples/)** - Working examples and demos
+- **[Guides](guides/)** - Advanced usage guides
 
 ## Component Categories
 
-- **[Form Components](components/index.md#)** - 
-- **[Utility Components](components/index.md#)** - 
-- **[Data Components](components/index.md#)** - 
-- **[Navigation Components](components/index.md#)** - 
-- **[Feedback Components](components/index.md#)** - 
-- **[Layout Components](components/index.md#)** - 
-- **[Core Components](components/index.md#)** - 
+- **[Form Components](components/#)** - 
+- **[Utility Components](components/#)** - 
+- **[Data Components](components/#)** - 
+- **[Navigation Components](components/#)** - 
+- **[Feedback Components](components/#)** - 
+- **[Layout Components](components/#)** - 
+- **[Core Components](components/#)** - 
 
 ---
 

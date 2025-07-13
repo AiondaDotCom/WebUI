@@ -83,6 +83,6 @@ themeToggle.renderTo('#theme-toggle');
 
 ## See Also
 
-- [Components Overview](../index.md)
-- [API Reference](../api/component.md)
-- [Examples](../examples/index.md)
+- [Components Overview](../)
+- [API Reference](../api/)
+- [Examples](../examples/)

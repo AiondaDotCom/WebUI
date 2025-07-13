@@ -115,7 +115,7 @@ export class Toast extends Component {
     const progressBarHtml = this.duration > 0 && !this.persistent ? this.getProgressBarHtml() : '';
     
     return `
-      <div class="pointer-events-auto max-w-lg w-full bg-white shadow-lg rounded-lg overflow-hidden ${this.getTypeClasses().join(' ')}">
+      <div class="pointer-events-auto max-w-xl w-full bg-white shadow-lg rounded-lg overflow-hidden ${this.getTypeClasses().join(' ')}">
         <div class="p-4">
           <div class="flex items-start">
             <div class="flex-shrink-0">
@@ -135,7 +135,7 @@ export class Toast extends Component {
 
   getToastClasses() {
     const classes = [
-      'max-w-sm',
+      'max-w-lg',
       'bg-white',
       'shadow-lg',
       'rounded-lg',

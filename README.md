@@ -6,11 +6,11 @@ A modern, mobile-first WebUI library built with pure ES6 JavaScript and Tailwind
 
 ## Overview
 
-Aionda WebUI provides a comprehensive set of 25 UI components designed for building complex desktop applications while maintaining responsive design principles. With minimal code, you can create sophisticated interfaces that work seamlessly across devices.
+Aionda WebUI provides a comprehensive set of 26 UI components designed for building complex desktop applications while maintaining responsive design principles. With minimal code, you can create sophisticated interfaces that work seamlessly across devices.
 
 ## ✨ Features
 
-- 🎯 **25 Production-Ready Components** - Complete component library across 7 categories
+- 🎯 **26 Production-Ready Components** - Complete component library across 7 categories
 - 📱 **Mobile-First** - Responsive design out of the box  
 - ⚡ **Pure ES6** - No build steps required, works directly in browsers
 - 🎨 **Tailwind CSS** - Utility-first styling with customizable themes
@@ -59,10 +59,11 @@ panel.renderTo('#app');
 
 ## 📦 Component Categories
 
-### Form Components (8)
+### Form Components (9)
 - **Button** - Multi-variant buttons with icons and states
 - **TextField** - Text input with validation and formatting  
 - **NumberField** - Numeric input with spinners
+- **RichTextField** - Rich text editor with enhanced color picker
 - **Checkbox** - Boolean input with switch variants
 - **Radio/RadioGroup** - Single selection inputs
 - **ComboBox** - Dropdown with search and remote data
@@ -120,6 +121,28 @@ Interactive data grid with sorting, filtering, cell editing, column resizing, an
 Complete form with validation, multiple field types, and real-time event logging.
 
 **[🔗 View Demo](examples/form-demo/index.html)**
+
+### Rich Text Editor with Enhanced Color Picker
+![RichTextField Overview](screenshots/richtext-overview.png)
+
+Professional rich text editor with advanced formatting capabilities and user-friendly color picker.
+
+#### Enhanced Color Picker with OK/Cancel Buttons
+![RichTextField Color Picker](screenshots/richtext-colorpicker.png)
+
+The enhanced color picker provides a dropdown interface with OK/Cancel buttons for better user experience, replacing the native browser color input.
+
+#### Form Integration
+![RichTextField Form Integration](screenshots/richtext-form.png)
+
+RichTextField seamlessly integrates with the form system, supporting validation and standard form workflows.
+
+#### Custom Toolbar Configuration
+![RichTextField Custom Toolbar](screenshots/richtext-custom.png)
+
+Flexible toolbar configuration allows you to customize which formatting options are available.
+
+**[🔗 View Demo](examples/richtext-editor/index.html)**
 
 ### Advanced Components Showcase
 ![Advanced Components](screenshots/advanced-components.png)
@@ -181,6 +204,40 @@ const store = new AiondaWebUI.Store({
 
 const grid = new AiondaWebUI.Grid({ store });
 store.add(newUser); // Grid updates automatically
+```
+
+### Rich Text Editing
+```javascript
+// Rich text editor with enhanced color picker
+const richText = new AiondaWebUI.RichTextField({
+  fieldLabel: 'Article Content',
+  value: '<p>Create <strong>formatted content</strong> with ease!</p>',
+  height: 300,
+  toolbar: [
+    'bold', 'italic', 'underline',
+    'separator',
+    'foreColor', 'backColor',  // Enhanced color picker
+    'separator',
+    'fontSize', 'fontName',
+    'separator',
+    'createLink', 'undo', 'redo'
+  ],
+  validators: [
+    (value) => value.length > 0 || 'Content is required'
+  ]
+});
+
+// Form integration
+const form = new AiondaWebUI.Form({
+  fields: [
+    { type: 'textfield', name: 'title', fieldLabel: 'Title' },
+    { type: 'richtextfield', name: 'content', fieldLabel: 'Content', height: 200 }
+  ]
+});
+
+// Get formatted content
+console.log(richText.getValue()); // Returns HTML
+console.log(richText.getTextContent()); // Returns plain text
 ```
 
 ## 🧪 Testing

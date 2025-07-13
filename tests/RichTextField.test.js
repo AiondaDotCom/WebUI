@@ -110,13 +110,21 @@ describe('RichTextField Component', () => {
       richTextField = new RichTextField();
       richTextField.renderTo(container);
       
-      const textColorInput = container.querySelector('input[data-command="foreColor"]');
-      const bgColorInput = container.querySelector('input[data-command="backColor"]');
+      const textColorButton = container.querySelector('.aionda-textcolor-btn');
+      const textColorInput = container.querySelector('.aionda-textcolor-input');
+      const colorDropdown = container.querySelector('.aionda-colorpicker-dropdown');
+      const okButton = container.querySelector('.aionda-colorpicker-ok');
+      const cancelButton = container.querySelector('.aionda-colorpicker-cancel');
+      const bgColorButton = container.querySelector('button[data-command="backColor"]');
       
+      expect(textColorButton).toBeTruthy();
       expect(textColorInput).toBeTruthy();
       expect(textColorInput.type).toBe('color');
-      expect(bgColorInput).toBeTruthy();
-      expect(bgColorInput.type).toBe('color');
+      expect(colorDropdown).toBeTruthy();
+      expect(okButton).toBeTruthy();
+      expect(cancelButton).toBeTruthy();
+      expect(bgColorButton).toBeTruthy();
+      expect(bgColorButton.getAttribute('data-command')).toBe('backColor');
     });
 
     test('should render select dropdowns for font controls', () => {
@@ -212,12 +220,37 @@ describe('RichTextField Component', () => {
       expect(document.execCommand).toHaveBeenCalledWith('italic', false, undefined);
     });
 
-    test('should handle color picker change', () => {
-      const colorInput = container.querySelector('input[data-command="foreColor"]');
-      colorInput.value = '#ff0000';
+    test('should handle color picker with OK button', () => {
+      // Setup selection mock
+      const mockRange = {
+        cloneRange: jest.fn(() => mockRange),
+        selectNodeContents: jest.fn(),
+        setStart: jest.fn(),
+        setEnd: jest.fn()
+      };
+      const mockSelection = {
+        rangeCount: 1,
+        isCollapsed: false,
+        getRangeAt: jest.fn(() => mockRange),
+        removeAllRanges: jest.fn(),
+        addRange: jest.fn()
+      };
+      global.getSelection = jest.fn(() => mockSelection);
+
+      const colorButton = container.querySelector('.aionda-textcolor-btn');
+      const colorInput = container.querySelector('.aionda-textcolor-input');
+      const okButton = container.querySelector('.aionda-colorpicker-ok');
       
+      // Open dropdown
+      colorButton.click();
+      
+      // Set color
+      colorInput.value = '#ff0000';
       const changeEvent = new Event('change', { bubbles: true });
       colorInput.dispatchEvent(changeEvent);
+      
+      // Click OK to apply
+      okButton.click();
       
       expect(document.execCommand).toHaveBeenCalledWith('foreColor', false, '#ff0000');
     });
@@ -230,7 +263,8 @@ describe('RichTextField Component', () => {
       fontSizeSelect.dispatchEvent(changeEvent);
       
       expect(document.execCommand).toHaveBeenCalledWith('fontSize', false, '4');
-      expect(fontSizeSelect.selectedIndex).toBe(0); // Should reset after selection
+      // The font dropdown now maintains its selection instead of resetting
+      expect(fontSizeSelect.value).toBe('4');
     });
 
     test('should handle font name selection', () => {
@@ -246,6 +280,22 @@ describe('RichTextField Component', () => {
     test('should handle create link command with prompt', () => {
       global.prompt = jest.fn(() => 'https://example.com');
       
+      // Mock a text selection for the link
+      const mockRange = {
+        cloneRange: jest.fn(() => mockRange),
+        selectNodeContents: jest.fn(),
+        setStart: jest.fn(),
+        setEnd: jest.fn()
+      };
+      const mockSelection = {
+        rangeCount: 1,
+        isCollapsed: false,
+        getRangeAt: jest.fn(() => mockRange),
+        removeAllRanges: jest.fn(),
+        addRange: jest.fn()
+      };
+      global.getSelection = jest.fn(() => mockSelection);
+      
       const linkButton = container.querySelector('[data-command="createLink"]');
       linkButton.click();
       
@@ -255,6 +305,22 @@ describe('RichTextField Component', () => {
 
     test('should not create link when prompt is cancelled', () => {
       global.prompt = jest.fn(() => null);
+      
+      // Mock a text selection for the link
+      const mockRange = {
+        cloneRange: jest.fn(() => mockRange),
+        selectNodeContents: jest.fn(),
+        setStart: jest.fn(),
+        setEnd: jest.fn()
+      };
+      const mockSelection = {
+        rangeCount: 1,
+        isCollapsed: false,
+        getRangeAt: jest.fn(() => mockRange),
+        removeAllRanges: jest.fn(),
+        addRange: jest.fn()
+      };
+      global.getSelection = jest.fn(() => mockSelection);
       
       const linkButton = container.querySelector('[data-command="createLink"]');
       linkButton.click();

@@ -679,3 +679,8 @@ beforeAll(() => {
 afterAll(() => {
   console.error = originalError;
 });
+
+// Mock browser dialog functions that aren't available in jsdom
+global.prompt = jest.fn();
+global.alert = jest.fn();
+global.confirm = jest.fn();

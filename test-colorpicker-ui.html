@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test: Verbesserter RichTextField Colorpicker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dist/aionda-webui.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">RichTextField mit verbessertem Colorpicker</h1>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Test: Colorpicker mit OK/Abbrechen-Buttons</h2>
+            <div id="richtext-container"></div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Anweisungen:</h2>
+            <ul class="space-y-2 text-gray-700">
+                <li>• <strong>Textfarbe ändern:</strong> Klicken Sie auf das "A" Symbol, um den Colorpicker zu öffnen</li>
+                <li>• <strong>Farbe auswählen:</strong> Wählen Sie eine Farbe im Dropdown-Panel</li>
+                <li>• <strong>Bestätigen:</strong> Klicken Sie auf "OK" um die Farbe anzuwenden</li>
+                <li>• <strong>Abbrechen:</strong> Klicken Sie auf "Abbrechen" um die Änderung zu verwerfen</li>
+                <li>• <strong>Schließen:</strong> Klicken Sie außerhalb des Panels oder verwenden Sie die Buttons</li>
+            </ul>
+        </div>
+
+        <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h3 class="font-semibold text-yellow-800 mb-2">Neue Features:</h3>
+            <ul class="text-yellow-700 space-y-1">
+                <li>✅ Sichtbarer Colorpicker mit Dropdown-Panel</li>
+                <li>✅ OK und Abbrechen Buttons</li>
+                <li>✅ Klick außerhalb schließt das Panel</li>
+                <li>✅ Abbrechen setzt die ursprüngliche Farbe zurück</li>
+                <li>✅ Deutsche Beschriftung</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="dist/aionda-webui.js"></script>
+    <script>
+        // Create RichTextField with improved color picker
+        const richText = new AiondaWebUI.RichTextField({
+            fieldLabel: 'Rich Text Editor mit verbessertem Colorpicker',
+            value: '<p>Wählen Sie Text aus und ändern Sie die Farbe mit dem verbesserten Colorpicker!</p><p>Dieser Text kann formatiert werden. Probieren Sie verschiedene Farben aus.</p>',
+            height: 200,
+            toolbar: [
+                'bold', 'italic', 'underline',
+                'separator',
+                'foreColor', 'backColor',
+                'separator',
+                'fontSize', 'fontName'
+            ]
+        });
+
+        richText.renderTo('#richtext-container');
+
+        // Log events for testing
+        richText.on('change', (data) => {
+            console.log('RichTextField changed:', data.value);
+        });
+
+        // Add some demo text styling
+        console.log('RichTextField mit verbessertem Colorpicker geladen!');
+        console.log('- Dropdown-Panel mit OK/Abbrechen-Buttons');
+        console.log('- Klick außerhalb schließt das Panel');
+        console.log('- Deutsche Beschriftung');
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dist/aionda-webui.css">
+</head>
+<body class="p-4">
+    <button id="test-btn">Test MenuBar Window</button>
+    
+    <script src="dist/aionda-webui.js"></script>
+    <script>
+        document.getElementById('test-btn').addEventListener('click', () => {
+            console.log('Creating window...');
+            
+            const window = new AiondaWebUI.Window({
+                title: 'Test MenuBar Window',
+                width: 500,
+                height: 300,
+                html: `<div class="p-4">
+                    <div id="menubar-container" class="w-full mb-4"></div>
+                    <p>Test content</p>
+                </div>`
+            });
+            
+            window.render();
+            document.body.appendChild(window.el);
+            
+            window.on('show', () => {
+                console.log('Window shown, creating MenuBar...');
+                
+                const menuBar = new AiondaWebUI.MenuBar({
+                    cls: 'test-menubar',
+                    items: [
+                        {
+                            text: 'File',
+                            menu: [
+                                { text: 'New', handler: () => console.log('New clicked') },
+                                { text: 'Open', handler: () => console.log('Open clicked') }
+                            ]
+                        },
+                        {
+                            text: 'Edit', 
+                            menu: [
+                                { text: 'Cut', handler: () => console.log('Cut clicked') },
+                                { text: 'Copy', handler: () => console.log('Copy clicked') }
+                            ]
+                        }
+                    ]
+                });
+                
+                const container = window.el.querySelector('#menubar-container');
+                menuBar.renderTo(container);
+                
+                // Force event rebinding
+                setTimeout(() => {
+                    const items = container.querySelectorAll('.aionda-menubar-item');
+                    items.forEach((item, index) => {
+                        item.addEventListener('click', (e) => {
+                            console.log(`Menu item ${index} clicked`);
+                            
+                            const config = menuBar.items[index];
+                            if (config.menu) {
+                                const menu = new AiondaWebUI.Menu({
+                                    items: config.menu,
+                                    contextMenu: true
+                                });
+                                
+                                menu.render();
+                                document.body.appendChild(menu.el);
+                                
+                                const rect = item.getBoundingClientRect();
+                                menu.showAtPosition(rect.left, rect.bottom);
+                                
+                                menu.on('itemclick', (data) => {
+                                    console.log('Menu item clicked:', data.item.text);
+                                    if (data.item.handler) {
+                                        data.item.handler();
+                                    }
+                                    menu.hide();
+                                });
+                            }
+                        });
+                    });
+                }, 500);
+            });
+            
+            window.show();
+        });
+    </script>
+</body>
+</html>

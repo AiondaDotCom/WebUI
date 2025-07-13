@@ -6,6 +6,7 @@ import { Checkbox } from './Checkbox.js';
 import { DateField } from './DateField.js';
 import { TextArea } from './TextArea.js';
 import { RadioGroup } from './RadioGroup.js';
+import { RichTextField } from './RichTextField.js';
 
 /**
  * @component Form
@@ -72,6 +73,7 @@ export class Form extends Component {
     
     // Items array for tracking
     this.items = [];
+    this.buttons = [];
     
     // Store items for later addition during render
     if (config.items) {
@@ -91,6 +93,11 @@ export class Form extends Component {
         this.add(field);
       });
     }
+    
+    // Handle buttons array - store for later rendering
+    if (config.buttons) {
+      this.buttons = config.buttons;
+    }
   }
 
   createTemplate() {
@@ -104,7 +111,7 @@ export class Form extends Component {
         <div class="aionda-form-body">
           <!-- Form fields will be inserted here -->
         </div>
-        <div class="aionda-form-buttons hidden">
+        <div class="aionda-form-buttons hidden mt-4 flex space-x-3">
           <!-- Form buttons will be inserted here -->
         </div>
         <div id="${this.id}-status" 
@@ -154,6 +161,20 @@ export class Form extends Component {
         }
       });
       this.pendingItems = [];
+    }
+    
+    // Render all items that aren't yet in the DOM
+    this.items.forEach(item => {
+      if (item && item.render && (!item.el || !item.el.parentNode)) {
+        this.registerField(item, {});
+      }
+    });
+    
+    // Render buttons
+    if (this.buttons && this.buttons.length > 0) {
+      this.buttons.forEach(button => {
+        this.addButton(button);
+      });
     }
     
     // Form submission
@@ -211,7 +232,8 @@ export class Form extends Component {
       checkbox: Checkbox,
       datefield: DateField,
       textarea: TextArea,
-      radiogroup: RadioGroup
+      radiogroup: RadioGroup,
+      richtextfield: RichTextField
     };
     
     const FieldClass = fieldClasses[cmp];

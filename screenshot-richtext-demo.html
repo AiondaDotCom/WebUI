@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RichTextField Demo for Screenshots</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dist/aionda-webui.css">
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Aionda WebUI - RichTextField</h1>
+            <p class="text-gray-600">Rich Text Editor with Enhanced Color Picker</p>
+        </div>
+
+        <!-- Basic RichTextField -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Basic Rich Text Editor</h2>
+            <div id="basic-richtext"></div>
+        </div>
+
+        <!-- Form Integration -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Form Integration</h2>
+            <div id="form-container"></div>
+        </div>
+
+        <!-- Custom Toolbar -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Custom Toolbar</h2>
+            <div id="custom-richtext"></div>
+        </div>
+
+        <!-- Features showcase -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+                <div>
+                    <h3 class="font-semibold text-blue-600 mb-2">✨ Text Formatting</h3>
+                    <ul class="space-y-1">
+                        <li>• Bold, Italic, Underline</li>
+                        <li>• Font Family & Size</li>
+                        <li>• Text Alignment</li>
+                        <li>• Ordered & Unordered Lists</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-green-600 mb-2">🎨 Advanced Features</h3>
+                    <ul class="space-y-1">
+                        <li>• Enhanced Color Picker</li>
+                        <li>• Text Highlighting</li>
+                        <li>• Link Creation</li>
+                        <li>• Undo/Redo Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="dist/aionda-webui.js"></script>
+    <script>
+        // Basic RichTextField
+        const basicRichText = new AiondaWebUI.RichTextField({
+            fieldLabel: 'Rich Text Editor',
+            value: '<p>This is <strong>formatted text</strong> with <span style="color: rgb(255, 0, 0);">red color</span> and <span style="background-color: yellow;">highlighting</span>.</p><p>The <em>enhanced color picker</em> provides OK/Cancel buttons for better user experience.</p>',
+            height: 200,
+            placeholder: 'Enter your formatted text here...'
+        });
+        basicRichText.renderTo('#basic-richtext');
+
+        // Form Integration
+        const form = new AiondaWebUI.Form({
+            fields: [
+                {
+                    type: 'textfield',
+                    name: 'title',
+                    fieldLabel: 'Title',
+                    value: 'Sample Article',
+                    required: true
+                },
+                {
+                    type: 'richtextfield',
+                    name: 'content',
+                    fieldLabel: 'Content',
+                    value: '<p>Create <strong>formatted content</strong> directly in forms!</p>',
+                    height: 150,
+                    required: true
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Save',
+                    variant: 'primary',
+                    type: 'submit'
+                },
+                {
+                    text: 'Cancel',
+                    variant: 'secondary'
+                }
+            ]
+        });
+        form.renderTo('#form-container');
+
+        // Custom Toolbar
+        const customRichText = new AiondaWebUI.RichTextField({
+            fieldLabel: 'Compact Version',
+            value: '<p>Custom toolbar with only <strong>essential functions</strong>.</p>',
+            height: 120,
+            toolbar: [
+                'bold', 'italic', 'underline',
+                'separator',
+                'foreColor', 'backColor',
+                'separator',
+                'createLink'
+            ]
+        });
+        customRichText.renderTo('#custom-richtext');
+
+        console.log('RichTextField Demo loaded!');
+    </script>
+</body>
+</html>

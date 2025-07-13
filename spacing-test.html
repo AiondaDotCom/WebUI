@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dist/aionda-webui.css">
+    <style>
+        /* Test styles for spacing fix */
+        .spacing-test-container {
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            width: 100% !important;
+        }
+        
+        .spacing-test-menubar {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .spacing-test-menubar .aionda-menu {
+            z-index: 9999 !important;
+        }
+    </style>
+</head>
+<body class="p-4 bg-gray-50">
+    <h1 class="text-2xl font-bold mb-4">MenuBar Spacing Test</h1>
+    <button id="test-btn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Create Test Window
+    </button>
+    
+    <script src="dist/aionda-webui.js"></script>
+    <script>
+        document.getElementById('test-btn').addEventListener('click', () => {
+            console.log('Creating test window...');
+            
+            const window = new AiondaWebUI.Window({
+                title: 'Spacing Test Window',
+                width: 600,
+                height: 400,
+                x: 100,
+                y: 100,
+                modal: false,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                autoShow: false,
+                html: `<div class="flex flex-col h-full">
+                    <!-- MenuBar Container positioned absolutely -->
+                    <div id="test-menubar-container" class="spacing-test-container" style="position: absolute; top: 0; left: 0; right: 0; z-index: 10;"></div>
+                    
+                    <!-- Main Content with top margin to avoid overlap -->
+                    <div class="flex-1 p-4" style="margin-top: 40px;">
+                        <h3 class="font-semibold mb-2">Spacing Test Content</h3>
+                        <p class="text-gray-600">This tests the MenuBar spacing issue. The MenuBar should be directly attached to the window title bar with no gap.</p>
+                        
+                        <div class="mt-4 p-3 bg-blue-50 rounded">
+                            <p class="text-sm text-blue-800">Check that there's no white space between the title bar and the MenuBar.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Status Bar -->
+                    <div class="border-t bg-gray-50 px-4 py-2 text-xs text-gray-600">
+                        Ready - Spacing Test
+                    </div>
+                </div>`
+            });
+            
+            // Render window
+            const el = window.render();
+            document.body.appendChild(el);
+            
+            // Create MenuBar when window shows
+            window.on('show', () => {
+                const container = el.querySelector('#test-menubar-container');
+                if (container) {
+                    console.log('Creating MenuBar...');
+                    
+                    const menuBar = new AiondaWebUI.MenuBar({
+                        cls: 'spacing-test-menubar',
+                        items: [
+                            {
+                                text: 'File',
+                                menu: [
+                                    { text: 'New', handler: () => console.log('New clicked') },
+                                    { text: 'Open', handler: () => console.log('Open clicked') },
+                                    { text: 'Save', handler: () => console.log('Save clicked') }
+                                ]
+                            },
+                            {
+                                text: 'Edit',
+                                menu: [
+                                    { text: 'Cut', handler: () => console.log('Cut clicked') },
+                                    { text: 'Copy', handler: () => console.log('Copy clicked') },
+                                    { text: 'Paste', handler: () => console.log('Paste clicked') }
+                                ]
+                            },
+                            {
+                                text: 'View',
+                                menu: [
+                                    { text: 'Zoom In', handler: () => console.log('Zoom In clicked') },
+                                    { text: 'Zoom Out', handler: () => console.log('Zoom Out clicked') },
+                                    { text: 'Full Screen', handler: () => console.log('Full Screen clicked') }
+                                ]
+                            }
+                        ]
+                    });
+                    
+                    // Render MenuBar
+                    menuBar.renderTo(container);
+                    
+                    // Fix event handlers
+                    setTimeout(() => {
+                        console.log('Fixing MenuBar events...');
+                        
+                        const menuItems = container.querySelectorAll('.aionda-menubar-item');
+                        menuItems.forEach((item, index) => {
+                            item.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                
+                                console.log(`Menu item ${index} clicked`);
+                                
+                                const menuConfig = menuBar.items[index];
+                                if (menuConfig && menuConfig.menu) {
+                                    // Create dropdown menu
+                                    const menu = new AiondaWebUI.Menu({
+                                        items: menuConfig.menu,
+                                        contextMenu: true,
+                                        autoHide: true
+                                    });
+                                    
+                                    menu.render();
+                                    document.body.appendChild(menu.el);
+                                    
+                                    const rect = item.getBoundingClientRect();
+                                    menu.showAtPosition(rect.left, rect.bottom);
+                                    
+                                    // Handle menu clicks
+                                    menu.on('itemclick', (data) => {
+                                        if (data.item.handler) {
+                                            data.item.handler();
+                                        }
+                                        menu.hide();
+                                    });
+                                    
+                                    // Auto-hide when clicking elsewhere
+                                    setTimeout(() => {
+                                        const hideHandler = (e) => {
+                                            if (!menu.el.contains(e.target)) {
+                                                menu.hide();
+                                                document.removeEventListener('click', hideHandler);
+                                            }
+                                        };
+                                        document.addEventListener('click', hideHandler);
+                                    }, 100);
+                                }
+                            });
+                        });
+                        
+                        console.log('MenuBar events fixed');
+                        
+                        // Measure and fix spacing
+                        setTimeout(() => {
+                            const windowTitle = el.querySelector('.aionda-window-title');
+                            const menuBarElement = container.querySelector('.aionda-menubar');
+                            
+                            if (windowTitle && menuBarElement) {
+                                const titleRect = windowTitle.getBoundingClientRect();
+                                const menuBarRect = menuBarElement.getBoundingClientRect();
+                                const gap = menuBarRect.top - titleRect.bottom;
+                                
+                                console.log(`Current gap: ${gap}px`);
+                                
+                                if (gap > 2) {
+                                    console.log(`Fixing gap of ${gap}px...`);
+                                    
+                                    // Apply negative margin to close gap
+                                    container.style.marginTop = `-${gap}px`;
+                                    container.style.position = 'relative';
+                                    container.style.zIndex = '10';
+                                    
+                                    // Re-measure
+                                    setTimeout(() => {
+                                        const newTitleRect = windowTitle.getBoundingClientRect();
+                                        const newMenuBarRect = menuBarElement.getBoundingClientRect();
+                                        const newGap = newMenuBarRect.top - newTitleRect.bottom;
+                                        
+                                        console.log(`Gap after fix: ${newGap}px`);
+                                        
+                                        if (Math.abs(newGap) <= 2) {
+                                            console.log('✅ Spacing fixed successfully!');
+                                        } else {
+                                            console.log('⚠️ Gap still exists, trying stronger fix...');
+                                            container.style.marginTop = `-${gap + 5}px`;
+                                        }
+                                    }, 100);
+                                } else {
+                                    console.log('✅ Spacing already good');
+                                }
+                            }
+                        }, 200);
+                        
+                    }, 500);
+                }
+            });
+            
+            // Show window
+            window.show();
+        });
+    </script>
+</body>
+</html>

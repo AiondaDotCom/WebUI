@@ -34,7 +34,7 @@ const coreFiles = {
 const componentFiles = {};
 const componentNames = [
   'Panel', 'Button', 'Grid', 'Form', 'TextField', 'NumberField', 'ComboBox', 'Checkbox',
-  'Tree', 'Menu', 'MenuItem', 'Toolbar', 'Window', 'MessageBox', 'Toast', 
+  'Tree', 'Menu', 'MenuItem', 'MenuBar', 'Toolbar', 'Window', 'MessageBox', 'Toast', 
   'DateField', 'TextArea', 'RadioGroup', 'Radio', 'ThemeToggle', 'RichTextField'
 ];
 

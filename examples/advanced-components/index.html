@@ -219,6 +219,7 @@
                     <button id="basic-window-btn" class="demo-btn">📄 Basic Window</button>
                     <button id="modal-window-btn" class="demo-btn">🔒 Modal Dialog</button>
                     <button id="form-window-btn" class="demo-btn">📝 Form Window</button>
+                    <button id="menubar-window-btn" class="demo-btn">📋 MenuBar Window</button>
                     <button id="maximizable-window-btn" class="demo-btn">🗖️ Maximizable</button>
                     <button id="resizable-window-btn" class="demo-btn">↔️ Resizable</button>
                     <button id="custom-window-btn" class="demo-btn">🎨 Custom Styled</button>
@@ -450,6 +451,30 @@
                 border-radius: 0.25rem;
                 background: white;
             }
+            /* Window MenuBar specific styles */
+            .window-menubar .aionda-menu {
+                z-index: 9999 !important; /* Ensure dropdowns appear above window content */
+            }
+            .window-menubar {
+                position: relative;
+                z-index: 10;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #window-menubar-container {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                margin-top: -1px !important;
+            }
+            /* Fix window body padding to eliminate gaps around MenuBar */
+            .aionda-window .aionda-window-body {
+                padding-top: 0px !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
         `;
         document.head.appendChild(style);
 
@@ -598,23 +623,350 @@
 
         // Menu System Demo
         function initMenuSystem() {
+            try {
+                // Check if MenuBar component is available
+                if (typeof AiondaWebUI === 'undefined' || !AiondaWebUI.MenuBar) {
+                    console.error('AiondaWebUI.MenuBar not available');
+                    initFallbackMenuSystem();
+                    return;
+                }
+
+                // Create application menu bar with full functionality
+                const menuBar = new AiondaWebUI.MenuBar({
+                    items: [
+                        {
+                            text: '📁 File',
+                            menu: [
+                                { 
+                                    text: 'New Document', 
+                                    icon: '📄', 
+                                    shortcut: 'Ctrl+N',
+                                    handler: () => logMenuAction('New Document created')
+                                },
+                                { 
+                                    text: 'Open...', 
+                                    icon: '📂', 
+                                    shortcut: 'Ctrl+O',
+                                    handler: () => logMenuAction('Open dialog would appear')
+                                },
+                                { 
+                                    text: 'Recent Files', 
+                                    icon: '🕐',
+                                    menu: [
+                                        { text: 'document1.txt', handler: () => logMenuAction('Opened document1.txt') },
+                                        { text: 'project.json', handler: () => logMenuAction('Opened project.json') },
+                                        { text: 'readme.md', handler: () => logMenuAction('Opened readme.md') }
+                                    ]
+                                },
+                                '-', // separator
+                                { 
+                                    text: 'Save', 
+                                    icon: '💾', 
+                                    shortcut: 'Ctrl+S',
+                                    handler: () => logMenuAction('Document saved')
+                                },
+                                { 
+                                    text: 'Save As...', 
+                                    icon: '💾', 
+                                    shortcut: 'Ctrl+Shift+S',
+                                    handler: () => logMenuAction('Save As dialog would appear')
+                                },
+                                '-',
+                                { 
+                                    text: 'Print', 
+                                    icon: '🖨️', 
+                                    shortcut: 'Ctrl+P',
+                                    handler: () => logMenuAction('Print dialog would appear')
+                                },
+                                '-',
+                                { 
+                                    text: 'Exit', 
+                                    icon: '❌', 
+                                    shortcut: 'Alt+F4',
+                                    handler: () => logMenuAction('Application would exit')
+                                }
+                            ]
+                        },
+                        {
+                            text: '✏️ Edit',
+                            menu: [
+                                { 
+                                    text: 'Undo', 
+                                    icon: '↩️', 
+                                    shortcut: 'Ctrl+Z',
+                                    handler: () => logMenuAction('Last action undone')
+                                },
+                                { 
+                                    text: 'Redo', 
+                                    icon: '↪️', 
+                                    shortcut: 'Ctrl+Y',
+                                    handler: () => logMenuAction('Last undo redone')
+                                },
+                                '-',
+                                { 
+                                    text: 'Cut', 
+                                    icon: '✂️', 
+                                    shortcut: 'Ctrl+X',
+                                    handler: () => logMenuAction('Text cut to clipboard')
+                                },
+                                { 
+                                    text: 'Copy', 
+                                    icon: '📋', 
+                                    shortcut: 'Ctrl+C',
+                                    handler: () => logMenuAction('Text copied to clipboard')
+                                },
+                                { 
+                                    text: 'Paste', 
+                                    icon: '📌', 
+                                    shortcut: 'Ctrl+V',
+                                    handler: () => logMenuAction('Text pasted from clipboard')
+                                },
+                                '-',
+                                { 
+                                    text: 'Select All', 
+                                    icon: '🔲', 
+                                    shortcut: 'Ctrl+A',
+                                    handler: () => logMenuAction('All text selected')
+                                },
+                                { 
+                                    text: 'Find...', 
+                                    icon: '🔍', 
+                                    shortcut: 'Ctrl+F',
+                                    handler: () => logMenuAction('Find dialog would appear')
+                                },
+                                { 
+                                    text: 'Replace...', 
+                                    icon: '🔄', 
+                                    shortcut: 'Ctrl+H',
+                                    handler: () => logMenuAction('Replace dialog would appear')
+                                }
+                            ]
+                        },
+                        {
+                            text: '👁️ View',
+                            menu: [
+                                { 
+                                    text: 'Zoom In', 
+                                    icon: '🔍➕', 
+                                    shortcut: 'Ctrl+=',
+                                    handler: () => logMenuAction('Zoomed in')
+                                },
+                                { 
+                                    text: 'Zoom Out', 
+                                    icon: '🔍➖', 
+                                    shortcut: 'Ctrl+-',
+                                    handler: () => logMenuAction('Zoomed out')
+                                },
+                                { 
+                                    text: 'Reset Zoom', 
+                                    icon: '🔍🔄', 
+                                    shortcut: 'Ctrl+0',
+                                    handler: () => logMenuAction('Zoom reset to 100%')
+                                },
+                                '-',
+                                { 
+                                    text: 'Full Screen', 
+                                    icon: '⛶', 
+                                    shortcut: 'F11',
+                                    handler: () => logMenuAction('Toggled full screen mode')
+                                },
+                                '-',
+                                { 
+                                    text: 'Show Toolbar', 
+                                    icon: '🔧', 
+                                    checked: true,
+                                    handler: () => logMenuAction('Toggled toolbar visibility')
+                                },
+                                { 
+                                    text: 'Show Sidebar', 
+                                    icon: '📋', 
+                                    checked: false,
+                                    handler: () => logMenuAction('Toggled sidebar visibility')
+                                },
+                                { 
+                                    text: 'Show Status Bar', 
+                                    icon: '📊', 
+                                    checked: true,
+                                    handler: () => logMenuAction('Toggled status bar visibility')
+                                }
+                            ]
+                        },
+                        {
+                            text: '🔧 Tools',
+                            menu: [
+                                { 
+                                    text: 'Preferences...', 
+                                    icon: '⚙️', 
+                                    shortcut: 'Ctrl+,',
+                                    handler: () => logMenuAction('Preferences dialog would open')
+                                },
+                                { 
+                                    text: 'Customize Toolbar...', 
+                                    icon: '🛠️',
+                                    handler: () => logMenuAction('Toolbar customization would open')
+                                },
+                                '-',
+                                { 
+                                    text: 'Import Data...', 
+                                    icon: '📥',
+                                    handler: () => logMenuAction('Import dialog would appear')
+                                },
+                                { 
+                                    text: 'Export Data...', 
+                                    icon: '📤',
+                                    handler: () => logMenuAction('Export dialog would appear')
+                                },
+                                '-',
+                                { 
+                                    text: 'Check for Updates...', 
+                                    icon: '🔄',
+                                    handler: () => logMenuAction('Checking for updates...')
+                                }
+                            ]
+                        },
+                        {
+                            text: '❓ Help',
+                            menu: [
+                                { 
+                                    text: 'Documentation', 
+                                    icon: '📖', 
+                                    shortcut: 'F1',
+                                    handler: () => logMenuAction('Documentation would open')
+                                },
+                                { 
+                                    text: 'Keyboard Shortcuts', 
+                                    icon: '⌨️',
+                                    handler: () => logMenuAction('Shortcuts reference would show')
+                                },
+                                { 
+                                    text: 'Video Tutorials', 
+                                    icon: '🎥',
+                                    handler: () => logMenuAction('Video tutorials would open')
+                                },
+                                '-',
+                                { 
+                                    text: 'Report Bug...', 
+                                    icon: '🐛',
+                                    handler: () => logMenuAction('Bug report form would open')
+                                },
+                                { 
+                                    text: 'Send Feedback...', 
+                                    icon: '💬',
+                                    handler: () => logMenuAction('Feedback form would open')
+                                },
+                                '-',
+                                { 
+                                    text: 'About', 
+                                    icon: 'ℹ️',
+                                    handler: () => logMenuAction('About dialog would show: Aionda WebUI v0.2.0')
+                                }
+                            ]
+                        }
+                    ]
+                });
+
+                // Render the menu bar
+                const menuBarContainer = document.getElementById('menu-bar');
+                menuBarContainer.innerHTML = '';
+                menuBarContainer.appendChild(menuBar.render());
+
+                // Add event listeners for demo feedback
+                menuBar.on('itemclick', (data) => {
+                    logMenuAction(`Menu bar item clicked: ${data.item.text}`);
+                });
+
+                menuBar.on('menuitemclick', (data) => {
+                    logMenuAction(`Menu item clicked: ${data.menuItem.text} from ${data.menuConfig.text} menu`);
+                });
+
+                console.log('✅ MenuBar component initialized successfully');
+
+            } catch (error) {
+                console.error('Error initializing menu system:', error);
+                initFallbackMenuSystem();
+            }
+
+            // Initialize context menu demo
+            const contextArea = document.getElementById('context-area');
+            contextArea.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                
+                // Create context menu if Menu component is available
+                if (typeof AiondaWebUI !== 'undefined' && AiondaWebUI.Menu) {
+                    const contextMenu = new AiondaWebUI.Menu({
+                        items: [
+                            { text: 'Cut', icon: '✂️', shortcut: 'Ctrl+X', handler: () => logMenuAction('Cut from context menu') },
+                            { text: 'Copy', icon: '📋', shortcut: 'Ctrl+C', handler: () => logMenuAction('Copy from context menu') },
+                            { text: 'Paste', icon: '📌', shortcut: 'Ctrl+V', handler: () => logMenuAction('Paste from context menu') },
+                            '-',
+                            { text: 'Select All', icon: '🔲', shortcut: 'Ctrl+A', handler: () => logMenuAction('Select All from context menu') },
+                            '-',
+                            { text: 'Properties...', icon: '⚙️', handler: () => logMenuAction('Properties dialog would open') }
+                        ],
+                        contextMenu: true,
+                        autoHide: true
+                    });
+                    
+                    contextMenu.render();
+                    contextMenu.showAtEvent(e);
+                    
+                    contextMenu.on('itemclick', (data) => {
+                        logMenuAction(`Context menu: ${data.item.text}`);
+                    });
+                } else {
+                    logMenuAction('Context menu would appear here with Cut, Copy, Paste, etc.');
+                }
+            });
+        }
+
+        // Fallback menu system if MenuBar component is not available
+        function initFallbackMenuSystem() {
             const menuBar = document.getElementById('menu-bar');
             menuBar.innerHTML = `
                 <div class="p-2 bg-gray-100 border-b">
                     <div class="flex space-x-4">
-                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">📁 File</div>
-                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">✏️ Edit</div>
-                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">👁️ View</div>
-                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">❓ Help</div>
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer" onclick="logMenuAction('File menu clicked (fallback)')">📁 File</div>
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer" onclick="logMenuAction('Edit menu clicked (fallback)')">✏️ Edit</div>
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer" onclick="logMenuAction('View menu clicked (fallback)')">👁️ View</div>
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer" onclick="logMenuAction('Help menu clicked (fallback)')">❓ Help</div>
                     </div>
+                    <div class="text-xs text-red-600 mt-1">⚠️ Fallback mode - MenuBar component not available</div>
                 </div>
             `;
 
             const contextArea = document.getElementById('context-area');
             contextArea.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
-                alert('🖱️ Context menu would appear here with options like Cut, Copy, Paste, etc.');
+                logMenuAction('Context menu would appear here with options like Cut, Copy, Paste, etc.');
             });
+        }
+
+        // Helper function to log menu actions
+        function logMenuAction(message) {
+            console.log('🎯 Menu Action:', message);
+            
+            // Also show in a demo area if we want visual feedback
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            
+            // You could add a log display area here if desired
+            if (typeof window.showToast === 'function') {
+                window.showToast(message, 'info');
+            }
+        }
+
+        // Helper function to log window menu actions
+        function logWindowAction(message) {
+            console.log('🪟 Window Action:', message);
+            
+            // Also show in a demo area if we want visual feedback
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            
+            // You could add a log display area here if desired
+            if (typeof window.showToast === 'function') {
+                window.showToast(message, 'info');
+            }
         }
 
         // Toolbar Demo
@@ -743,6 +1095,347 @@
                     window.show();
                 });
 
+                document.getElementById('menubar-window-btn').addEventListener('click', () => {
+                    // Create a window with an integrated MenuBar
+                    const window = new AiondaWebUI.Window({
+                        title: '📋 Application Window with MenuBar',
+                        width: 600,
+                        height: 450,
+                        x: 200,
+                        y: 150,
+                        modal: false,
+                        draggable: true,
+                        resizable: true,
+                        closable: true,
+                        autoShow: false,
+                        html: `<div class="flex flex-col h-full">
+                            <!-- MenuBar Container positioned directly under title -->
+                            <div id="window-menubar-container" class="w-full"></div>
+                            
+                            <!-- Main Content Area -->
+                            <div class="flex-1 p-4">
+                                <h3 class="font-semibold mb-3 text-lg">📋 Professional Application Window</h3>
+                                <p class="mb-4 text-gray-600">This window demonstrates a complete application interface with an integrated menu bar, just like desktop applications.</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                                        <h4 class="font-semibold text-blue-800 mb-2">📂 File Operations</h4>
+                                        <p class="text-sm text-blue-700">Use the File menu to create, open, or save documents. Try keyboard shortcuts like Ctrl+N!</p>
+                                    </div>
+                                    <div class="bg-green-50 p-3 rounded-lg border border-green-200">
+                                        <h4 class="font-semibold text-green-800 mb-2">✏️ Edit Functions</h4>
+                                        <p class="text-sm text-green-700">Access cut, copy, paste and other editing tools through the Edit menu.</p>
+                                    </div>
+                                    <div class="bg-purple-50 p-3 rounded-lg border border-purple-200">
+                                        <h4 class="font-semibold text-purple-800 mb-2">👁️ View Options</h4>
+                                        <p class="text-sm text-purple-700">Control zoom, full screen mode, and UI element visibility in the View menu.</p>
+                                    </div>
+                                    <div class="bg-orange-50 p-3 rounded-lg border border-orange-200">
+                                        <h4 class="font-semibold text-orange-800 mb-2">❓ Help & Support</h4>
+                                        <p class="text-sm text-orange-700">Find documentation, shortcuts, and support options in the Help menu.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Demo Content Area -->
+                                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 min-h-32">
+                                    <h5 class="font-medium mb-2">📄 Document Content Area</h5>
+                                    <p class="text-sm text-gray-600 mb-2">This would be your main application content. Menu actions will be logged to the console.</p>
+                                    <div class="text-xs text-gray-500">
+                                        ⌨️ <strong>Keyboard Navigation:</strong> Press Alt to activate menu bar, then use arrow keys to navigate.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Status Bar -->
+                            <div class="border-t bg-gray-50 px-4 py-2 text-xs text-gray-600 flex justify-between">
+                                <span>Ready | Document: Untitled</span>
+                                <span id="window-status-time">Loading...</span>
+                            </div>
+                        </div>`
+                    });
+                    
+                    // Render the window first
+                    const el = window.render();
+                    document.body.appendChild(el);
+                    
+                    // Create and add the MenuBar after window is rendered
+                    window.on('show', () => {
+                        const menuBarContainer = el.querySelector('#window-menubar-container');
+                        if (menuBarContainer && AiondaWebUI.MenuBar) {
+                            
+                            // Create MenuBar specifically for this window
+                            const windowMenuBar = new AiondaWebUI.MenuBar({
+                                cls: 'window-menubar', // Add custom class for window-specific styling
+                                items: [
+                                    {
+                                        text: '📁 File',
+                                        menu: [
+                                            { 
+                                                text: 'New Document', 
+                                                icon: '📄', 
+                                                shortcut: 'Ctrl+N',
+                                                handler: () => logWindowAction('New document created in window')
+                                            },
+                                            { 
+                                                text: 'Open...', 
+                                                icon: '📂', 
+                                                shortcut: 'Ctrl+O',
+                                                handler: () => logWindowAction('Open dialog would appear')
+                                            },
+                                            { 
+                                                text: 'Recent Files', 
+                                                icon: '🕐',
+                                                menu: [
+                                                    { text: 'Project Plan.docx', handler: () => logWindowAction('Opened Project Plan.docx') },
+                                                    { text: 'Meeting Notes.txt', handler: () => logWindowAction('Opened Meeting Notes.txt') },
+                                                    { text: 'Budget 2025.xlsx', handler: () => logWindowAction('Opened Budget 2025.xlsx') }
+                                                ]
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Save', 
+                                                icon: '💾', 
+                                                shortcut: 'Ctrl+S',
+                                                handler: () => logWindowAction('Document saved')
+                                            },
+                                            { 
+                                                text: 'Save As...', 
+                                                icon: '💾', 
+                                                shortcut: 'Ctrl+Shift+S',
+                                                handler: () => logWindowAction('Save As dialog opened')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Print...', 
+                                                icon: '🖨️', 
+                                                shortcut: 'Ctrl+P',
+                                                handler: () => logWindowAction('Print dialog opened')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Close Window', 
+                                                icon: '❌',
+                                                handler: () => {
+                                                    logWindowAction('Closing window via menu');
+                                                    window.hide();
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        text: '✏️ Edit',
+                                        menu: [
+                                            { 
+                                                text: 'Undo', 
+                                                icon: '↩️', 
+                                                shortcut: 'Ctrl+Z',
+                                                handler: () => logWindowAction('Undo last action')
+                                            },
+                                            { 
+                                                text: 'Redo', 
+                                                icon: '↪️', 
+                                                shortcut: 'Ctrl+Y',
+                                                handler: () => logWindowAction('Redo last action')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Cut', 
+                                                icon: '✂️', 
+                                                shortcut: 'Ctrl+X',
+                                                handler: () => logWindowAction('Text cut to clipboard')
+                                            },
+                                            { 
+                                                text: 'Copy', 
+                                                icon: '📋', 
+                                                shortcut: 'Ctrl+C',
+                                                handler: () => logWindowAction('Text copied to clipboard')
+                                            },
+                                            { 
+                                                text: 'Paste', 
+                                                icon: '📌', 
+                                                shortcut: 'Ctrl+V',
+                                                handler: () => logWindowAction('Text pasted from clipboard')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Select All', 
+                                                icon: '🔲', 
+                                                shortcut: 'Ctrl+A',
+                                                handler: () => logWindowAction('All content selected')
+                                            },
+                                            { 
+                                                text: 'Find & Replace...', 
+                                                icon: '🔍', 
+                                                shortcut: 'Ctrl+H',
+                                                handler: () => logWindowAction('Find & Replace dialog opened')
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        text: '👁️ View',
+                                        menu: [
+                                            { 
+                                                text: 'Zoom In', 
+                                                icon: '🔍➕', 
+                                                shortcut: 'Ctrl+=',
+                                                handler: () => logWindowAction('Zoomed in')
+                                            },
+                                            { 
+                                                text: 'Zoom Out', 
+                                                icon: '🔍➖', 
+                                                shortcut: 'Ctrl+-',
+                                                handler: () => logWindowAction('Zoomed out')
+                                            },
+                                            { 
+                                                text: 'Actual Size', 
+                                                icon: '🔍🔄', 
+                                                shortcut: 'Ctrl+0',
+                                                handler: () => logWindowAction('Reset to actual size')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Full Screen', 
+                                                icon: '⛶', 
+                                                shortcut: 'F11',
+                                                handler: () => {
+                                                    logWindowAction('Toggled full screen');
+                                                    // Toggle window maximize
+                                                    if (window.maximized) {
+                                                        window.restore();
+                                                    } else {
+                                                        window.maximize();
+                                                    }
+                                                }
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Show Status Bar', 
+                                                icon: '📊', 
+                                                checked: true,
+                                                handler: () => {
+                                                    const statusBar = el.querySelector('.border-t.bg-gray-50');
+                                                    if (statusBar) {
+                                                        statusBar.style.display = statusBar.style.display === 'none' ? 'flex' : 'none';
+                                                        logWindowAction('Toggled status bar visibility');
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        text: '🔧 Tools',
+                                        menu: [
+                                            { 
+                                                text: 'Preferences...', 
+                                                icon: '⚙️', 
+                                                shortcut: 'Ctrl+,',
+                                                handler: () => logWindowAction('Preferences dialog opened')
+                                            },
+                                            { 
+                                                text: 'Customize Interface...', 
+                                                icon: '🛠️',
+                                                handler: () => logWindowAction('Interface customization opened')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Import...', 
+                                                icon: '📥',
+                                                handler: () => logWindowAction('Import dialog opened')
+                                            },
+                                            { 
+                                                text: 'Export...', 
+                                                icon: '📤',
+                                                handler: () => logWindowAction('Export dialog opened')
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        text: '❓ Help',
+                                        menu: [
+                                            { 
+                                                text: 'User Manual', 
+                                                icon: '📖', 
+                                                shortcut: 'F1',
+                                                handler: () => logWindowAction('User manual opened')
+                                            },
+                                            { 
+                                                text: 'Keyboard Shortcuts', 
+                                                icon: '⌨️',
+                                                handler: () => logWindowAction('Keyboard shortcuts reference opened')
+                                            },
+                                            { 
+                                                text: 'Video Tutorials', 
+                                                icon: '🎥',
+                                                handler: () => logWindowAction('Video tutorials opened')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'Report Issue...', 
+                                                icon: '🐛',
+                                                handler: () => logWindowAction('Issue report form opened')
+                                            },
+                                            { 
+                                                text: 'Contact Support...', 
+                                                icon: '💬',
+                                                handler: () => logWindowAction('Support contact form opened')
+                                            },
+                                            '-',
+                                            { 
+                                                text: 'About Application', 
+                                                icon: 'ℹ️',
+                                                handler: () => logWindowAction('About dialog: Aionda WebUI v0.2.0 - Window Demo Application')
+                                            }
+                                        ]
+                                    }
+                                ]
+                            });
+                            
+                            // Render MenuBar to container using renderTo() method which handles everything properly
+                            windowMenuBar.renderTo(menuBarContainer);
+                            
+                            // Store reference to component on DOM element for debugging
+                            const menuBarElement = windowMenuBar.el;
+                            if (menuBarElement) {
+                                menuBarElement._component = windowMenuBar;
+                            }
+                            
+                            // MenuBar should now work automatically with window context fixes in the component
+                            
+                            // Add event listeners for window-specific actions
+                            windowMenuBar.on('menuitemclick', (data) => {
+                                logWindowAction(`Window Menu: ${data.menuItem.text} from ${data.menuConfig.text}`);
+                            });
+                            
+                            // Add click debugging
+                            windowMenuBar.on('itemclick', (data) => {
+                                console.log('Window MenuBar item clicked:', data);
+                            });
+                            
+                            console.log('✅ MenuBar integrated into window successfully');
+                            
+                            // Update status bar with current time
+                            const updateTime = () => {
+                                const timeEl = el.querySelector('#window-status-time');
+                                if (timeEl) {
+                                    timeEl.textContent = new Date().toLocaleTimeString();
+                                }
+                            };
+                            updateTime();
+                            const timeInterval = setInterval(updateTime, 1000);
+                            
+                            // Clean up interval when window is hidden
+                            window.on('hide', () => {
+                                clearInterval(timeInterval);
+                                if (windowMenuBar) {
+                                    windowMenuBar.destroy();
+                                }
+                            });
+                        }
+                    });
+                    
+                    window.show();
+                });
+
                 document.getElementById('maximizable-window-btn').addEventListener('click', () => {
                     const window = new AiondaWebUI.Window({
                         title: '🗖️ Maximizable Window',
@@ -844,6 +1537,9 @@
                 });
                 document.getElementById('form-window-btn').addEventListener('click', () => {
                     alert('📝 Error: Window component not available. Check console for details.');
+                });
+                document.getElementById('menubar-window-btn').addEventListener('click', () => {
+                    alert('📋 Error: Window or MenuBar component not available. Check console for details.');
                 });
                 document.getElementById('maximizable-window-btn').addEventListener('click', () => {
                     alert('🗖️ Error: Window component not available. Check console for details.');

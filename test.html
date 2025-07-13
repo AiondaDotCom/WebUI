@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dist/aionda-webui.css">
+</head>
+<body>
+    <div id="app"></div>
+    
+    <script src="dist/aionda-webui.js"></script>
+    <script>
+        console.log('Starting form creation...');
+        
+        // Test modern Form API with fields and buttons
+        const form = new AiondaWebUI.Form({
+            fields: [
+                {
+                    cmp: 'textfield',
+                    name: 'name',
+                    fieldLabel: 'Name',
+                    placeholder: 'Enter your name',
+                    required: true
+                },
+                {
+                    cmp: 'textfield', 
+                    name: 'email',
+                    fieldLabel: 'Email',
+                    placeholder: 'Enter your email',
+                    inputType: 'email',
+                    required: true
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Submit',
+                    variant: 'primary',
+                    type: 'submit'
+                },
+                {
+                    text: 'Reset',
+                    variant: 'secondary',
+                    handler: () => {
+                        form.reset();
+                    }
+                }
+            ]
+        });
+        
+        console.log('Form created:', form);
+        console.log('Form items:', form.items);
+
+        form.on('submit', (data) => {
+            console.log('Form submitted with data:', data.values);
+            alert('Form submitted! Check console for details.');
+        });
+
+        console.log('About to render form...');
+        form.renderTo('#app');
+        console.log('Form rendered');
+    </script>
+</body>
+</html>

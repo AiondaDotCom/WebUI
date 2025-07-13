@@ -43,34 +43,44 @@ button.renderTo('#app');
 ### 3. Build a Simple Form
 
 ```javascript
-// Create form fields
-const nameField = new AiondaWebUI.TextField({
-    label: 'Name',
-    placeholder: 'Enter your name',
-    required: true
-});
-
-const emailField = new AiondaWebUI.TextField({
-    label: 'Email',
-    placeholder: 'Enter your email',
-    type: 'email',
-    required: true
-});
-
-const submitButton = new AiondaWebUI.Button({
-    text: 'Submit',
-    variant: 'primary',
-    handler: () => {
-        const name = nameField.getValue();
-        const email = emailField.getValue();
-        console.log('Form data:', { name, email });
-    }
-});
-
-// Create form container
+// Create form with declarative field configuration
 const form = new AiondaWebUI.Form({
     title: 'Contact Form',
-    items: [nameField, emailField, submitButton]
+    fields: [
+        {
+            cmp: 'textfield',
+            name: 'name',
+            fieldLabel: 'Name',
+            placeholder: 'Enter your name',
+            required: true
+        },
+        {
+            cmp: 'textfield',
+            name: 'email',
+            fieldLabel: 'Email',
+            placeholder: 'Enter your email',
+            inputType: 'email',
+            required: true
+        }
+    ],
+    buttons: [
+        {
+            text: 'Submit',
+            variant: 'primary',
+            type: 'submit',
+            handler: (form) => {
+                const values = form.getValues();
+                console.log('Form data:', values);
+            }
+        },
+        {
+            text: 'Reset',
+            variant: 'secondary',
+            handler: (form) => {
+                form.reset();
+            }
+        }
+    ]
 });
 
 form.renderTo('#app');
@@ -105,14 +115,23 @@ npm test
 
 ### Components
 
-All UI elements in Aionda WebUI are components that extend the base `Component` class:
+All UI elements in Aionda WebUI are components that extend the base `Component` class. You can create components imperatively or use the declarative Form API:
 
 ```javascript
+// Imperative approach - direct component creation
 const panel = new AiondaWebUI.Panel({
     title: 'My Panel',
     items: [
         new AiondaWebUI.Button({ text: 'Button 1' }),
         new AiondaWebUI.Button({ text: 'Button 2' })
+    ]
+});
+
+// Declarative approach - using Form configuration
+const form = new AiondaWebUI.Form({
+    fields: [
+        { cmp: 'textfield', name: 'username', fieldLabel: 'Username' },
+        { cmp: 'checkbox', name: 'remember', fieldLabel: 'Remember me' }
     ]
 });
 ```

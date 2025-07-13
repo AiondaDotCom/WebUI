@@ -8,49 +8,49 @@ This documentation covers 25 components across 7 categories.
 
 ### Form Components (8 components)
 
-- **[Button](components/Button.md)** - 
-- **[Checkbox](components/Checkbox.md)** - 
-- **[ComboBox](components/ComboBox.md)** - 
-- **[NumberField](components/NumberField.md)** - 
-- **[Radio](components/Radio.md)** - 
-- **[RadioGroup](components/RadioGroup.md)** - 
-- **[TextArea](components/TextArea.md)** - 
-- **[TextField](components/TextField.md)** - 
+- **[Button](components/button.md)** - 
+- **[Checkbox](components/checkbox.md)** - 
+- **[ComboBox](components/combobox.md)** - 
+- **[NumberField](components/numberfield.md)** - 
+- **[Radio](components/radio.md)** - 
+- **[RadioGroup](components/radiogroup.md)** - 
+- **[TextArea](components/textarea.md)** - 
+- **[TextField](components/textfield.md)** - 
 
 ### Utility Components (2 components)
 
-- **[DateField](components/DateField.md)** - 
-- **[ThemeToggle](components/ThemeToggle.md)** - 
+- **[DateField](components/datefield.md)** - 
+- **[ThemeToggle](components/themetoggle.md)** - 
 
 ### Data Components (3 components)
 
-- **[Form](components/Form.md)** - 
-- **[Grid](components/Grid.md)** - 
-- **[Tree](components/Tree.md)** - 
+- **[Form](components/form.md)** - 
+- **[Grid](components/grid.md)** - 
+- **[Tree](components/tree.md)** - 
 
 ### Navigation Components (3 components)
 
-- **[Menu](components/Menu.md)** - 
-- **[MenuItem](components/MenuItem.md)** - 
-- **[Toolbar](components/Toolbar.md)** - 
+- **[Menu](components/menu.md)** - 
+- **[MenuItem](components/menuitem.md)** - 
+- **[Toolbar](components/toolbar.md)** - 
 
 ### Feedback Components (2 components)
 
-- **[MessageBox](components/MessageBox.md)** - 
-- **[Toast](components/Toast.md)** - 
+- **[MessageBox](components/messagebox.md)** - 
+- **[Toast](components/toast.md)** - 
 
 ### Layout Components (2 components)
 
-- **[Panel](components/Panel.md)** - 
-- **[Window](components/Window.md)** - 
+- **[Panel](components/panel.md)** - 
+- **[Window](components/window.md)** - 
 
 ### Core Components (5 components)
 
-- **[Component](components/Component.md)** - 
-- **[EventEmitter](components/EventEmitter.md)** - 
-- **[I18n](components/I18n.md)** - 
-- **[SecurityUtils](components/SecurityUtils.md)** - 
-- **[Store](components/Store.md)** - 
+- **[Component](components/component.md)** - 
+- **[EventEmitter](components/eventemitter.md)** - 
+- **[I18n](components/i18n.md)** - 
+- **[SecurityUtils](components/securityutils.md)** - 
+- **[Store](components/store.md)** - 
 
 
 ## Quick Start

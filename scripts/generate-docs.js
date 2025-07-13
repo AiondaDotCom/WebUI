@@ -174,6 +174,12 @@ class DocumentationGenerator {
         default: return options.inverse(this);
       }
     });
+    
+    // toLowerCase helper
+    handlebars.registerHelper('toLowerCase', (text) => {
+      if (!text || typeof text !== 'string') return '';
+      return text.toLowerCase();
+    });
   }
 
   /**

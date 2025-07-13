@@ -5,7 +5,7 @@ Complete reference for all Aionda WebUI components.
 ## All Components
 
 {{#each components}}
-- **[{{name}}]({{name}}.md)** - {{description}} {{#if since}}*(since {{since}})*{{/if}}
+- **[{{name}}]({{toLowerCase name}}.md)** - {{description}} {{#if since}}*(since {{since}})*{{/if}}
 {{/each}}
 
 ## By Category
@@ -14,7 +14,7 @@ Complete reference for all Aionda WebUI components.
 ### {{name}}
 
 {{#each components}}
-- **[{{name}}]({{name}}.md)** - {{description}}
+- **[{{name}}]({{toLowerCase name}}.md)** - {{description}}
 {{/each}}
 
 {{/each}}
@@ -33,7 +33,7 @@ Component (Base Class)
 | Component | Category | Description | Key Features |
 |-----------|----------|-------------|--------------|
 {{#each components}}
-| [{{name}}]({{name}}.md) | {{category}} | {{truncate description 50}} | {{#each keyFeatures}}{{this}}{{#unless @last}}, {{/unless}}{{/each}} |
+| [{{name}}]({{toLowerCase name}}.md) | {{category}} | {{truncate description 50}} | {{#each keyFeatures}}{{this}}{{#unless @last}}, {{/unless}}{{/each}} |
 {{/each}}
 
 ---

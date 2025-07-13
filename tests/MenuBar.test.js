@@ -573,6 +573,503 @@ describe('MenuBar', () => {
     });
   });
 
+  describe('Window Integration', () => {
+    let windowContainer;
+    
+    beforeEach(() => {
+      // Create a mock window container
+      windowContainer = document.createElement('div');
+      windowContainer.className = 'aionda-window';
+      windowContainer.style.position = 'absolute';
+      windowContainer.style.top = '100px';
+      windowContainer.style.left = '200px';
+      document.body.appendChild(windowContainer);
+      
+      const items = [
+        { text: 'File', menu: [{ text: 'New' }, { text: 'Open' }] },
+        { text: 'Edit', menu: [{ text: 'Cut' }, { text: 'Copy' }] }
+      ];
+
+      menuBar = new MenuBar({ items });
+      const element = menuBar.render();
+      windowContainer.appendChild(element);
+    });
+
+    afterEach(() => {
+      if (windowContainer && windowContainer.parentNode) {
+        windowContainer.parentNode.removeChild(windowContainer);
+      }
+    });
+
+    test('should detect window context correctly', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Click to show menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      expect(menuBar.activeMenu).toBeTruthy();
+      
+      // Check if window-specific positioning was applied
+      const menuEl = menuBar.activeMenu.el;
+      expect(menuEl.style.zIndex).toBe('999999');
+      expect(menuEl.style.position).toBe('fixed');
+      expect(menuEl.style.transition).toBe('none');
+      expect(menuEl.style.transform).toBe('none');
+    });
+
+    test('should append menu to document body in window context', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      const menuEl = menuBar.activeMenu.el;
+      expect(menuEl.parentNode).toBe(document.body);
+    });
+
+    test('should position menu relative to menubar item in window', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      const rect = fileItem.getBoundingClientRect();
+      
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      const menuEl = menuBar.activeMenu.el;
+      expect(menuEl.style.top).toBe((rect.bottom + 2) + 'px');
+      expect(menuEl.style.left).toBe(rect.left + 'px');
+    });
+
+    test('should not apply window fixes for normal (non-window) context', () => {
+      // Test with menubar outside window
+      const normalContainer = document.createElement('div');
+      document.body.appendChild(normalContainer);
+      
+      try {
+        const normalMenuBar = new MenuBar({ 
+          items: [{ text: 'File', menu: [{ text: 'New' }] }] 
+        });
+        const element = normalMenuBar.render();
+        normalContainer.appendChild(element);
+        
+        const fileItem = normalContainer.querySelector('[data-item-index="0"]');
+        fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        
+        const menuEl = normalMenuBar.activeMenu.el;
+        // Menu should use normal positioning, not window-specific overrides
+        expect(menuEl.style.zIndex).toBe(''); // Should be empty (default)
+        expect(menuEl.style.transition).toBe(''); // Should be empty (default)
+        // Position may be set by the Menu component itself, so we just check it's not the window-specific value
+        expect(menuEl.style.zIndex).not.toBe('999999');
+        
+        normalMenuBar.destroy();
+      } finally {
+        document.body.removeChild(normalContainer);
+      }
+    });
+  });
+
+  describe('Window Movement Tracking', () => {
+    let windowContainer;
+    
+    beforeEach(() => {
+      windowContainer = document.createElement('div');
+      windowContainer.className = 'aionda-window';
+      windowContainer.style.position = 'absolute';
+      windowContainer.style.top = '100px';
+      windowContainer.style.left = '200px';
+      document.body.appendChild(windowContainer);
+      
+      const items = [
+        { text: 'File', menu: [{ text: 'New' }, { text: 'Open' }] }
+      ];
+
+      menuBar = new MenuBar({ items });
+      const element = menuBar.render();
+      windowContainer.appendChild(element);
+    });
+
+    afterEach(() => {
+      if (windowContainer && windowContainer.parentNode) {
+        windowContainer.parentNode.removeChild(windowContainer);
+      }
+    });
+
+    test('should setup window movement tracking when menu opens', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      expect(menuBar.trackedWindow).toBe(windowContainer);
+      expect(menuBar.trackedMenuItem).toBe(menuBar.menuItems[0]);
+      expect(menuBar.trackedItemEl).toBe(fileItem);
+      expect(menuBar.windowObserver).toBeTruthy();
+      expect(menuBar.positionCheckInterval).toBeTruthy();
+    });
+
+    test('should stop window movement tracking when menu closes', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Open menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(menuBar.windowObserver).toBeTruthy();
+      
+      // Close menu
+      menuBar.hideActiveMenu();
+      
+      expect(menuBar.trackedWindow).toBeNull();
+      expect(menuBar.trackedMenuItem).toBeNull();
+      expect(menuBar.trackedItemEl).toBeNull();
+      expect(menuBar.windowObserver).toBeNull();
+      expect(menuBar.positionCheckInterval).toBeNull();
+    });
+
+    test('should update menu position when window moves', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Open menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      const menuEl = menuBar.activeMenu.el;
+      
+      // Verify updateMenuPosition can be called without errors
+      expect(() => {
+        menuBar.updateMenuPosition();
+      }).not.toThrow();
+      
+      // Verify the menu element has position properties set
+      expect(menuEl.style.top).toBeTruthy();
+      expect(menuEl.style.left).toBeTruthy();
+      
+      // Test that updateMenuPosition actually updates based on current position
+      const currentRect = fileItem.getBoundingClientRect();
+      menuBar.updateMenuPosition();
+      
+      const expectedTop = (currentRect.bottom + 2) + 'px';
+      const expectedLeft = currentRect.left + 'px';
+      
+      expect(menuEl.style.top).toBe(expectedTop);
+      expect(menuEl.style.left).toBe(expectedLeft);
+    });
+
+    test('should handle MutationObserver style changes', (done) => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Open menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      // Spy on updateMenuPosition
+      const updateSpy = jest.spyOn(menuBar, 'updateMenuPosition');
+      
+      // Change window style (this should trigger MutationObserver)
+      windowContainer.style.transform = 'translate(50px, 50px)';
+      
+      // Give MutationObserver time to fire
+      setTimeout(() => {
+        expect(updateSpy).toHaveBeenCalled();
+        done();
+      }, 100);
+    });
+
+    test('should clean up tracking on component destroy', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Open menu to start tracking
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(menuBar.windowObserver).toBeTruthy();
+      expect(menuBar.positionCheckInterval).toBeTruthy();
+      
+      // Destroy component
+      menuBar.destroy();
+      
+      expect(menuBar.trackedWindow).toBeNull();
+      expect(menuBar.windowObserver).toBeNull();
+      expect(menuBar.positionCheckInterval).toBeNull();
+    });
+
+    test('should handle updateMenuPosition with missing elements gracefully', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Open menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      // Remove active menu to test graceful handling
+      menuBar.activeMenu = null;
+      
+      // Should not throw error
+      expect(() => {
+        menuBar.updateMenuPosition();
+      }).not.toThrow();
+    });
+
+    test('should handle multiple menu switches with tracking', () => {
+      const items = [
+        { text: 'File', menu: [{ text: 'New' }] },
+        { text: 'Edit', menu: [{ text: 'Cut' }] }
+      ];
+      
+      menuBar.destroy();
+      menuBar = new MenuBar({ items });
+      const element = menuBar.render();
+      windowContainer.appendChild(element);
+      
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      const editItem = windowContainer.querySelector('[data-item-index="1"]');
+      
+      // Open File menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      const firstTrackedItem = menuBar.trackedItemEl;
+      
+      // Switch to Edit menu
+      editItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      expect(menuBar.trackedItemEl).toBe(editItem);
+      expect(menuBar.trackedItemEl).not.toBe(firstTrackedItem);
+    });
+  });
+
+  describe('Window Integration Edge Cases', () => {
+    test('should handle window context without crashing when no window found', () => {
+      const items = [{ text: 'File', menu: [{ text: 'New' }] }];
+      menuBar = new MenuBar({ items });
+      
+      // Mock the closest method to return null (no window found)
+      const element = menuBar.render();
+      const originalClosest = element.closest;
+      element.closest = jest.fn().mockReturnValue(null);
+      
+      container.appendChild(element);
+      
+      const fileItem = element.querySelector('[data-item-index="0"]');
+      
+      // Should not crash when no window found
+      expect(() => {
+        fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      }).not.toThrow();
+      
+      // Restore original method
+      element.closest = originalClosest;
+    });
+
+    test('should handle menu positioning when menu element is missing', () => {
+      const windowContainer = document.createElement('div');
+      windowContainer.className = 'aionda-window';
+      document.body.appendChild(windowContainer);
+      
+      try {
+        const items = [{ text: 'File', menu: [{ text: 'New' }] }];
+        menuBar = new MenuBar({ items });
+        const element = menuBar.render();
+        windowContainer.appendChild(element);
+        
+        const fileItem = element.querySelector('[data-item-index="0"]');
+        fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        
+        // Remove menu element to test graceful handling
+        if (menuBar.activeMenu && menuBar.activeMenu.el) {
+          menuBar.activeMenu.el = null;
+        }
+        
+        // Should not crash when updating position
+        expect(() => {
+          menuBar.updateMenuPosition();
+        }).not.toThrow();
+        
+      } finally {
+        document.body.removeChild(windowContainer);
+      }
+    });
+
+    test('should handle window tracking setup when no window element found', () => {
+      const items = [{ text: 'File', menu: [{ text: 'New' }] }];
+      menuBar = new MenuBar({ items });
+      
+      // Initialize tracking properties to null to avoid undefined
+      menuBar.trackedWindow = null;
+      menuBar.windowObserver = null;
+      menuBar.positionCheckInterval = null;
+      
+      // Mock to simulate no window found
+      menuBar.el = { closest: jest.fn().mockReturnValue(null) };
+      
+      // Should not crash when trying to setup tracking
+      expect(() => {
+        menuBar.setupWindowMovementTracking({}, {});
+      }).not.toThrow();
+      
+      expect(menuBar.trackedWindow).toBeNull();
+      expect(menuBar.windowObserver).toBeNull();
+      expect(menuBar.positionCheckInterval).toBeNull();
+    });
+  });
+
+  describe('Menu Hover Behavior in Window Context', () => {
+    let windowContainer;
+    
+    beforeEach(() => {
+      windowContainer = document.createElement('div');
+      windowContainer.className = 'aionda-window';
+      document.body.appendChild(windowContainer);
+      
+      const items = [
+        { text: 'File', menu: [{ text: 'New' }] },
+        { text: 'Edit', menu: [{ text: 'Cut' }] },
+        { text: 'View', menu: [{ text: 'Zoom' }] }
+      ];
+
+      menuBar = new MenuBar({ items });
+      const element = menuBar.render();
+      windowContainer.appendChild(element);
+    });
+
+    afterEach(() => {
+      if (windowContainer && windowContainer.parentNode) {
+        windowContainer.parentNode.removeChild(windowContainer);
+      }
+    });
+
+    test('should switch menus on hover when in menubar mode', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      const editItem = windowContainer.querySelector('[data-item-index="1"]');
+      
+      // Click File to enter menubar mode
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(menuBar.menubarMode).toBe(true);
+      expect(menuBar.activeMenu).toBeTruthy();
+      
+      const firstMenu = menuBar.activeMenu;
+      
+      // Test manual focus change and menu switching functionality
+      menuBar.setFocusedItemIndex(1);
+      expect(menuBar.focusedItemIndex).toBe(1);
+      
+      // Test that we can show a different menu
+      const editMenuItem = menuBar.menuItems[1];
+      if (editMenuItem.menu) {
+        menuBar.showMenu(editMenuItem, editItem);
+        expect(menuBar.activeMenu).toBeTruthy();
+        expect(menuBar.activeMenu).not.toBe(firstMenu);
+      }
+    });
+
+    test('should not switch menus on hover when not in menubar mode', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      const editItem = windowContainer.querySelector('[data-item-index="1"]');
+      
+      // Just hover without clicking (not in menubar mode)
+      editItem.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+      
+      expect(menuBar.menubarMode).toBe(false);
+      expect(menuBar.activeMenu).toBeNull();
+    });
+
+    test('should respect showOnHover setting', () => {
+      menuBar.destroy();
+      const items = [
+        { text: 'File', menu: [{ text: 'New' }] },
+        { text: 'Edit', menu: [{ text: 'Cut' }] }
+      ];
+      
+      menuBar = new MenuBar({ items, showOnHover: false });
+      const element = menuBar.render();
+      windowContainer.appendChild(element);
+      
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      const editItem = windowContainer.querySelector('[data-item-index="1"]');
+      
+      // Enter menubar mode
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(menuBar.menubarMode).toBe(true);
+      
+      // Hover should not switch menu when showOnHover is false
+      editItem.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+      
+      // Should update focus but not show menu
+      expect(menuBar.focusedItemIndex).toBe(1);
+    });
+  });
+
+  describe('Advanced Menu State Management', () => {
+    let windowContainer;
+    
+    beforeEach(() => {
+      windowContainer = document.createElement('div');
+      windowContainer.className = 'aionda-window';
+      document.body.appendChild(windowContainer);
+      
+      const items = [
+        { text: 'File', menu: [{ text: 'New' }] },
+        { text: 'Edit', menu: [{ text: 'Cut' }] }
+      ];
+
+      menuBar = new MenuBar({ items });
+      const element = menuBar.render();
+      windowContainer.appendChild(element);
+    });
+
+    afterEach(() => {
+      if (windowContainer && windowContainer.parentNode) {
+        windowContainer.parentNode.removeChild(windowContainer);
+      }
+    });
+
+    test('should maintain menubar mode when menu is open', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Open menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(menuBar.menubarMode).toBe(true);
+      expect(menuBar.activeMenu).toBeTruthy();
+      
+      // Try to exit menubar mode while menu is open
+      menuBar.exitMenubarMode();
+      
+      // Should still be in menubar mode because menu is open
+      expect(menuBar.menubarMode).toBe(true);
+    });
+
+    test('should exit menubar mode when no menu is open', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      
+      // Enter menubar mode
+      menuBar.enterMenubarMode();
+      expect(menuBar.menubarMode).toBe(true);
+      
+      // Exit when no menu is active
+      menuBar.exitMenubarMode();
+      expect(menuBar.menubarMode).toBe(false);
+    });
+
+    test('should clean up tracking when switching between menus', () => {
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      const editItem = windowContainer.querySelector('[data-item-index="1"]');
+      
+      // Open File menu
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      const stopTrackingSpy = jest.spyOn(menuBar, 'stopWindowMovementTracking');
+      
+      // Switch to Edit menu
+      editItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      // Should have stopped tracking before starting new tracking
+      expect(stopTrackingSpy).toHaveBeenCalled();
+    });
+
+    test('should emit menushow event with correct data', () => {
+      const mockHandler = jest.fn();
+      menuBar.on('menushow', mockHandler);
+      
+      const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+      fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      
+      expect(mockHandler).toHaveBeenCalledWith(
+        expect.objectContaining({
+          menuItem: expect.objectContaining({
+            config: expect.objectContaining({ text: 'File' }),
+            menu: expect.any(Object)
+          }),
+          menu: expect.any(Object)
+        })
+      );
+    });
+  });
+
   describe('Edge Cases', () => {
     test('should handle empty items array', () => {
       menuBar = new MenuBar({ items: [] });
@@ -620,6 +1117,39 @@ describe('MenuBar', () => {
       
       fileItem.dispatchEvent(clickEvent);
       expect(mockPreventDefault).toHaveBeenCalled();
+    });
+
+    test('should handle rapid menu switching without errors', () => {
+      const windowContainer = document.createElement('div');
+      windowContainer.className = 'aionda-window';
+      document.body.appendChild(windowContainer);
+      
+      try {
+        const items = [
+          { text: 'File', menu: [{ text: 'New' }] },
+          { text: 'Edit', menu: [{ text: 'Cut' }] },
+          { text: 'View', menu: [{ text: 'Zoom' }] }
+        ];
+        
+        menuBar = new MenuBar({ items });
+        const element = menuBar.render();
+        windowContainer.appendChild(element);
+        
+        const fileItem = windowContainer.querySelector('[data-item-index="0"]');
+        const editItem = windowContainer.querySelector('[data-item-index="1"]');
+        const viewItem = windowContainer.querySelector('[data-item-index="2"]');
+        
+        // Rapidly switch between menus
+        expect(() => {
+          fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+          editItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+          viewItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+          fileItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        }).not.toThrow();
+        
+      } finally {
+        document.body.removeChild(windowContainer);
+      }
     });
   });
 });

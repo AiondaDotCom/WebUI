@@ -1,36 +1,35 @@
 import { Component } from '../core/Component.js';
 
 /**
- * Panel Component - Pure ES6
- * Basic container with header, body, and optional features
- * 
- * @class Panel
+ * @component Panel
  * @extends Component
  * @description A flexible container component with header, body, collapsible functionality, and child item management
+ * @category Layout Components
+ * @since 1.0.0
  * @example
- * const panel = new Panel({
+ * // Basic panel with items
+ * const panel = new AiondaWebUI.Panel({
  *   title: 'My Panel',
  *   collapsible: true,
- *   items: [button1, button2],
- *   renderTo: '#container'
+ *   items: [button1, button2]
  * });
+ * panel.renderTo('#container');
  */
 export class Panel extends Component {
   /**
-   * Creates a new Panel instance
-   * @param {Object} [config={}] - Configuration object
-   * @param {string} [config.title=''] - Panel title text
-   * @param {boolean} [config.collapsible=false] - Whether panel can be collapsed
-   * @param {boolean} [config.collapsed=false] - Initial collapsed state
-   * @param {boolean} [config.header=true] - Whether to show header
-   * @param {number} [config.headerHeight=48] - Header height in pixels
-   * @param {boolean} [config.padding=true] - Whether to add padding to body
-   * @param {boolean} [config.border=true] - Whether to show border
-   * @param {boolean} [config.shadow=false] - Whether to show shadow
-   * @param {Object} [config.bodyStyle={}] - Additional styles for body element
-   * @param {Object} [config.menu=null] - Menu configuration
-   * @param {Object} [config.contextMenu=null] - Context menu configuration
-   * @param {Array} [config.items=[]] - Child components to add to panel
+   * @config
+   * @property {string} [title=''] - Panel title text
+   * @property {boolean} [collapsible=false] - Whether panel can be collapsed
+   * @property {boolean} [collapsed=false] - Initial collapsed state
+   * @property {boolean} [header=true] - Whether to show header
+   * @property {number} [headerHeight=48] - Header height in pixels
+   * @property {boolean} [padding=true] - Whether to add padding to body
+   * @property {boolean} [border=true] - Whether to show border
+   * @property {boolean} [shadow=false] - Whether to show shadow
+   * @property {Object} [bodyStyle={}] - Additional styles for body element
+   * @property {Object} [menu=null] - Menu configuration
+   * @property {Object} [contextMenu=null] - Context menu configuration
+   * @property {Array} [items=[]] - Child components to add to panel
    */
   constructor(config = {}) {
     super(config);

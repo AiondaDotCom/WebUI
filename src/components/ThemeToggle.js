@@ -2,10 +2,31 @@ import { Component } from '../core/Component.js';
 import { ThemeManager } from '../core/ThemeManager.js';
 
 /**
- * ThemeToggle Component - Pure ES6
- * Toggle switch for dark/light theme with icons and accessibility
+ * @component ThemeToggle
+ * @extends Component
+ * @description A toggle button for switching between light and dark themes
+ * @category Utility Components
+ * @since 1.0.0
+ * @example
+ * // Theme toggle button
+ * const themeToggle = new AiondaWebUI.ThemeToggle({
+ *   position: 'top-right',
+ *   animated: true,
+ *   showLabel: true
+ * });
+ * themeToggle.renderTo('#theme-toggle');
  */
 export class ThemeToggle extends Component {
+    /**
+   * @config
+   * @property {string} [position='top-right'] - Toggle position on screen
+   * @property {boolean} [animated=true] - Whether to animate theme transitions
+   * @property {boolean} [showLabel=false] - Whether to show text labels
+   * @property {string} [lightIcon='fas fa-sun'] - Icon for light theme
+   * @property {string} [darkIcon='fas fa-moon'] - Icon for dark theme
+   * @property {string} [size='md'] - Toggle size ('sm', 'md', 'lg')
+   * @property {Function} [onChange] - Callback when theme changes
+   */
   constructor(config = {}) {
     super(config);
     

@@ -1,8 +1,13 @@
 /**
- * Security Utilities - Pure ES6
- * Provides XSS protection and input sanitization for all components
+ * @component SecurityUtils
+ * @description Security utilities for input sanitization, XSS prevention, and safe operations
+ * @category Core Components
+ * @since 1.0.0
+ * @example
+ * // Sanitizing user input
+ * const safe = SecurityUtils.escapeHtml(userInput);
+ * const cleanHtml = SecurityUtils.sanitizeHtml(htmlContent);
  */
-
 export class SecurityUtils {
   /**
    * Escape HTML entities to prevent XSS attacks

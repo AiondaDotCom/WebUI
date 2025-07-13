@@ -1,17 +1,20 @@
 import { EventEmitter } from './EventEmitter.js';
 
 /**
- * Simple Store for data management - Pure ES6
- * 
- * @class Store
+ * @component Store
  * @extends EventEmitter
- * @description Data management class with sorting, filtering, and event notifications
+ * @description Data management class with filtering, sorting, and remote loading capabilities
+ * @category Core Components
+ * @since 1.0.0
  * @example
+ * // Creating a data store
  * const store = new Store({
- *   data: [{id: 1, name: 'John'}, {id: 2, name: 'Jane'}],
- *   sorters: [{property: 'name', direction: 'ASC'}]
+ *   data: [
+ *     { id: 1, name: 'John', age: 30 },
+ *     { id: 2, name: 'Jane', age: 25 }
+ *   ],
+ *   sorters: [{ property: 'name', direction: 'ASC' }]
  * });
- * store.on('update', () => console.log('Data changed'));
  */
 export class Store extends EventEmitter {
   /**

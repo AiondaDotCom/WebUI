@@ -3,7 +3,43 @@ import { Panel } from './Panel.js';
 let windowZIndex = 1000;
 let activeWindows = [];
 
+/**
+ * @component Window
+ * @extends Panel
+ * @description A draggable, resizable window component with minimize, maximize, and modal capabilities
+ * @category Layout Components
+ * @since 1.0.0
+ * @example
+ * // Modal window with content
+ * const window = new AiondaWebUI.Window({
+ *   title: 'Settings',
+ *   width: 400,
+ *   height: 300,
+ *   modal: true,
+ *   closable: true,
+ *   html: '<div class="p-4">Window content</div>'
+ * });
+ * window.show();
+ */
 export class Window extends Panel {
+    /**
+   * @config
+   * @property {string} [title=''] - Window title text
+   * @property {number} [width=400] - Window width in pixels
+   * @property {number} [height=300] - Window height in pixels
+   * @property {number} [x=50] - Window x position
+   * @property {number} [y=50] - Window y position
+   * @property {boolean} [modal=false] - Whether window is modal
+   * @property {boolean} [draggable=true] - Whether window can be dragged
+   * @property {boolean} [resizable=true] - Whether window can be resized
+   * @property {boolean} [closable=true] - Whether window has close button
+   * @property {boolean} [minimizable=false] - Whether window can be minimized
+   * @property {boolean} [maximizable=false] - Whether window can be maximized
+   * @property {boolean} [centered=false] - Whether to center window on screen
+   * @property {boolean} [autoShow=true] - Whether to show window automatically
+   * @property {string} [html] - HTML content for window body
+   * @property {Array} [items=[]] - Child components to add to window
+   */
   constructor(config = {}) {
     // Set up Panel config with Window-specific defaults
     const panelConfig = {

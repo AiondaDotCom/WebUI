@@ -2,10 +2,36 @@ import { TextField } from './TextField.js';
 import { Component } from '../core/Component.js';
 
 /**
- * TextArea Component - Pure ES6
- * Multi-line text input with auto-resize, character counting, and validation
+ * @component TextArea
+ * @extends Component
+ * @description A multi-line text input component with auto-resize and validation capabilities
+ * @category Form Components
+ * @since 1.0.0
+ * @example
+ * // Auto-resizing text area
+ * const textArea = new AiondaWebUI.TextArea({
+ *   fieldLabel: 'Comments',
+ *   placeholder: 'Enter your comments...',
+ *   autoResize: true,
+ *   maxLength: 500
+ * });
+ * textArea.renderTo('#container');
  */
 export class TextArea extends TextField {
+    /**
+   * @config
+   * @property {string} [name] - Input name attribute
+   * @property {string} [fieldLabel=''] - Label text displayed above field
+   * @property {string} [value=''] - Initial text value
+   * @property {string} [placeholder] - Placeholder text
+   * @property {number} [rows=3] - Number of visible rows
+   * @property {number} [cols] - Number of visible columns
+   * @property {number} [maxLength] - Maximum number of characters
+   * @property {boolean} [autoResize=false] - Whether to auto-resize height
+   * @property {boolean} [readOnly=false] - Whether field is read-only
+   * @property {boolean} [required=false] - Whether field is required
+   * @property {string} [resize='vertical'] - Resize behavior ('none', 'both', 'horizontal', 'vertical')
+   */
   constructor(config = {}) {
     super(config);
     

@@ -3,26 +3,39 @@ import { Menu } from './Menu.js';
 import { BrowserDetect, EventCompat, DOMCompat } from '../utils/BrowserCompat.js';
 
 /**
- * Excel-like Grid Component - Pure ES6
- * Features: sorting, filtering, cell editing, selection, resizing
- * 
- * @class Grid
+ * @component Grid
  * @extends Component
- * @description A comprehensive data grid component with Excel-like features including sorting, filtering, editing, and column management
+ * @description An advanced data grid with sorting, filtering, editing, and Excel-like features
+ * @category Data Components
+ * @since 1.0.0
  * @example
- * const grid = new Grid({
- *   store: myDataStore,
+ * // Data grid with features
+ * const grid = new AiondaWebUI.Grid({
+ *   store: dataStore,
  *   columns: [
- *     {text: 'Name', dataIndex: 'name', sortable: true, filterable: true},
- *     {text: 'Age', dataIndex: 'age', sortable: true, editor: 'numberfield'},
- *     {text: 'Email', dataIndex: 'email', filterable: true}
+ *     { field: 'name', text: 'Name', sortable: true },
+ *     { field: 'email', text: 'Email', filterable: true }
  *   ],
  *   selectionMode: 'multi',
- *   editable: true,
- *   resizable: true
+ *   editable: true
  * });
+ * grid.renderTo('#container');
  */
 export class Grid extends Component {
+    /**
+   * @config
+   * @property {Object} store - Data store containing grid data
+   * @property {Array} columns - Column configuration array
+   * @property {string} [selectionMode='single'] - Selection mode ('single', 'multi', 'none')
+   * @property {boolean} [sortable=true] - Whether columns are sortable
+   * @property {boolean} [filterable=false] - Whether columns are filterable
+   * @property {boolean} [editable=false] - Whether cells are editable
+   * @property {boolean} [resizable=true] - Whether columns are resizable
+   * @property {boolean} [reorderable=false] - Whether columns can be reordered
+   * @property {boolean} [showRowNumbers=false] - Whether to show row numbers
+   * @property {number} [pageSize] - Number of rows per page
+   * @property {boolean} [autoLoad=true] - Whether to load data automatically
+   */
   constructor(config = {}) {
     super(config);
     config = config || {};

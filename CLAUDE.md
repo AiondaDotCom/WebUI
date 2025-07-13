@@ -154,7 +154,8 @@ Open `examples/form-demo/index.html` for the comprehensive form system demo with
 - **Event Delegation**: Proper event handling instead of inline handlers
 - **Tailwind Classes**: Utility-first CSS approach
 - **Component Lifecycle**: render() → setupEventListeners() → show/hide/destroy
-- **No Comments**: Code should be self-documenting (per user preference)
+- **JSDoc Documentation**: Required for all components (see Documentation Standards below)
+- **No Inline Comments**: Code should be self-documenting, use JSDoc for API documentation
 
 ## Recent Major Updates
 
@@ -272,6 +273,118 @@ npm test -- --watch       # Watch mode
 npm test -- --coverage    # With coverage
 npm test Component.test.js # Specific test file
 ```
+
+### Documentation Generation
+```bash
+npm run docs:generate       # Generate documentation from JSDoc
+npm run docs:watch         # Watch and regenerate on changes
+npm run docs:serve         # Serve documentation locally
+npm run docs:build         # Generate and serve documentation
+```
+
+## Documentation Standards
+
+All components **MUST** include structured JSDoc comments for automatic documentation generation. The documentation system parses source code and generates comprehensive Markdown documentation.
+
+### Required JSDoc Format
+
+#### Component Declaration
+```javascript
+/**
+ * @component ComponentName
+ * @extends BaseClass
+ * @description Detailed component description explaining purpose and key features
+ * @category Component Category (e.g., "Form Components", "Layout Components", "Data Components")
+ * @since 1.0.0
+ * @example
+ * // Basic usage example
+ * const comp = new ComponentName({
+ *   property: 'value'
+ * });
+ * comp.renderTo('#container');
+ */
+```
+
+#### Configuration Properties
+```javascript
+/**
+ * @config
+ * @property {string} [text=''] - Property description with type and default
+ * @property {boolean} [disabled=false] - Whether component is disabled
+ * @property {Function} [handler] - Event handler function (no default needed)
+ * @property {Object} [style={}] - CSS styles object
+ * @property {string} style.color - Nested property documentation
+ */
+```
+
+#### Methods
+```javascript
+/**
+ * @method methodName
+ * @description What this method does and when to use it
+ * @param {string} param1 - Parameter description
+ * @param {Object} [options] - Optional parameters object
+ * @param {boolean} [options.flag=true] - Optional parameter with default
+ * @returns {ComponentName} Returns this for method chaining
+ * @throws {Error} When invalid parameter provided
+ * @since 1.2.0
+ * @example
+ * component.methodName('value', { flag: false });
+ */
+```
+
+#### Events
+```javascript
+/**
+ * @event eventName
+ * @description When and why this event is fired
+ * @param {Object} event - Event object structure
+ * @param {ComponentName} event.source - Source component
+ * @param {*} event.value - Event-specific value
+ * @example
+ * component.on('eventName', (event) => {
+ *   console.log('Event fired:', event.value);
+ * });
+ */
+```
+
+### Documentation Requirements
+
+Every component file must include:
+
+1. **Component Header**: `@component`, `@extends`, `@description`, `@category`, `@since`, `@example`
+2. **Configuration Block**: `@config` with all `@property` tags for constructor options
+3. **Public Methods**: All public methods with `@method` documentation
+4. **Events**: All emitted events with `@event` documentation
+5. **Examples**: At least one working example showing basic usage
+
+### Documentation Categories
+
+Use these standard categories for consistent organization:
+
+- **Core Components**: EventEmitter, Component, Store
+- **Layout Components**: Panel, Window, Container, Splitter
+- **Form Components**: Button, TextField, ComboBox, Checkbox, RadioGroup
+- **Data Components**: Grid, Tree, ListView, Chart
+- **Navigation Components**: Menu, Toolbar, TabPanel, Breadcrumb
+- **Feedback Components**: MessageBox, Toast, Progress, Spinner
+- **Utility Components**: ThemeToggle, DateField, FileUpload
+
+### Documentation Generation Process
+
+1. **Write JSDoc**: Follow the required format above
+2. **Generate Docs**: Run `npm run docs:generate`
+3. **Review Output**: Check generated markdown in `docs/` directory
+4. **Validate**: Ensure all components appear in documentation
+5. **Commit**: Include both source changes and generated documentation
+
+The documentation system automatically:
+- Extracts component metadata from JSDoc comments
+- Generates individual component pages
+- Creates category-based indexes
+- Links components and cross-references
+- Validates documentation completeness
+- Reports missing or incomplete documentation
 
 ## Notes for Future Development
 - The project emphasizes simplicity and browser compatibility

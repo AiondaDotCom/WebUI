@@ -1,7 +1,37 @@
 import { Component } from '../core/Component.js';
 import { Radio } from './Radio.js';
 
+/**
+ * @component RadioGroup
+ * @extends Component
+ * @description A container for managing a group of radio buttons with single selection
+ * @category Form Components
+ * @since 1.0.0
+ * @example
+ * // Radio group with options
+ * const radioGroup = new AiondaWebUI.RadioGroup({
+ *   fieldLabel: 'Preferred Contact',
+ *   items: [
+ *     { boxLabel: 'Email', inputValue: 'email' },
+ *     { boxLabel: 'Phone', inputValue: 'phone' },
+ *     { boxLabel: 'Mail', inputValue: 'mail' }
+ *   ],
+ *   value: 'email'
+ * });
+ * radioGroup.renderTo('#container');
+ */
 export class RadioGroup extends Component {
+    /**
+   * @config
+   * @property {string} [name] - Input name for all radio buttons in group
+   * @property {string} [fieldLabel=''] - Label text displayed above group
+   * @property {Array} [items=[]] - Array of radio button configurations
+   * @property {string} [value] - Selected radio button value
+   * @property {boolean} [readOnly=false] - Whether group is read-only
+   * @property {boolean} [disabled=false] - Whether group is disabled
+   * @property {string} [layout='vertical'] - Layout direction ('vertical', 'horizontal')
+   * @property {boolean} [allowBlank=true] - Whether no selection is allowed
+   */
   constructor(config = {}) {
     super(config);
     

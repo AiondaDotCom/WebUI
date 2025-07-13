@@ -1,6 +1,32 @@
 import { Component } from '../core/Component.js';
 
+/**
+ * @component Toast
+ * @extends Component
+ * @description A non-intrusive notification component that appears temporarily to show status messages
+ * @category Feedback Components
+ * @since 1.0.0
+ * @example
+ * // Success notification
+ * Toast.show({
+ *   message: 'Data saved successfully!',
+ *   type: 'success',
+ *   duration: 3000,
+ *   position: 'top-right'
+ * });
+ */
 export class Toast extends Component {
+    /**
+   * @config
+   * @property {string} message - Toast message text
+   * @property {string} [type='info'] - Toast type ('info', 'success', 'warning', 'error')
+   * @property {number} [duration=5000] - Duration in milliseconds (0 for permanent)
+   * @property {string} [position='top-right'] - Toast position ('top-left', 'top-right', 'bottom-left', 'bottom-right')
+   * @property {boolean} [closable=true] - Whether toast has close button
+   * @property {string} [iconCls] - Custom icon CSS class
+   * @property {Function} [onClick] - Click handler function
+   * @property {boolean} [autoHide=true] - Whether toast auto-hides after duration
+   */
   constructor(config = {}) {
     super(config);
     

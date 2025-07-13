@@ -1,7 +1,33 @@
 import { Component } from '../core/Component.js';
 import { MenuItem } from './MenuItem.js';
 
+/**
+ * @component Menu
+ * @extends Component
+ * @description A context menu or dropdown menu component with hierarchical items and keyboard navigation
+ * @category Navigation Components
+ * @since 1.0.0
+ * @example
+ * // Context menu with items
+ * const menu = new AiondaWebUI.Menu({
+ *   items: [
+ *     { text: 'New', iconCls: 'fas fa-plus', handler: createNew },
+ *     { text: 'Open', iconCls: 'fas fa-folder-open', handler: openFile },
+ *     '-', // separator
+ *     { text: 'Exit', iconCls: 'fas fa-times', handler: exit }
+ *   ]
+ * });
+ */
 export class Menu extends Component {
+    /**
+   * @config
+   * @property {Array} [items=[]] - Array of menu items or separators
+   * @property {boolean} [floating=true] - Whether menu floats above other content
+   * @property {boolean} [shadow=true] - Whether to show drop shadow
+   * @property {string} [cls] - Additional CSS classes
+   * @property {number} [minWidth=120] - Minimum menu width
+   * @property {boolean} [allowOtherMenus=false] - Whether other menus can be open simultaneously
+   */
   constructor(config = {}) {
     super(config);
     

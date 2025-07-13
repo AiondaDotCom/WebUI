@@ -9,7 +9,36 @@ import { i18n } from './I18n.js';
  */
 let componentIdCounter = 0;
 
+/**
+ * @component Component
+ * @extends EventEmitter
+ * @description Base component class providing rendering, lifecycle management, and common functionality
+ * @category Core Components
+ * @since 1.0.0
+ * @example
+ * // Extending the base component
+ * class MyComponent extends Component {
+ *   createTemplate() {
+ *     return '<div class="my-component">Hello World</div>';
+ *   }
+ * }
+ * const comp = new MyComponent();
+ * comp.renderTo('#container');
+ */
 export class Component extends EventEmitter {
+    /**
+   * @config
+   * @property {string} [id] - Unique component identifier (auto-generated if not provided)
+   * @property {string} [cls=''] - Additional CSS classes
+   * @property {number|string} [width] - Component width
+   * @property {number|string} [height] - Component height
+   * @property {boolean} [hidden=false] - Whether component is initially hidden
+   * @property {boolean} [disabled=false] - Whether component is disabled
+   * @property {boolean} [responsive=true] - Whether component is responsive
+   * @property {Object} [style={}] - Inline CSS styles
+   * @property {string} [locale] - Component locale for internationalization
+   * @property {string|Element} [renderTo] - Target element for automatic rendering
+   */
   constructor(config = {}) {
     super();
     

@@ -1,6 +1,34 @@
 import { Component } from '../core/Component.js';
 
+/**
+ * @component Radio
+ * @extends Component
+ * @description A radio button component for single selection within a group
+ * @category Form Components
+ * @since 1.0.0
+ * @example
+ * // Radio button in a group
+ * const radio = new AiondaWebUI.Radio({
+ *   fieldLabel: 'Size',
+ *   boxLabel: 'Large',
+ *   name: 'size',
+ *   inputValue: 'large',
+ *   checked: false
+ * });
+ * radio.renderTo('#container');
+ */
 export class Radio extends Component {
+    /**
+   * @config
+   * @property {string} name - Input name attribute (required for grouping)
+   * @property {string} [fieldLabel=''] - Label text displayed above radio
+   * @property {string} [boxLabel=''] - Label text displayed next to radio
+   * @property {string} inputValue - Value when radio is selected
+   * @property {boolean} [checked=false] - Initial checked state
+   * @property {boolean} [readOnly=false] - Whether radio is read-only
+   * @property {boolean} [disabled=false] - Whether radio is disabled
+   * @property {string} [size='md'] - Radio size ('sm', 'md', 'lg')
+   */
   constructor(config = {}) {
     super(config);
     

@@ -1,0 +1,138 @@
+# {{name}}
+
+{{#if description}}
+{{{description}}}
+{{/if}}
+
+{{#if extends}}
+**Extends**: {{extends}}
+{{/if}}
+
+{{#if since}}
+**Since**: {{since}}
+{{/if}}
+
+**Category**: {{category}}
+
+**File**: [`{{filePath}}`]({{filePath}})
+
+---
+
+{{#if config.length}}
+## Configuration
+
+The following properties can be passed to the component constructor:
+
+{{#each config}}
+### {{name}}
+
+- **Type**: `{{type}}`
+- **Required**: {{#if required}}Yes{{else}}No{{/if}}
+{{#if default}}
+- **Default**: `{{default}}`
+{{/if}}
+
+{{{description}}}
+
+{{/each}}
+{{/if}}
+
+{{#if methods.length}}
+## Methods
+
+{{#each methods}}
+### {{name}}({{#each parameters}}{{name}}{{#unless @last}}, {{/unless}}{{/each}})
+
+{{{description}}}
+
+{{#if parameters.length}}
+**Parameters**:
+{{#each parameters}}
+- `{{name}}` ({{type}}){{#if optional}} *optional*{{/if}}: {{{description}}}{{#if default}} (default: `{{default}}`){{/if}}
+{{/each}}
+{{/if}}
+
+{{#if returns}}
+**Returns**: `{{returns.type}}` - {{returns.description}}
+{{/if}}
+
+{{#if throws.length}}
+**Throws**:
+{{#each throws}}
+- `{{type}}`: {{{description}}}
+{{/each}}
+{{/if}}
+
+{{#if examples.length}}
+**Example**:
+{{#each examples}}
+```javascript
+{{{code}}}
+```
+{{/each}}
+{{/if}}
+
+{{#if deprecated}}
+> ⚠️ **Deprecated**: This method is deprecated and may be removed in future versions.
+{{/if}}
+
+---
+
+{{/each}}
+{{/if}}
+
+{{#if events.length}}
+## Events
+
+{{#each events}}
+### {{name}}
+
+{{{description}}}
+
+{{#if parameters.length}}
+**Event Object**:
+```javascript
+{
+{{#each parameters}}
+  {{name}}: {{type}}{{#if description}} // {{{description}}}{{/if}}{{#unless @last}},{{/unless}}
+{{/each}}
+}
+```
+{{/if}}
+
+{{#if examples.length}}
+**Example**:
+{{#each examples}}
+```javascript
+{{{code}}}
+```
+{{/each}}
+{{/if}}
+
+---
+
+{{/each}}
+{{/if}}
+
+{{#if examples.length}}
+## Usage Examples
+
+{{#each examples}}
+### {{title}}
+
+{{#if description}}
+{{{description}}}
+{{/if}}
+
+```javascript
+{{{code}}}
+```
+
+{{/each}}
+{{/if}}
+
+## See Also
+
+- [Components Overview](../index.md)
+- [API Reference](../api/component.md)
+- [Examples](../examples/index.md)

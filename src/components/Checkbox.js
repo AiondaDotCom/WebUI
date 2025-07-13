@@ -1,22 +1,45 @@
 import { Component } from '../core/Component.js';
 
 /**
- * Checkbox Component - Pure ES6
- * Boolean input with customizable styling and validation
- * 
- * @class Checkbox
+ * @component Checkbox
  * @extends Component
  * @description A versatile checkbox component with switch variants, validation, and accessibility features
+ * @category Form Components
+ * @since 1.0.0
  * @example
- * const checkbox = new Checkbox({
+ * // Basic checkbox usage
+ * const checkbox = new AiondaWebUI.Checkbox({
  *   fieldLabel: 'Accept Terms',
  *   boxLabel: 'I agree to the terms and conditions',
  *   checked: false,
  *   variant: 'switch',
  *   required: true
  * });
+ * checkbox.renderTo('#container');
  */
 export class Checkbox extends Component {
+  /**
+   * @config
+   * @property {string} [name] - Input name attribute (defaults to component id)
+   * @property {string} [fieldLabel=''] - Label text displayed above checkbox
+   * @property {string} [boxLabel=''] - Label text displayed next to checkbox
+   * @property {string} [value='on'] - Value when checkbox is checked
+   * @property {boolean} [checked=false] - Initial checked state
+   * @property {string} [inputValue='on'] - Value attribute of input element
+   * @property {string} [uncheckedValue=''] - Value when checkbox is unchecked
+   * @property {boolean} [indeterminate=false] - Indeterminate state
+   * @property {boolean} [readOnly=false] - Whether checkbox is read-only
+   * @property {boolean} [allowBlank=true] - Whether empty value is allowed
+   * @property {boolean} [submitValue=true] - Whether to submit this field's value
+   * @property {Array} [validators=[]] - Array of validation functions
+   * @property {string} [labelAlign='top'] - Label alignment ('top', 'left', 'right')
+   * @property {number} [labelWidth=120] - Label width in pixels
+   * @property {string} [boxLabelAlign='after'] - Box label position ('before', 'after')
+   * @property {string} [checkboxCls=''] - Additional CSS classes for checkbox
+   * @property {string} [focusCls='ring-2 ring-blue-500'] - CSS class applied on focus
+   * @property {string} [size='md'] - Checkbox size ('sm', 'md', 'lg')
+   * @property {string} [variant='checkbox'] - Checkbox variant ('checkbox', 'switch')
+   */
   constructor(config = {}) {
     super(config);
     

@@ -1,7 +1,37 @@
 import { Component } from '../core/Component.js';
 import { Button } from './Button.js';
 
+/**
+ * @component MessageBox
+ * @extends Component
+ * @description A modal dialog for displaying messages, confirmations, and prompts to users
+ * @category Feedback Components
+ * @since 1.0.0
+ * @example
+ * // Confirmation dialog
+ * MessageBox.confirm({
+ *   title: 'Confirm Delete',
+ *   message: 'Are you sure you want to delete this item?',
+ *   buttons: ['Yes', 'No'],
+ *   fn: (result) => {
+ *     if (result === 'yes') deleteItem();
+ *   }
+ * });
+ */
 export class MessageBox extends Component {
+    /**
+   * @config
+   * @property {string} [title=''] - Dialog title
+   * @property {string} [message=''] - Dialog message text
+   * @property {Array} [buttons=['OK']] - Array of button labels
+   * @property {string} [icon] - Icon to display ('info', 'warning', 'error', 'question')
+   * @property {Function} [fn] - Callback function when dialog is closed
+   * @property {Object} [scope] - Scope for callback function
+   * @property {boolean} [modal=true] - Whether dialog is modal
+   * @property {number} [width=300] - Dialog width
+   * @property {number} [height] - Dialog height (auto if not specified)
+   * @property {boolean} [closable=false] - Whether dialog has close button
+   */
   constructor(config = {}) {
     super(config);
     

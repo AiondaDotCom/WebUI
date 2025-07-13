@@ -17,7 +17,11 @@
     "lint": "eslint src/ --ext .js",
     "serve": "python3 -m http.server 8080",
     "screenshots": "node scripts/generate-screenshots.js",
-    "screenshots:update": "node scripts/generate-screenshots.js --update-readme"
+    "screenshots:update": "node scripts/generate-screenshots.js --update-readme",
+    "docs:generate": "node scripts/generate-docs.js",
+    "docs:watch": "nodemon scripts/generate-docs.js --watch src --watch scripts",
+    "docs:serve": "python3 -m http.server 8080 --directory docs",
+    "docs:build": "npm run docs:generate && npm run docs:serve"
   },
   "keywords": [
     "ui",
@@ -33,9 +37,13 @@
   "devDependencies": {
     "@babel/preset-env": "^7.23.0",
     "babel-jest": "^29.7.0",
+    "doctrine": "^3.0.0",
     "eslint": "^8.57.0",
+    "glob": "^8.1.0",
+    "handlebars": "^4.7.8",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^30.0.4",
+    "nodemon": "^3.0.0",
     "playwright": "^1.54.1"
   },
   "jest": {

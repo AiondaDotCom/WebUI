@@ -1,9 +1,21 @@
 import { Component } from '../core/Component.js';
 
 /**
- * Tree Panel Component - Pure ES6
- * Hierarchical data display with expand/collapse, lazy loading, drag & drop, and selection
- * Features: node operations, selection modes, mobile-responsive design
+ * @component Tree
+ * @extends Component
+ * @description A hierarchical tree component with expand/collapse, selection, and drag-drop capabilities
+ * @category Data Components
+ * @since 1.0.0
+ * @example
+ * // File tree with nodes
+ * const tree = new AiondaWebUI.Tree({
+ *   store: treeStore,
+ *   displayField: 'text',
+ *   selectionMode: 'single',
+ *   checkboxes: true,
+ *   dragDrop: true
+ * });
+ * tree.renderTo('#tree');
  */
 export class Tree extends Component {
   /**

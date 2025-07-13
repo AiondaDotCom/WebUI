@@ -2,14 +2,14 @@ import { Component } from '../core/Component.js';
 import { BrowserDetect, EventCompat, DOMCompat } from '../utils/BrowserCompat.js';
 
 /**
- * ComboBox Component - Pure ES6
- * Dropdown with search, remote data, and custom templates
- * 
- * @class ComboBox
+ * @component ComboBox
  * @extends Component
  * @description A sophisticated dropdown component with search functionality, remote data loading, and custom templating
+ * @category Form Components
+ * @since 1.0.0
  * @example
- * const comboBox = new ComboBox({
+ * // ComboBox with remote data
+ * const comboBox = new AiondaWebUI.ComboBox({
  *   fieldLabel: 'Choose Country',
  *   store: countryStore,
  *   displayField: 'name',
@@ -18,8 +18,26 @@ import { BrowserDetect, EventCompat, DOMCompat } from '../utils/BrowserCompat.js
  *   forceSelection: true,
  *   queryMode: 'remote'
  * });
+ * comboBox.renderTo('#container');
  */
 export class ComboBox extends Component {
+    /**
+   * @config
+   * @property {string} [name] - Input name attribute
+   * @property {string} [fieldLabel=''] - Label text displayed above field
+   * @property {Object} [store] - Data store for dropdown options
+   * @property {string} [displayField='text'] - Field to display in dropdown
+   * @property {string} [valueField='value'] - Field to use as value
+   * @property {string} [value] - Initial selected value
+   * @property {boolean} [typeAhead=false] - Enable type-ahead functionality
+   * @property {boolean} [forceSelection=false] - Force user to select from list
+   * @property {string} [queryMode='local'] - Query mode ('local' or 'remote')
+   * @property {number} [queryDelay=500] - Delay before triggering remote query
+   * @property {number} [minChars=1] - Minimum characters to trigger query
+   * @property {string} [emptyText='Select...'] - Placeholder text
+   * @property {string} [loadingText='Loading...'] - Loading indicator text
+   * @property {Function} [tpl] - Custom template function for dropdown items
+   */
   constructor(config = {}) {
     super(config);
     config = config || {};

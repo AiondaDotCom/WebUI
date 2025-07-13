@@ -1,6 +1,37 @@
 import { TextField } from './TextField.js';
 
+/**
+ * @component DateField
+ * @extends Component
+ * @description A date input field with calendar picker and date validation
+ * @category Utility Components
+ * @since 1.0.0
+ * @example
+ * // Date field with range validation
+ * const dateField = new AiondaWebUI.DateField({
+ *   fieldLabel: 'Birth Date',
+ *   format: 'Y-m-d',
+ *   minValue: '1900-01-01',
+ *   maxValue: new Date(),
+ *   required: true
+ * });
+ * dateField.renderTo('#container');
+ */
 export class DateField extends TextField {
+    /**
+   * @config
+   * @property {string} [name] - Input name attribute
+   * @property {string} [fieldLabel=''] - Label text displayed above field
+   * @property {Date|string} [value] - Initial date value
+   * @property {string} [format='Y-m-d'] - Date format string
+   * @property {Date|string} [minValue] - Minimum allowed date
+   * @property {Date|string} [maxValue] - Maximum allowed date
+   * @property {boolean} [readOnly=false] - Whether field is read-only
+   * @property {boolean} [required=false] - Whether field is required
+   * @property {string} [emptyText] - Placeholder text
+   * @property {Array} [disabledDays] - Array of disabled day numbers (0-6)
+   * @property {Array} [disabledDates] - Array of disabled date strings
+   */
   constructor(config = {}) {
     config = config || {};
     

@@ -1,6 +1,33 @@
 import { Component } from '../core/Component.js';
 
+/**
+ * @component MenuItem
+ * @extends Component
+ * @description An individual menu item with icon, text, keyboard shortcuts, and submenu support
+ * @category Navigation Components
+ * @since 1.0.0
+ * @example
+ * // Menu item with icon and handler
+ * const menuItem = new AiondaWebUI.MenuItem({
+ *   text: 'Save',
+ *   iconCls: 'fas fa-save',
+ *   shortcut: 'Ctrl+S',
+ *   handler: saveDocument
+ * });
+ */
 export class MenuItem extends Component {
+    /**
+   * @config
+   * @property {string} [text] - Menu item text
+   * @property {string} [iconCls] - CSS class for menu item icon
+   * @property {Function} [handler] - Click handler function
+   * @property {string} [shortcut] - Keyboard shortcut text to display
+   * @property {boolean} [disabled=false] - Whether menu item is disabled
+   * @property {boolean} [checked=false] - Whether menu item is checked
+   * @property {string} [group] - Group name for radio-style menu items
+   * @property {Menu} [menu] - Submenu to show on hover
+   * @property {string} [href] - URL for link-style menu items
+   */
   constructor(config = {}) {
     super(config);
     

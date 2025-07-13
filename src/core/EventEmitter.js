@@ -1,13 +1,13 @@
 /**
- * Simple EventEmitter for browser environments
- * Pure ES6 - no transpilation needed
- * 
- * @class EventEmitter
- * @description A lightweight event emitter implementation for component communication
+ * @component EventEmitter
+ * @description Event system providing observer pattern functionality with debugging and validation
+ * @category Core Components
+ * @since 1.0.0
  * @example
+ * // Using EventEmitter
  * const emitter = new EventEmitter();
- * emitter.on('test', (data) => console.log(data));
- * emitter.emit('test', 'Hello World');
+ * emitter.on('dataChange', (data) => console.log(data));
+ * emitter.emit('dataChange', { value: 'new data' });
  */
 export class EventEmitter {
   /**

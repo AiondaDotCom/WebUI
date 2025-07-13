@@ -8,25 +8,36 @@ import { TextArea } from './TextArea.js';
 import { RadioGroup } from './RadioGroup.js';
 
 /**
- * Form Component - Pure ES6
- * Complete form management with validation, data binding, and submission
- * 
- * @class Form
+ * @component Form
  * @extends Component
- * @description A comprehensive form management component with validation, data binding, layout management, and submission handling
+ * @description A form container with validation, layout management, and submission handling
+ * @category Data Components
+ * @since 1.0.0
  * @example
- * const form = new Form({
+ * // Form with validation
+ * const form = new AiondaWebUI.Form({
+ *   title: 'User Registration',
  *   layout: 'vertical',
- *   url: '/api/submit',
- *   method: 'POST',
- *   items: [
- *     {cmp: 'textfield', name: 'name', fieldLabel: 'Name', allowBlank: false},
- *     {cmp: 'numberfield', name: 'age', fieldLabel: 'Age', minValue: 0},
- *     {cmp: 'checkbox', name: 'terms', boxLabel: 'Accept Terms', checked: false}
- *   ]
+ *   items: [textField, emailField, submitButton],
+ *   url: '/api/register'
  * });
+ * form.renderTo('#container');
  */
 export class Form extends Component {
+    /**
+   * @config
+   * @property {string} [title] - Form title
+   * @property {string} [layout='vertical'] - Form layout ('vertical', 'horizontal', 'inline')
+   * @property {Array} [items=[]] - Array of form fields and components
+   * @property {string} [url] - Form submission URL
+   * @property {string} [method='POST'] - HTTP method for submission
+   * @property {Object} [baseParams] - Base parameters to include with submission
+   * @property {number} [timeout=30000] - Request timeout in milliseconds
+   * @property {boolean} [trackResetOnLoad=false] - Whether to track initial values for reset
+   * @property {boolean} [monitorValid=true] - Whether to monitor form validity
+   * @property {string} [labelAlign='top'] - Default label alignment for fields
+   * @property {number} [labelWidth=120] - Default label width in pixels
+   */
   constructor(config = {}) {
     super(config);
     config = config || {};

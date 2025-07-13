@@ -1,39 +1,39 @@
 import { Component } from '../core/Component.js';
 
 /**
- * Button Component - Pure ES6
- * Supports variants, sizes, loading states, and more
- * 
- * @class Button
+ * @component Button
  * @extends Component
  * @description A versatile button component with multiple variants, sizes, states, and accessibility features
+ * @category Form Components
+ * @since 1.0.0
  * @example
- * const button = new Button({
+ * // Basic button usage
+ * const button = new AiondaWebUI.Button({
  *   text: 'Click Me',
  *   variant: 'primary',
  *   size: 'lg',
  *   icon: 'user',
  *   handler: () => console.log('Clicked!')
  * });
+ * button.renderTo('#container');
  */
 export class Button extends Component {
   /**
-   * Creates a new Button instance
-   * @param {Object} [config={}] - Configuration object
-   * @param {string} [config.text=''] - Button text content
-   * @param {string} [config.icon=''] - Icon class or name
-   * @param {string} [config.iconAlign='left'] - Icon alignment ('left' or 'right')
-   * @param {string} [config.variant='primary'] - Button variant ('primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark')
-   * @param {string} [config.size='md'] - Button size ('xs', 'sm', 'md', 'lg', 'xl')
-   * @param {boolean} [config.outline=false] - Whether to use outline style
-   * @param {boolean} [config.pressed=false] - Whether button is in pressed state
-   * @param {boolean} [config.loading=false] - Whether button is in loading state
-   * @param {boolean} [config.block=false] - Whether button takes full width
-   * @param {string} [config.href] - URL for link buttons
-   * @param {string} [config.target] - Target for link buttons
-   * @param {Function} [config.handler] - Click handler function
-   * @param {string} [config.ariaLabel] - Accessibility label
-   * @param {string} [config.ariaDescription] - Accessibility description
+   * @config
+   * @property {string} [text=''] - Button text content
+   * @property {string} [icon=''] - Icon class or name
+   * @property {string} [iconAlign='left'] - Icon alignment ('left' or 'right')
+   * @property {string} [variant='primary'] - Button variant ('primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark')
+   * @property {string} [size='md'] - Button size ('xs', 'sm', 'md', 'lg', 'xl')
+   * @property {boolean} [outline=false] - Whether to use outline style
+   * @property {boolean} [pressed=false] - Whether button is in pressed state
+   * @property {boolean} [loading=false] - Whether button is in loading state
+   * @property {boolean} [block=false] - Whether button takes full width
+   * @property {string} [href] - URL for link buttons
+   * @property {string} [target] - Target for link buttons
+   * @property {Function} [handler] - Click handler function
+   * @property {string} [ariaLabel] - Accessibility label
+   * @property {string} [ariaDescription] - Accessibility description
    */
   constructor(config = {}) {
     super(config);
@@ -376,6 +376,13 @@ export class Button extends Component {
       return;
     }
 
+    /**
+     * @event click
+     * @description Fired when button is clicked
+     * @param {Object} event - Event object
+     * @param {Button} event.field - The button component
+     * @param {Event} event.event - Original DOM event
+     */
     this.emit('click', { field: this, event });
 
     if (this.handler) {
@@ -404,6 +411,14 @@ export class Button extends Component {
     this.emit('keydown', { field: this, event, key: event.key });
   }
 
+  /**
+   * @method setText
+   * @description Updates the button text content
+   * @param {string} text - New button text
+   * @returns {Button} Returns this for method chaining
+   * @example
+   * button.setText('New Text');
+   */
   setText(text) {
     this.text = text;
     if (this.rendered) {
@@ -412,6 +427,14 @@ export class Button extends Component {
     return this;
   }
 
+  /**
+   * @method setIcon
+   * @description Updates the button icon
+   * @param {string} icon - New icon class or name
+   * @returns {Button} Returns this for method chaining
+   * @example
+   * button.setIcon('fas fa-user');
+   */
   setIcon(icon) {
     this.icon = icon;
     if (this.rendered) {

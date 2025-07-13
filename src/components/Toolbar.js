@@ -1,7 +1,34 @@
 import { Component } from '../core/Component.js';
 import { Button } from './Button.js';
 
+/**
+ * @component Toolbar
+ * @extends Component
+ * @description A container for organizing buttons, separators, and other toolbar items
+ * @category Navigation Components
+ * @since 1.0.0
+ * @example
+ * // Toolbar with buttons
+ * const toolbar = new AiondaWebUI.Toolbar({
+ *   items: [
+ *     { text: 'New', iconCls: 'fas fa-plus' },
+ *     { text: 'Save', iconCls: 'fas fa-save' },
+ *     '-', // separator
+ *     { text: 'Print', iconCls: 'fas fa-print' }
+ *   ]
+ * });
+ * toolbar.renderTo('#toolbar');
+ */
 export class Toolbar extends Component {
+    /**
+   * @config
+   * @property {Array} [items=[]] - Array of toolbar items (buttons, separators, components)
+   * @property {string} [layout='hbox'] - Toolbar layout ('hbox', 'vbox')
+   * @property {boolean} [enableOverflow=false] - Whether to handle overflow with menu
+   * @property {string} [cls] - Additional CSS classes
+   * @property {string} [defaultType='button'] - Default component type for items
+   * @property {boolean} [vertical=false] - Whether toolbar is vertical
+   */
   constructor(config = {}) {
     super(config);
     

@@ -1,0 +1,49 @@
+# Aionda WebUI Documentation
+
+A modern, mobile-first WebUI library built with pure ES6 JavaScript and Tailwind CSS.
+
+## Components Overview
+
+This documentation covers {{components.length}} components across {{categories.length}} categories.
+
+{{#each categories}}
+### {{name}} ({{components.length}} components)
+
+{{#each components}}
+- **[{{name}}](components/{{name}}.md)** - {{description}}
+{{/each}}
+
+{{/each}}
+
+## Quick Start
+
+```javascript
+// Basic component usage
+const button = new AiondaWebUI.Button({
+  text: 'Click Me',
+  variant: 'primary',
+  handler: () => alert('Hello Aionda WebUI!')
+});
+
+button.renderTo('#app');
+```
+
+## Navigation
+
+- **[Getting Started](getting-started.md)** - Quick start guide and installation
+- **[Components](components/index.md)** - Complete component reference
+- **[API Reference](api/index.md)** - Core API documentation
+- **[Examples](examples/index.md)** - Working examples and demos
+- **[Guides](guides/index.md)** - Advanced usage guides
+
+## Component Categories
+
+{{#each categories}}
+- **[{{name}}](components/index.md#{{anchor}})** - {{description}}
+{{/each}}
+
+---
+
+**Generated**: {{timestamp}}  
+**Version**: {{version}}  
+**Components**: {{totalComponents}}

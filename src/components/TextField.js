@@ -1,22 +1,37 @@
 import { Component } from '../core/Component.js';
 
 /**
- * TextField Component - Pure ES6
- * Single-line text input with validation, masking, and formatting
- * 
- * @class TextField
+ * @component TextField
  * @extends Component
- * @description A comprehensive text input field with validation, masking, formatting, and accessibility features
+ * @description A single-line text input field with validation, formatting, and various input types
+ * @category Form Components
+ * @since 1.0.0
  * @example
- * const textField = new TextField({
- *   fieldLabel: 'Email Address',
- *   value: 'user@example.com',
- *   regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
- *   allowBlank: false,
- *   placeholder: 'Enter your email'
+ * // Text field with validation
+ * const textField = new AiondaWebUI.TextField({
+ *   fieldLabel: 'Email',
+ *   inputType: 'email',
+ *   required: true,
+ *   vtype: 'email'
  * });
+ * textField.renderTo('#container');
  */
 export class TextField extends Component {
+    /**
+   * @config
+   * @property {string} [name] - Input name attribute
+   * @property {string} [fieldLabel=''] - Label text displayed above field
+   * @property {string} [value=''] - Initial text value
+   * @property {string} [inputType='text'] - HTML input type
+   * @property {string} [placeholder] - Placeholder text
+   * @property {number} [maxLength] - Maximum number of characters
+   * @property {number} [minLength] - Minimum number of characters
+   * @property {boolean} [readOnly=false] - Whether field is read-only
+   * @property {boolean} [required=false] - Whether field is required
+   * @property {string} [vtype] - Validation type ('email', 'url', 'alpha', 'alphanum')
+   * @property {RegExp} [maskRe] - Regular expression for input masking
+   * @property {boolean} [selectOnFocus=false] - Whether to select text on focus
+   */
   constructor(config = {}) {
     super(config);
     

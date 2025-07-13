@@ -1,24 +1,39 @@
 import { TextField } from './TextField.js';
 
 /**
- * NumberField Component - Pure ES6
- * Numeric input with spinners, validation, and formatting
- * 
- * @class NumberField
- * @extends TextField
- * @description A specialized text field for numeric input with step controls, validation, and locale-aware formatting
+ * @component NumberField
+ * @extends Component
+ * @description A numeric input field with validation, formatting, and spinner controls
+ * @category Form Components
+ * @since 1.0.0
  * @example
- * const numberField = new NumberField({
- *   fieldLabel: 'Price',
- *   value: 99.99,
+ * // Number field with validation
+ * const numberField = new AiondaWebUI.NumberField({
+ *   fieldLabel: 'Age',
+ *   value: 25,
  *   minValue: 0,
- *   maxValue: 1000,
- *   decimalPrecision: 2,
- *   step: 0.01,
- *   allowDecimals: true
+ *   maxValue: 120,
+ *   allowDecimals: false
  * });
+ * numberField.renderTo('#container');
  */
 export class NumberField extends TextField {
+    /**
+   * @config
+   * @property {string} [name] - Input name attribute
+   * @property {string} [fieldLabel=''] - Label text displayed above field
+   * @property {number} [value] - Initial numeric value
+   * @property {number} [minValue] - Minimum allowed value
+   * @property {number} [maxValue] - Maximum allowed value
+   * @property {boolean} [allowDecimals=true] - Whether to allow decimal values
+   * @property {boolean} [allowNegative=true] - Whether to allow negative values
+   * @property {number} [decimalPrecision=2] - Number of decimal places
+   * @property {string} [decimalSeparator='.'] - Character used for decimal separation
+   * @property {string} [thousandSeparator=','] - Character used for thousand separation
+   * @property {number} [step=1] - Step increment for spinner buttons
+   * @property {boolean} [hideTrigger=false] - Whether to hide spinner buttons
+   * @property {string} [emptyText] - Placeholder text
+   */
   constructor(config = {}) {
     config = config || {};
     // Set numeric input type

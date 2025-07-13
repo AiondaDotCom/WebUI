@@ -1,8 +1,16 @@
 import { EventEmitter } from './EventEmitter.js';
 
 /**
- * Internationalization (i18n) System for Aionda WebUI
- * Provides localization support for all components
+ * @component I18n
+ * @extends EventEmitter
+ * @description Internationalization class providing translation, formatting, and locale management
+ * @category Core Components
+ * @since 1.0.0
+ * @example
+ * // Using I18n for translations
+ * const i18n = I18n.getInstance();
+ * i18n.setLocale('de');
+ * const message = i18n.t('common.save'); // Returns translated text
  */
 export class I18n extends EventEmitter {
   static instance = null;

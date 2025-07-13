@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Window Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+    <style>
+        /* CRITICAL: Override Tailwind CSS for Windows */
+        .aionda-window {
+            box-sizing: border-box !important;
+            position: fixed !important;
+            display: flex !important;
+            flex-direction: column !important;
+            min-width: 100px !important;
+            min-height: 100px !important;
+            border-radius: 0.375rem !important;
+        }
+        
+        .aionda-window-header {
+            flex-shrink: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+        
+        .aionda-window-body {
+            flex: 1 !important;
+            overflow: auto !important;
+            display: block !important;
+        }
+        
+        .demo-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        .demo-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            border: none;
+            font-size: 0.875rem;
+        }
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .demo-button.secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+        .demo-button.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .demo-button.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        .demo-button.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .feature-card {
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: #f9fafb;
+        }
+        .window-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .event-log {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+        .clear-button {
+            background: #6b7280;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        .clear-button:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">🪟 Aionda WebUI - Window Demo</h1>
+            <p class="text-gray-600 text-lg">Comprehensive demonstration of Window component features</p>
+        </div>
+
+        <!-- Basic Window Examples -->
+        <div class="demo-section">
+            <div class="demo-title">🔧 Basic Window Types</div>
+            <p class="text-gray-600 mb-4">Different types of windows with various configurations</p>
+            
+            <div class="window-examples">
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">📄 Basic Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Simple draggable and resizable window</p>
+                    <button class="demo-button" onclick="showBasicWindow()">Open Basic Window</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🔒 Modal Dialog</h4>
+                    <p class="text-sm text-gray-600 mb-3">Modal window that blocks background interaction</p>
+                    <button class="demo-button secondary" onclick="showModalWindow()">Open Modal</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">📝 Form Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window containing a form with validation</p>
+                    <button class="demo-button success" onclick="showFormWindow()">Open Form</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🗖️ Maximizable Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window with maximize/restore functionality</p>
+                    <button class="demo-button warning" onclick="showMaximizableWindow()">Open Maximizable</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">↔️ Resizable Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window with min/max size constraints</p>
+                    <button class="demo-button" onclick="showResizableWindow()">Open Resizable</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🎨 Custom Styled</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window with custom styling and effects</p>
+                    <button class="demo-button danger" onclick="showCustomWindow()">Open Custom</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Window Features -->
+        <div class="demo-section">
+            <div class="demo-title">⚡ Advanced Window Features</div>
+            <p class="text-gray-600 mb-4">Explore advanced window capabilities and interactions</p>
+            
+            <div class="window-examples">
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">📱 Responsive Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window that adapts to screen size</p>
+                    <button class="demo-button" onclick="showResponsiveWindow()">Open Responsive</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🔄 Multiple Windows</h4>
+                    <p class="text-sm text-gray-600 mb-3">Open multiple windows simultaneously</p>
+                    <button class="demo-button secondary" onclick="showMultipleWindows()">Open Multiple</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">⏰ Auto-Close Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window that closes automatically after timeout</p>
+                    <button class="demo-button success" onclick="showAutoCloseWindow()">Open Auto-Close</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">📋 Window with Toolbar</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window containing toolbar and tools</p>
+                    <button class="demo-button warning" onclick="showToolbarWindow()">Open Toolbar Window</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">📊 Data Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window with grid and data management</p>
+                    <button class="demo-button" onclick="showDataWindow()">Open Data Window</button>
+                </div>
+
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🌙 Theme Window</h4>
+                    <p class="text-sm text-gray-600 mb-3">Window with theme toggle functionality</p>
+                    <button class="demo-button danger" onclick="showThemeWindow()">Open Theme Window</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Window Manager Demo -->
+        <div class="demo-section">
+            <div class="demo-title">🎛️ Window Manager</div>
+            <p class="text-gray-600 mb-4">Window management and coordination features</p>
+            
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button class="demo-button" onclick="showAllWindows()">Show All Window Types</button>
+                <button class="demo-button secondary" onclick="closeAllWindows()">Close All Windows</button>
+                <button class="demo-button success" onclick="cascadeWindows()">Cascade Windows</button>
+                <button class="demo-button warning" onclick="tileWindows()">Tile Windows</button>
+            </div>
+        </div>
+
+        <!-- Event Log -->
+        <div class="demo-section">
+            <div class="demo-title">📋 Window Events Log</div>
+            <p class="text-gray-600">Real-time logging of window events and interactions</p>
+            
+            <div id="eventLog" class="event-log"></div>
+            <button class="clear-button" onclick="clearEventLog()">Clear Log</button>
+        </div>
+
+        <!-- Features Overview -->
+        <div class="demo-section">
+            <div class="demo-title">🎯 Window Component Features</div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🖱️ Interaction</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Draggable title bars</li>
+                        <li>✅ Resizable borders</li>
+                        <li>✅ Double-click to maximize</li>
+                        <li>✅ Keyboard shortcuts</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🎨 Styling</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Custom CSS classes</li>
+                        <li>✅ Theme integration</li>
+                        <li>✅ Responsive design</li>
+                        <li>✅ Animation effects</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">⚙️ Configuration</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Size constraints</li>
+                        <li>✅ Position control</li>
+                        <li>✅ Modal behavior</li>
+                        <li>✅ Close prevention</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4 class="font-semibold mb-2">🔧 Management</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Z-index ordering</li>
+                        <li>✅ Focus management</li>
+                        <li>✅ Window registry</li>
+                        <li>✅ Event coordination</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Aionda WebUI -->
+    <script src="../../dist/aionda-webui.js"></script>
+    
+    <script>
+        // Global variables
+        let windowInstances = [];
+        let eventCounter = 0;
+
+        // Event logging
+        function logEvent(type, message) {
+            eventCounter++;
+            const timestamp = new Date().toLocaleTimeString();
+            const logEl = document.getElementById('eventLog');
+            
+            logEl.innerHTML += `[${eventCounter.toString().padStart(3, '0')}] ${timestamp} - ${type}: ${message}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearEventLog() {
+            document.getElementById('eventLog').innerHTML = '';
+            eventCounter = 0;
+            logEvent('SYSTEM', 'Event log cleared');
+        }
+
+        // Simplified window creation (like in working examples)
+        function createWindow(config) {
+            console.log('Creating window with config:', config);
+            
+            // Set autoShow to false to control visibility manually
+            config.autoShow = false;
+            
+            try {
+                const window = new AiondaWebUI.Window(config);
+                console.log('Window created:', window);
+                console.log('Window visible after creation:', window.visible);
+                
+                // Add event listeners
+                window.on('show', () => {
+                    logEvent('WINDOW', `"${config.title}" shown`);
+                    console.log('Window shown:', config.title);
+                });
+                
+                window.on('hide', () => {
+                    logEvent('WINDOW', `"${config.title}" hidden`);
+                });
+                
+                window.on('close', () => {
+                    logEvent('WINDOW', `"${config.title}" closed`);
+                    windowInstances = windowInstances.filter(w => w !== window);
+                });
+                
+                window.on('maximize', () => {
+                    logEvent('WINDOW', `"${config.title}" maximized`);
+                });
+                
+                window.on('restore', () => {
+                    logEvent('WINDOW', `"${config.title}" restored`);
+                });
+                
+                windowInstances.push(window);
+                console.log('Window added to instances, total:', windowInstances.length);
+                return window;
+                
+            } catch (error) {
+                console.error('Error creating window:', error);
+                logEvent('ERROR', `Failed to create window: ${error.message}`);
+                return null;
+            }
+        }
+
+        // Basic window examples
+        function showBasicWindow() {
+            console.log('=== Creating Basic Window (Direct) ===');
+            
+            const window = new AiondaWebUI.Window({
+                title: '📄 Basic Window',
+                width: 400,
+                height: 300,
+                x: 50,
+                y: 50,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                modal: false,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Basic Window Demo</h3>
+                        <p class="mb-4">This is a basic draggable and resizable window.</p>
+                        <div class="space-y-2">
+                            <p class="text-sm"><strong>Features:</strong></p>
+                            <ul class="text-sm list-disc list-inside space-y-1">
+                                <li>Drag the title bar to move</li>
+                                <li>Resize from corners and edges</li>
+                                <li>Close with the X button</li>
+                                <li>Non-modal (background clickable)</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            });
+            
+            console.log('Window created, rendering...');
+            const el = window.render();
+            console.log('Rendered, adding to DOM...');
+            document.body.appendChild(el);
+            console.log('Added to DOM, showing...');
+            window.show();
+            console.log('Window shown!');
+            
+            windowInstances.push(window);
+        }
+
+        function showModalWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '🔒 Modal Dialog',
+                width: 350,
+                height: 200,
+                x: 100,
+                y: 100,
+                modal: true,
+                draggable: true,
+                resizable: false,
+                closable: true,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Modal Dialog</h3>
+                        <p class="mb-4">This window blocks interaction with the background until closed.</p>
+                        <div class="text-sm text-gray-600">
+                            <p>Click the backdrop or close button to dismiss.</p>
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showFormWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '📝 Form Window',
+                width: 450,
+                height: 400,
+                x: 150,
+                y: 150,
+                modal: true,
+                draggable: true,
+                resizable: false,
+                closable: true,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-4">User Information Form</h3>
+                        <form class="space-y-3" onsubmit="handleFormSubmit(event)">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Name</label>
+                                <input type="text" name="name" class="w-full border rounded px-3 py-2" placeholder="Enter your name" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Email</label>
+                                <input type="email" name="email" class="w-full border rounded px-3 py-2" placeholder="Enter your email" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Department</label>
+                                <select name="department" class="w-full border rounded px-3 py-2" required>
+                                    <option value="">Select department</option>
+                                    <option value="engineering">Engineering</option>
+                                    <option value="sales">Sales</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="hr">Human Resources</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Message</label>
+                                <textarea name="message" class="w-full border rounded px-3 py-2 h-20" placeholder="Enter your message"></textarea>
+                            </div>
+                            <div class="flex space-x-2 pt-3">
+                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
+                                <button type="button" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" onclick="closeCurrentWindow(this)">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showMaximizableWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '🗖️ Maximizable Window',
+                width: 500,
+                height: 400,
+                x: 200,
+                y: 200,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                maximizable: true,
+                modal: false,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Maximizable Window</h3>
+                        <p class="mb-4">This window can be maximized to full screen.</p>
+                        <div class="mb-4">
+                            <p class="text-sm"><strong>Try these actions:</strong></p>
+                            <ul class="text-sm list-disc list-inside space-y-1 mt-2">
+                                <li>Click the maximize button in the title bar</li>
+                                <li>Double-click the title bar to maximize</li>
+                                <li>Click restore to return to original size</li>
+                                <li>Keyboard shortcut: F11 (if supported)</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-blue-50 rounded">
+                            <p class="text-sm"><strong>Window Features:</strong></p>
+                            <ul class="text-sm list-disc list-inside mt-1 space-y-1">
+                                <li>Remembers previous size when restored</li>
+                                <li>Smooth animation transitions</li>
+                                <li>Full keyboard support</li>
+                                <li>Edge case handling for screen bounds</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showResizableWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '↔️ Resizable Window',
+                width: 400,
+                height: 300,
+                x: 250,
+                y: 250,
+                minWidth: 250,
+                minHeight: 200,
+                maxWidth: 800,
+                maxHeight: 600,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                modal: false,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Resizable Window</h3>
+                        <p class="mb-4">This window can be resized by dragging the edges and corners.</p>
+                        <div class="p-3 bg-green-50 rounded mb-4">
+                            <p class="text-sm"><strong>Resize Constraints:</strong></p>
+                            <ul class="text-sm list-disc list-inside mt-1 space-y-1">
+                                <li>Min size: 250x200 pixels</li>
+                                <li>Max size: 800x600 pixels</li>
+                                <li>Drag corners and edges to resize</li>
+                                <li>Maintains aspect ratio with Shift key</li>
+                            </ul>
+                        </div>
+                        <div class="h-20 bg-gray-100 rounded flex items-center justify-center text-gray-500">
+                            Resizable content area
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showCustomWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '🎨 Custom Styled Window',
+                width: 450,
+                height: 350,
+                x: 300,
+                y: 300,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                modal: false,
+                autoShow: false,
+                cls: 'custom-window-demo',
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2 text-purple-700">Custom Styled Window</h3>
+                        <p class="mb-4">This window demonstrates custom styling capabilities.</p>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <div class="p-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded">
+                                <h4 class="font-semibold">Gradient Card</h4>
+                                <p class="text-sm">Beautiful gradients</p>
+                            </div>
+                            <div class="p-3 bg-gradient-to-r from-blue-400 to-green-400 text-white rounded">
+                                <h4 class="font-semibold">Another Card</h4>
+                                <p class="text-sm">Custom content</p>
+                            </div>
+                        </div>
+                        <div class="p-3 border-2 border-dashed border-purple-300 rounded">
+                            <p class="text-center text-purple-600">Drop zone area</p>
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            
+            // Apply custom styling after window is shown
+            window.on('show', () => {
+                const windowEl = window.el;
+                if (windowEl) {
+                    const header = windowEl.querySelector('.aionda-window-header');
+                    if (header) {
+                        header.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        header.style.color = 'white';
+                    }
+                }
+            });
+            
+            window.show();
+            windowInstances.push(window);
+        }
+
+        // Advanced window examples
+        function showResponsiveWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '📱 Responsive Window',
+                width: Math.min(500, globalThis.innerWidth - 40),
+                height: Math.min(400, globalThis.innerHeight - 40),
+                x: 350,
+                y: 100,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                modal: false,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Responsive Window</h3>
+                        <p class="mb-4">This window adapts to different screen sizes.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-3 bg-blue-50 rounded">
+                                <h4 class="font-semibold text-sm">Desktop</h4>
+                                <p class="text-xs">Full features available</p>
+                            </div>
+                            <div class="p-3 bg-green-50 rounded">
+                                <h4 class="font-semibold text-sm">Mobile</h4>
+                                <p class="text-xs">Touch-optimized</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-sm">
+                            <p><strong>Screen size:</strong> ${globalThis.innerWidth}x${globalThis.innerHeight}</p>
+                            <p><strong>Window size:</strong> Automatically adjusted</p>
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showMultipleWindows() {
+            const types = [
+                { title: '🔴 Red Window', color: 'from-red-400 to-red-600' },
+                { title: '🟢 Green Window', color: 'from-green-400 to-green-600' },
+                { title: '🔵 Blue Window', color: 'from-blue-400 to-blue-600' }
+            ];
+
+            types.forEach((type, index) => {
+                setTimeout(() => {
+                    const window = new AiondaWebUI.Window({
+                        title: type.title,
+                        width: 300,
+                        height: 200,
+                        x: 100 + (index * 50),
+                        y: 100 + (index * 50),
+                        draggable: true,
+                        resizable: true,
+                        closable: true,
+                        modal: false,
+                        autoShow: false,
+                        html: `
+                            <div class="p-4">
+                                <div class="h-24 bg-gradient-to-r ${type.color} rounded mb-3 flex items-center justify-center text-white font-semibold">
+                                    Window #${index + 1}
+                                </div>
+                                <p class="text-sm">This is one of multiple windows opened simultaneously.</p>
+                            </div>
+                        `
+                    });
+                    
+                    const el = window.render();
+                    document.body.appendChild(el);
+                    window.show();
+                    windowInstances.push(window);
+                }, index * 300);
+            });
+        }
+
+        function showAutoCloseWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '⏰ Auto-Close Window',
+                width: 350,
+                height: 250,
+                x: 400,
+                y: 200,
+                draggable: true,
+                resizable: false,
+                closable: true,
+                modal: false,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Auto-Close Window</h3>
+                        <p class="mb-4">This window will close automatically in <span id="countdown">10</span> seconds.</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                            <div id="progress" class="bg-blue-500 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                        <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onclick="closeCurrentWindow(this)">
+                            Close Now
+                        </button>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            
+            window.on('show', () => {
+                let timeLeft = 10;
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    const countdownEl = window.el.querySelector('#countdown');
+                    const progressEl = window.el.querySelector('#progress');
+                    
+                    if (countdownEl) countdownEl.textContent = timeLeft;
+                    if (progressEl) progressEl.style.width = `${(timeLeft / 10) * 100}%`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        window.close();
+                    }
+                }, 1000);
+                
+                window.on('close', () => {
+                    clearInterval(interval);
+                });
+            });
+            
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showToolbarWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '📋 Window with Toolbar',
+                width: 500,
+                height: 400,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                modal: false,
+                x: 450,
+                y: 250,
+                autoShow: false,
+                html: `
+                    <div class="flex flex-col h-full">
+                        <div class="p-2 bg-gray-50 border-b flex items-center space-x-2">
+                            <button class="p-2 hover:bg-gray-200 rounded" onclick="toolbarAction('new')" title="New">📄</button>
+                            <button class="p-2 hover:bg-gray-200 rounded" onclick="toolbarAction('save')" title="Save">💾</button>
+                            <div class="w-px h-6 bg-gray-300"></div>
+                            <button class="p-2 hover:bg-gray-200 rounded" onclick="toolbarAction('undo')" title="Undo">↩️</button>
+                            <button class="p-2 hover:bg-gray-200 rounded" onclick="toolbarAction('redo')" title="Redo">↪️</button>
+                            <div class="w-px h-6 bg-gray-300"></div>
+                            <button class="p-2 hover:bg-gray-200 rounded" onclick="toolbarAction('search')" title="Search">🔍</button>
+                            <button class="p-2 hover:bg-gray-200 rounded" onclick="toolbarAction('settings')" title="Settings">⚙️</button>
+                        </div>
+                        <div class="flex-1 p-4">
+                            <h3 class="font-semibold mb-2">Toolbar Window</h3>
+                            <p class="mb-4">This window includes a functional toolbar with various actions.</p>
+                            <div id="toolbar-output" class="p-3 bg-gray-50 rounded h-32 overflow-y-auto text-sm font-mono"></div>
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showDataWindow() {
+            const sampleData = [
+                { id: 1, name: 'John Doe', department: 'Engineering', salary: 75000 },
+                { id: 2, name: 'Jane Smith', department: 'Sales', salary: 65000 },
+                { id: 3, name: 'Bob Johnson', department: 'Marketing', salary: 60000 },
+                { id: 4, name: 'Alice Brown', department: 'HR', salary: 55000 }
+            ];
+
+            const window = new AiondaWebUI.Window({
+                title: '📊 Data Window',
+                width: 600,
+                height: 450,
+                x: 500,
+                y: 300,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                modal: false,
+                autoShow: false,
+                html: `
+                    <div class="flex flex-col h-full">
+                        <div class="p-3 bg-gray-50 border-b">
+                            <h3 class="font-semibold">Employee Data Management</h3>
+                        </div>
+                        <div class="flex-1 p-4">
+                            <div class="mb-4 flex space-x-2">
+                                <button class="px-3 py-1 bg-blue-500 text-white rounded text-sm" onclick="dataAction('add')">Add Employee</button>
+                                <button class="px-3 py-1 bg-green-500 text-white rounded text-sm" onclick="dataAction('export')">Export Data</button>
+                                <button class="px-3 py-1 bg-yellow-500 text-white rounded text-sm" onclick="dataAction('refresh')">Refresh</button>
+                            </div>
+                            <div class="border rounded overflow-hidden">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="p-2 text-left">ID</th>
+                                            <th class="p-2 text-left">Name</th>
+                                            <th class="p-2 text-left">Department</th>
+                                            <th class="p-2 text-left">Salary</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${sampleData.map(row => `
+                                            <tr class="border-t hover:bg-gray-50">
+                                                <td class="p-2">${row.id}</td>
+                                                <td class="p-2">${row.name}</td>
+                                                <td class="p-2">${row.department}</td>
+                                                <td class="p-2">$${row.salary.toLocaleString()}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        function showThemeWindow() {
+            const window = new AiondaWebUI.Window({
+                title: '🌙 Theme Window',
+                width: 400,
+                height: 350,
+                x: 550,
+                y: 350,
+                draggable: true,
+                resizable: true,
+                closable: true,
+                modal: false,
+                autoShow: false,
+                html: `
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-4">Theme Preferences</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Color Theme</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="theme" value="light" class="mr-2" checked>
+                                        <span class="flex items-center">
+                                            <span class="w-4 h-4 bg-white border rounded mr-2"></span>
+                                            Light Theme
+                                        </span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="theme" value="dark" class="mr-2">
+                                        <span class="flex items-center">
+                                            <span class="w-4 h-4 bg-gray-800 rounded mr-2"></span>
+                                            Dark Theme
+                                        </span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="theme" value="auto" class="mr-2">
+                                        <span class="flex items-center">
+                                            <span class="w-4 h-4 bg-gradient-to-r from-white to-gray-800 rounded mr-2"></span>
+                                            Auto (System)
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Font Size</label>
+                                <select class="w-full border rounded px-3 py-2">
+                                    <option>Small</option>
+                                    <option selected>Medium</option>
+                                    <option>Large</option>
+                                    <option>Extra Large</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" checked>
+                                    Enable animations
+                                </label>
+                            </div>
+                            <div class="flex space-x-2 pt-4">
+                                <button class="px-4 py-2 bg-blue-500 text-white rounded" onclick="applyTheme()">Apply</button>
+                                <button class="px-4 py-2 bg-gray-300 rounded" onclick="resetTheme()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            });
+            
+            const el = window.render();
+            document.body.appendChild(el);
+            window.show();
+            windowInstances.push(window);
+        }
+
+        // Window management functions
+        function showAllWindows() {
+            showBasicWindow();
+            setTimeout(() => showModalWindow(), 200);
+            setTimeout(() => showFormWindow(), 400);
+            setTimeout(() => showMaximizableWindow(), 600);
+        }
+
+        function closeAllWindows() {
+            windowInstances.forEach(window => {
+                if (!window.destroyed) {
+                    window.close();
+                }
+            });
+            windowInstances = [];
+            logEvent('MANAGER', 'All windows closed');
+        }
+
+        function cascadeWindows() {
+            let offset = 0;
+            windowInstances.forEach((window, index) => {
+                if (!window.destroyed && window.el) {
+                    window.setPosition(100 + offset, 100 + offset);
+                    offset += 30;
+                }
+            });
+            logEvent('MANAGER', `Cascaded ${windowInstances.length} windows`);
+        }
+
+        function tileWindows() {
+            const openWindows = windowInstances.filter(w => !w.destroyed);
+            if (openWindows.length === 0) return;
+
+            const cols = Math.ceil(Math.sqrt(openWindows.length));
+            const rows = Math.ceil(openWindows.length / cols);
+            const windowWidth = Math.floor((window.innerWidth - 100) / cols);
+            const windowHeight = Math.floor((window.innerHeight - 100) / rows);
+
+            openWindows.forEach((win, index) => {
+                const col = index % cols;
+                const row = Math.floor(index / cols);
+                const x = 50 + (col * windowWidth);
+                const y = 50 + (row * windowHeight);
+                
+                win.setPosition(x, y);
+                win.setSize(windowWidth - 20, windowHeight - 20);
+            });
+            
+            logEvent('MANAGER', `Tiled ${openWindows.length} windows in ${cols}x${rows} grid`);
+        }
+
+        // Utility functions
+        function closeCurrentWindow(element) {
+            const windowEl = element.closest('.aionda-window');
+            const closeBtn = windowEl.querySelector('.aionda-window-close');
+            if (closeBtn) {
+                closeBtn.click();
+            }
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            logEvent('FORM', `Form submitted: ${JSON.stringify(data)}`);
+            closeCurrentWindow(event.target);
+        }
+
+        function toolbarAction(action) {
+            const output = document.getElementById('toolbar-output');
+            if (output) {
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `[${timestamp}] Toolbar action: ${action}\n`;
+                output.scrollTop = output.scrollHeight;
+            }
+            logEvent('TOOLBAR', `Action executed: ${action}`);
+        }
+
+        function dataAction(action) {
+            logEvent('DATA', `Data action executed: ${action}`);
+            switch (action) {
+                case 'add':
+                    alert('Add Employee dialog would open here');
+                    break;
+                case 'export':
+                    alert('Data export functionality would trigger here');
+                    break;
+                case 'refresh':
+                    alert('Data would be refreshed from server');
+                    break;
+            }
+        }
+
+        function applyTheme() {
+            const theme = document.querySelector('input[name="theme"]:checked').value;
+            logEvent('THEME', `Theme applied: ${theme}`);
+            alert(`${theme} theme would be applied to the application`);
+        }
+
+        function resetTheme() {
+            logEvent('THEME', 'Theme reset to defaults');
+            alert('Theme settings would be reset to defaults');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            logEvent('SYSTEM', 'Window Demo initialized');
+            console.log('🪟 Window Demo loaded successfully!');
+            
+            // Check if Window component is available
+            if (typeof AiondaWebUI !== 'undefined' && AiondaWebUI.Window) {
+                logEvent('SYSTEM', 'Window component loaded and ready');
+                
+                // Test basic window creation
+                console.log('Testing basic window creation...');
+                try {
+                    const testWindow = new AiondaWebUI.Window({
+                        title: 'Test Window',
+                        width: 300,
+                        height: 200,
+                        x: 50,
+                        y: 50,
+                        html: '<div class="p-4">Test content</div>'
+                    });
+                    console.log('Window created:', testWindow);
+                    console.log('Window element:', testWindow.el);
+                    console.log('Window visible:', testWindow.visible);
+                } catch (error) {
+                    console.error('Error creating test window:', error);
+                    logEvent('ERROR', `Window creation failed: ${error.message}`);
+                }
+            } else {
+                logEvent('ERROR', 'Window component not available');
+                console.error('AiondaWebUI not found or Window component missing');
+            }
+        });
+    </script>
+</body>
+</html>

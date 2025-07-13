@@ -37,6 +37,7 @@ export class Window extends Panel {
     this.centered = config.centered === true;
     this.autoShow = config.autoShow !== false;
     this.cls = config.cls;
+    this.html = config.html;
     
     // Window state
     this.minimized = false;
@@ -90,8 +91,7 @@ export class Window extends Panel {
       ...this.getBaseClasses(),
       'aionda-window',
       'flex',
-      'flex-col',
-      'relative'
+      'flex-col'
     ];
 
     if (this.cls) {
@@ -104,7 +104,6 @@ export class Window extends Panel {
 
     if (this.border) classes.push('border', 'border-gray-200', 'dark:border-gray-600');
     if (this.shadow) classes.push('shadow-lg');
-    if (this.responsive) classes.push('w-full');
 
     return classes;
   }
@@ -197,6 +196,9 @@ export class Window extends Panel {
       return styles.join('; ');
     }
 
+    // Always set display for visible windows
+    styles.push('display: flex');
+
     // Check for mobile screens (small viewport)
     const globalWindow = typeof window !== 'undefined' ? window : (typeof global !== 'undefined' && global.window ? global.window : null);
     const screenWidth = globalWindow ? globalWindow.innerWidth : 1024;
@@ -238,6 +240,38 @@ export class Window extends Panel {
     // Check if touch events are supported
     const globalWindow = typeof window !== 'undefined' ? window : (typeof global !== 'undefined' && global.window ? global.window : null);
     return globalWindow && ('ontouchstart' in globalWindow || navigator.maxTouchPoints > 0);
+  }
+
+  render() {
+    if (this.destroyed) {
+      throw new Error('Cannot render destroyed component');
+    }
+
+    if (this.rendered && this.el) {
+      return this.el;
+    }
+
+    const template = this.createTemplate();
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = template.trim();
+    this.el = wrapper.firstElementChild;
+
+    if (!this.el) {
+      throw new Error('Component template must return a valid HTML element');
+    }
+
+    this.el.id = this.id;
+    this.el.className = this.getPanelClasses().join(' ');
+    
+    // Apply Window-specific styles
+    this.updateWindowStyle();
+    
+    this.setupEventListeners();
+
+    this.rendered = true;
+    this.emit('render');
+
+    return this.el;
   }
 
   setupEventListeners() {
@@ -308,6 +342,11 @@ export class Window extends Panel {
     });
     this.el.addEventListener('touchmove', (e) => this.emit('touchmove', e));
     this.el.addEventListener('touchend', (e) => this.emit('touchend', e));
+
+    // Add HTML content if provided
+    if (this.bodyEl && this.html) {
+      this.bodyEl.innerHTML = this.html;
+    }
 
     if (this.bodyEl && this.items.length > 0) {
       this.items.forEach(item => {
@@ -492,7 +531,7 @@ export class Window extends Panel {
 
     if (this.el) {
       this.el.classList.remove('hidden');
-      this.el.style.display = 'flex';
+      this.updateWindowStyle(); // Update styles with new visibility
     }
     
     if (this.backdropEl) {
@@ -636,6 +675,12 @@ export class Window extends Panel {
     if (this.el) {
       const style = this.getWindowStyle();
       this.el.style.cssText = style;
+      
+      // FORCE override Tailwind CSS conflicts
+      this.el.style.setProperty('position', 'fixed', 'important');
+      this.el.style.setProperty('display', 'flex', 'important');
+      this.el.style.setProperty('flex-direction', 'column', 'important');
+      this.el.style.setProperty('box-sizing', 'border-box', 'important');
     }
   }
 

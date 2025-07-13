@@ -952,6 +952,131 @@ describe('Window', () => {
     });
   });
 
+  describe('Tailwind CSS regression prevention', () => {
+    test('should render with correct dimensions despite Tailwind CSS presence', () => {
+      window = new Window({
+        width: 400,
+        height: 300,
+        x: 100,
+        y: 150,
+        autoShow: false
+      });
+      
+      const el = window.render();
+      document.body.appendChild(el);
+      
+      // Verify that the key regression-preventing CSS properties are set
+      expect(el.style.position).toBe('fixed');
+      expect(el.style.display).toBe('flex');
+      expect(el.style.flexDirection).toBe('column');
+      expect(el.style.boxSizing).toBe('border-box');
+      
+      // Verify that window dimensions are correctly stored
+      expect(window.width).toBe(400);
+      expect(window.height).toBe(300);
+      expect(window.x).toBe(100);
+      expect(window.y).toBe(150);
+    });
+
+    test('should enforce CSS positioning overrides with !important', () => {
+      window = new Window({
+        width: 300,
+        height: 200,
+        autoShow: false
+      });
+      
+      const el = window.render();
+      document.body.appendChild(el);
+      
+      // Verify that the critical style properties are set directly on the element
+      expect(el.style.position).toBe('fixed');
+      expect(el.style.display).toBe('flex');
+      expect(el.style.flexDirection).toBe('column');
+      expect(el.style.boxSizing).toBe('border-box');
+      
+      // Verify that the updateWindowStyle method exists and was called
+      expect(typeof window.updateWindowStyle).toBe('function');
+      
+      // Test that re-calling updateWindowStyle maintains the overrides
+      window.updateWindowStyle();
+      expect(el.style.position).toBe('fixed');
+      expect(el.style.display).toBe('flex');
+    });
+
+    test('should properly handle render → appendChild → show sequence', () => {
+      window = new Window({
+        title: 'Test Window',
+        width: 350,
+        height: 250,
+        autoShow: false,
+        html: '<div class="p-4">Test Content</div>'
+      });
+      
+      // Test the exact sequence used in the demos
+      const el = window.render();
+      expect(el).toBeTruthy();
+      expect(el.tagName).toBe('DIV');
+      
+      document.body.appendChild(el);
+      expect(el.parentNode).toBe(document.body);
+      
+      window.show();
+      expect(window.visible).toBe(true);
+      expect(el).not.toHaveClass('hidden');
+      
+      // Verify HTML content was inserted
+      const body = el.querySelector('.aionda-window-body');
+      expect(body.innerHTML).toContain('Test Content');
+    });
+
+    test('should maintain visibility after CSS style updates', () => {
+      window = new Window({
+        width: 400,
+        height: 300,
+        autoShow: false
+      });
+      
+      const el = window.render();
+      document.body.appendChild(el);
+      window.show();
+      
+      // Verify basic styling is applied
+      expect(el.style.position).toBe('fixed');
+      expect(el.style.display).toBe('flex');
+      expect(window.visible).toBe(true);
+      
+      // Simulate CSS style update (which happens in the real fix)
+      window.updateWindowStyle();
+      
+      // Verify styling is still properly applied after update
+      expect(el.style.position).toBe('fixed');
+      expect(el.style.display).toBe('flex');
+      expect(window.visible).toBe(true);
+    });
+
+    test('should handle window creation with HTML content correctly', () => {
+      const htmlContent = '<div style="padding: 20px; background: #f0f0f0;"><h3>Custom Content</h3><p>This is test content.</p></div>';
+      
+      window = new Window({
+        title: 'HTML Content Window',
+        width: 500,
+        height: 400,
+        html: htmlContent,
+        autoShow: false
+      });
+      
+      const el = window.render();
+      document.body.appendChild(el);
+      window.show();
+      
+      // Verify HTML content is properly inserted
+      const body = el.querySelector('.aionda-window-body');
+      expect(body.innerHTML).toBe(htmlContent);
+      expect(body.textContent).toContain('Custom Content');
+      expect(body.textContent).toContain('This is test content.');
+    });
+  });
+
   describe('edge cases and error handling', () => {
     test('should handle missing DOM elements gracefully', () => {
       window = new Window();

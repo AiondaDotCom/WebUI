@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Basic Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .typeui-component { box-sizing: border-box; }
+        .typeui-hidden { display: none !important; }
+        .typeui-disabled { pointer-events: none; opacity: 0.6; }
+        .typeui-responsive { max-width: 100%; }
+        .typeui-panel { border-radius: 0.375rem; }
+        .typeui-panel-header { border-top-left-radius: 0.375rem; border-top-right-radius: 0.375rem; }
+        .typeui-panel-body { border-bottom-left-radius: 0.375rem; border-bottom-right-radius: 0.375rem; }
+        .typeui-button { border: 1px solid transparent; user-select: none; position: relative; overflow: hidden; }
+        .typeui-button:focus { z-index: 1; }
+        .typeui-button-pressed { transform: scale(0.98); }
+        .typeui-button-loading { pointer-events: none; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .typeui-button-spinner { animation: spin 1s linear infinite; }
+        @media (max-width: 640px) {
+            .typeui-responsive { width: 100% !important; min-width: 0 !important; }
+            .typeui-panel { border-radius: 0; border-left: none; border-right: none; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Aionda WebUI Demo</h1>
+        
+        <div id="demo-container" class="space-y-6">
+            <!-- Components will be rendered here -->
+        </div>
+    </div>
+
+    <script type="module">
+        // Simple TypeUI implementation for demo
+        class Component {
+            constructor(config = {}) {
+                this.id = config.id || this.generateId();
+                this.cls = config.cls || '';
+                this.hidden = config.hidden ?? false;
+                this.disabled = config.disabled ?? false;
+                this.responsive = config.responsive ?? true;
+                this.style = config.style || {};
+                this.el = null;
+                this.rendered = false;
+            }
+
+            generateId() {
+                return `typeui-component-${Math.random().toString(36).substr(2, 9)}`;
+            }
+
+            getBaseClasses() {
+                const classes = ['typeui-component'];
+                if (this.cls) classes.push(...this.cls.split(' ').filter(Boolean));
+                if (this.hidden) classes.push('typeui-hidden');
+                if (this.disabled) classes.push('typeui-disabled');
+                if (this.responsive) classes.push('typeui-responsive');
+                return classes;
+            }
+
+            render() {
+                if (this.rendered && this.el) return this.el;
+                
+                const template = this.createTemplate();
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = template.trim();
+                this.el = wrapper.firstElementChild;
+                
+                this.el.id = this.id;
+                this.setupEventListeners();
+                this.rendered = true;
+                return this.el;
+            }
+
+            renderTo(target) {
+                const element = this.render();
+                const container = typeof target === 'string' ? document.querySelector(target) : target;
+                container.appendChild(element);
+                return element;
+            }
+
+            setupEventListeners() {}
+        }
+
+        class Panel extends Component {
+            constructor(config = {}) {
+                super(config);
+                this.title = config.title || '';
+                this.collapsible = config.collapsible ?? false;
+                this.collapsed = config.collapsed ?? false;
+                this.header = config.header ?? true;
+                this.padding = config.padding ?? true;
+                this.border = config.border ?? true;
+                this.shadow = config.shadow ?? false;
+                this.items = [];
+            }
+
+            createTemplate() {
+                const headerTemplate = this.header ? this.createHeaderTemplate() : '';
+                const bodyTemplate = this.createBodyTemplate();
+
+                return `
+                    <div class="${this.getPanelClasses().join(' ')}">
+                        ${headerTemplate}
+                        ${bodyTemplate}
+                    </div>
+                `;
+            }
+
+            createHeaderTemplate() {
+                if (!this.header) return '';
+
+                const collapseButton = this.collapsible ? `
+                    <button class="typeui-panel-collapse-btn p-1 hover:bg-gray-100 rounded transition-colors">
+                        <svg class="w-4 h-4 transform transition-transform ${this.collapsed ? '' : 'rotate-90'}" 
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                ` : '';
+
+                return `
+                    <div class="typeui-panel-header flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+                        <div class="flex items-center gap-2">
+                            ${collapseButton}
+                            <h3 class="typeui-panel-title font-medium text-gray-900">${this.title}</h3>
+                        </div>
+                    </div>
+                `;
+            }
+
+            createBodyTemplate() {
+                const bodyClasses = [
+                    'typeui-panel-body',
+                    'transition-all duration-200',
+                    this.padding ? 'p-4' : '',
+                    this.collapsed ? 'hidden' : 'block'
+                ].filter(Boolean);
+
+                return `<div class="${bodyClasses.join(' ')}"></div>`;
+            }
+
+            getPanelClasses() {
+                const classes = [
+                    ...this.getBaseClasses(),
+                    'typeui-panel',
+                    'bg-white',
+                    'flex',
+                    'flex-col',
+                    'overflow-hidden'
+                ];
+
+                if (this.border) classes.push('border', 'border-gray-200');
+                if (this.shadow) classes.push('shadow-sm');
+                if (this.responsive) classes.push('w-full');
+
+                return classes;
+            }
+
+            setupEventListeners() {
+                if (this.collapsible) {
+                    const collapseBtn = this.el.querySelector('.typeui-panel-collapse-btn');
+                    if (collapseBtn) {
+                        collapseBtn.addEventListener('click', () => this.toggleCollapse());
+                    }
+                }
+            }
+
+            toggleCollapse() {
+                this.collapsed = !this.collapsed;
+                const body = this.el.querySelector('.typeui-panel-body');
+                const icon = this.el.querySelector('.typeui-panel-collapse-btn svg');
+                
+                if (this.collapsed) {
+                    body.classList.add('hidden');
+                    body.classList.remove('block');
+                    icon?.classList.remove('rotate-90');
+                } else {
+                    body.classList.remove('hidden');
+                    body.classList.add('block');
+                    icon?.classList.add('rotate-90');
+                }
+            }
+
+            add(component) {
+                this.items.push(component);
+                const body = this.el?.querySelector('.typeui-panel-body');
+                if (body) {
+                    body.appendChild(component.render());
+                }
+                return this;
+            }
+        }
+
+        class Button extends Component {
+            constructor(config = {}) {
+                super(config);
+                this.text = config.text || '';
+                this.variant = config.variant || 'primary';
+                this.size = config.size || 'md';
+                this.outline = config.outline ?? false;
+                this.loading = config.loading ?? false;
+                this.handler = config.handler;
+            }
+
+            createTemplate() {
+                const classes = this.getButtonClasses().join(' ');
+                const content = this.getButtonContent();
+
+                return `
+                    <button type="button" class="${classes}">
+                        ${content}
+                    </button>
+                `;
+            }
+
+            getButtonClasses() {
+                const classes = [
+                    ...this.getBaseClasses(),
+                    'typeui-button',
+                    'inline-flex',
+                    'items-center',
+                    'justify-center',
+                    'font-medium',
+                    'transition-all',
+                    'duration-150',
+                    'focus:outline-none',
+                    'focus:ring-2',
+                    'focus:ring-offset-2'
+                ];
+
+                // Size classes
+                switch (this.size) {
+                    case 'sm':
+                        classes.push('px-3', 'py-2', 'text-sm', 'rounded-md');
+                        break;
+                    case 'md':
+                        classes.push('px-4', 'py-2', 'text-sm', 'rounded-md');
+                        break;
+                    case 'lg':
+                        classes.push('px-4', 'py-2', 'text-base', 'rounded-md');
+                        break;
+                }
+
+                // Variant classes
+                if (this.outline) {
+                    classes.push('border', 'border-blue-600', 'text-blue-600', 'bg-transparent', 'hover:bg-blue-50');
+                } else {
+                    switch (this.variant) {
+                        case 'primary':
+                            classes.push('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                            break;
+                        case 'success':
+                            classes.push('bg-green-600', 'text-white', 'hover:bg-green-700');
+                            break;
+                        case 'danger':
+                            classes.push('bg-red-600', 'text-white', 'hover:bg-red-700');
+                            break;
+                    }
+                }
+
+                if (this.loading) {
+                    classes.push('cursor-wait');
+                }
+
+                return classes;
+            }
+
+            getButtonContent() {
+                if (this.loading) {
+                    return `
+                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        ${this.text}
+                    `;
+                }
+                return this.text;
+            }
+
+            setupEventListeners() {
+                this.el.addEventListener('click', (e) => {
+                    if (this.handler) {
+                        this.handler(this, e);
+                    }
+                });
+            }
+        }
+
+        // Demo implementation
+        const container = document.getElementById('demo-container');
+
+        // Create a simple panel
+        const panel1 = new Panel({
+            title: 'Basic Panel',
+            shadow: true,
+            padding: true
+        });
+
+        panel1.renderTo(container);
+        panel1.add(new Button({
+            text: 'Primary Button',
+            variant: 'primary',
+            handler: (btn) => alert('Primary button clicked!')
+        }));
+
+        // Create a collapsible panel
+        const panel2 = new Panel({
+            title: 'Collapsible Panel',
+            collapsible: true,
+            shadow: true,
+            cls: 'mt-4'
+        });
+
+        panel2.renderTo(container);
+        
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'space-x-2';
+        
+        const successBtn = new Button({
+            text: 'Success',
+            variant: 'success',
+            handler: () => alert('Success!')
+        });
+        
+        const outlineBtn = new Button({
+            text: 'Outlined',
+            outline: true,
+            handler: () => alert('Outlined button!')
+        });
+        
+        const loadingBtn = new Button({
+            text: 'Loading',
+            loading: true
+        });
+
+        buttonContainer.appendChild(successBtn.render());
+        buttonContainer.appendChild(outlineBtn.render());
+        buttonContainer.appendChild(loadingBtn.render());
+        
+        panel2.add({ render: () => buttonContainer });
+
+        // Create a data demo panel
+        const panel3 = new Panel({
+            title: 'TypeUI Features Demo',
+            shadow: true,
+            cls: 'mt-4'
+        });
+
+        panel3.renderTo(container);
+        
+        const featuresContent = document.createElement('div');
+        featuresContent.innerHTML = `
+            <h4 class="font-semibold mb-2">Key Features:</h4>
+            <ul class="space-y-1 text-sm text-gray-600">
+                <li>✅ Mobile-first responsive design</li>
+                <li>✅ TypeScript support with type safety</li>
+                <li>✅ Tailwind CSS integration</li>
+                <li>✅ MVVM architecture</li>
+                <li>✅ Minimal code approach</li>
+                <li>✅ Modern ES6 JavaScript API</li>
+            </ul>
+        `;
+        
+        panel3.add({ render: () => featuresContent });
+
+        console.log('TypeUI Demo loaded successfully!');
+    </script>
+</body>
+</html>

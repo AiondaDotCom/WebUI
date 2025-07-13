@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MessageBox & Toast Demo - Aionda WebUI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .demo-buttons button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background: #3b82f6;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .demo-buttons button:hover {
+            background: #2563eb;
+        }
+        
+        .demo-buttons button.secondary {
+            background: #6b7280;
+        }
+        
+        .demo-buttons button.secondary:hover {
+            background: #4b5563;
+        }
+        
+        .demo-buttons button.success {
+            background: #059669;
+        }
+        
+        .demo-buttons button.success:hover {
+            background: #047857;
+        }
+        
+        .demo-buttons button.warning {
+            background: #d97706;
+        }
+        
+        .demo-buttons button.warning:hover {
+            background: #b45309;
+        }
+        
+        .demo-buttons button.error {
+            background: #dc2626;
+        }
+        
+        .demo-buttons button.error:hover {
+            background: #b91c1c;
+        }
+
+        /* Toast animations */
+        .toast-enter {
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+        
+        .toast-exit {
+            opacity: 0 !important;
+            transform: translateX(100%) !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">MessageBox & Toast Demo</h1>
+        
+        <!-- MessageBox Demo -->
+        <div class="demo-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">MessageBox Components</h2>
+            <p class="text-gray-600 mb-4">Modal dialogs for user interaction with promise-based returns.</p>
+            
+            <div class="demo-buttons">
+                <button onclick="testAlert()">Basic Alert</button>
+                <button onclick="testAlertWithIcon()">Alert with Icon</button>
+                <button onclick="testConfirm()">Confirm Dialog</button>
+                <button onclick="testPrompt()">Prompt Dialog</button>
+                <button onclick="testCustomMessageBox()">Custom MessageBox</button>
+            </div>
+        </div>
+
+        <!-- Toast Demo -->
+        <div class="demo-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Toast Notifications</h2>
+            <p class="text-gray-600 mb-4">Non-blocking notifications with auto-dismiss and animations.</p>
+            
+            <div class="demo-buttons">
+                <button onclick="testInfoToast()">Info Toast</button>
+                <button class="success" onclick="testSuccessToast()">Success Toast</button>
+                <button class="warning" onclick="testWarningToast()">Warning Toast</button>
+                <button class="error" onclick="testErrorToast()">Error Toast</button>
+                <button class="secondary" onclick="testCustomToast()">Custom Toast</button>
+            </div>
+        </div>
+
+        <!-- Toast Positioning Demo -->
+        <div class="demo-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Toast Positioning</h2>
+            <p class="text-gray-600 mb-4">Test different toast positions on the screen.</p>
+            
+            <div class="demo-buttons">
+                <button onclick="testToastPosition('top-left')">Top Left</button>
+                <button onclick="testToastPosition('top-center')">Top Center</button>
+                <button onclick="testToastPosition('top-right')">Top Right</button>
+                <button onclick="testToastPosition('bottom-left')">Bottom Left</button>
+                <button onclick="testToastPosition('bottom-center')">Bottom Center</button>
+                <button onclick="testToastPosition('bottom-right')">Bottom Right</button>
+            </div>
+        </div>
+
+        <!-- Advanced Features Demo -->
+        <div class="demo-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Advanced Features</h2>
+            <p class="text-gray-600 mb-4">Advanced toast and messagebox features.</p>
+            
+            <div class="demo-buttons">
+                <button onclick="testPersistentToast()">Persistent Toast</button>
+                <button onclick="testToastWithTitle()">Toast with Title</button>
+                <button onclick="testMultipleToasts()">Multiple Toasts</button>
+                <button onclick="testClearAllToasts()">Clear All Toasts</button>
+                <button onclick="testPasswordPrompt()">Password Prompt</button>
+            </div>
+        </div>
+
+        <!-- Results Display -->
+        <div class="demo-section">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Results</h2>
+            <div id="results" class="bg-white p-4 rounded border min-h-[100px] font-mono text-sm"></div>
+        </div>
+    </div>
+
+    <script src="../../dist/aionda-webui.js"></script>
+    <script>
+        function log(message) {
+            const results = document.getElementById('results');
+            results.innerHTML += `<div class="mb-1">${new Date().toLocaleTimeString()}: ${message}</div>`;
+            results.scrollTop = results.scrollHeight;
+        }
+
+        // MessageBox Tests
+        async function testAlert() {
+            log('Testing basic alert...');
+            await AiondaWebUI.MessageBox.alert('This is a basic alert message!');
+            log('Alert closed');
+        }
+
+        async function testAlertWithIcon() {
+            log('Testing alert with custom icon...');
+            await AiondaWebUI.MessageBox.alert(
+                'This alert has a custom warning icon!',
+                'Warning',
+                { iconType: 'warning' }
+            );
+            log('Warning alert closed');
+        }
+
+        async function testConfirm() {
+            log('Testing confirm dialog...');
+            const result = await AiondaWebUI.MessageBox.confirm(
+                'Do you want to proceed with this action?',
+                'Confirmation Required'
+            );
+            log(`Confirm result: ${result}`);
+        }
+
+        async function testPrompt() {
+            log('Testing prompt dialog...');
+            const result = await AiondaWebUI.MessageBox.prompt(
+                'Please enter your name:',
+                'User Input',
+                'John Doe'
+            );
+            log(`Prompt result: ${result || 'cancelled'}`);
+        }
+
+        async function testCustomMessageBox() {
+            log('Testing custom MessageBox...');
+            const messageBox = new AiondaWebUI.MessageBox({
+                title: 'Custom Dialog',
+                message: 'This is a custom MessageBox with multiple buttons.',
+                iconType: 'question',
+                buttons: [
+                    {
+                        text: 'Option 1',
+                        variant: 'primary',
+                        handler: () => {
+                            messageBox.close();
+                            log('Option 1 selected');
+                        }
+                    },
+                    {
+                        text: 'Option 2',
+                        variant: 'secondary',
+                        handler: () => {
+                            messageBox.close();
+                            log('Option 2 selected');
+                        }
+                    },
+                    {
+                        text: 'Cancel',
+                        variant: 'secondary',
+                        handler: () => {
+                            messageBox.close();
+                            log('Cancelled');
+                        }
+                    }
+                ]
+            });
+            messageBox.show();
+        }
+
+        async function testPasswordPrompt() {
+            log('Testing password prompt...');
+            const result = await AiondaWebUI.MessageBox.prompt(
+                'Please enter your password:',
+                'Authentication',
+                '',
+                { inputType: 'password' }
+            );
+            log(`Password entered: ${result ? '***' : 'cancelled'}`);
+        }
+
+        // Toast Tests
+        function testInfoToast() {
+            log('Showing info toast...');
+            AiondaWebUI.Toast.info('This is an informational message');
+        }
+
+        function testSuccessToast() {
+            log('Showing success toast...');
+            AiondaWebUI.Toast.success('Operation completed successfully!');
+        }
+
+        function testWarningToast() {
+            log('Showing warning toast...');
+            AiondaWebUI.Toast.warning('This is a warning message');
+        }
+
+        function testErrorToast() {
+            log('Showing error toast...');
+            AiondaWebUI.Toast.error('An error occurred while processing');
+        }
+
+        function testCustomToast() {
+            log('Showing custom toast...');
+            const toast = new AiondaWebUI.Toast({
+                message: 'This is a custom toast with extended duration',
+                type: 'info',
+                duration: 8000,
+                title: 'Custom Toast',
+                position: 'top-center'
+            });
+            toast.show();
+        }
+
+        function testToastPosition(position) {
+            log(`Showing toast at ${position}...`);
+            AiondaWebUI.Toast.show(
+                `Toast positioned at ${position}`,
+                { position, type: 'info' }
+            );
+        }
+
+        function testPersistentToast() {
+            log('Showing persistent toast...');
+            const toast = new AiondaWebUI.Toast({
+                message: 'This toast will not auto-dismiss. Click the X to close.',
+                type: 'warning',
+                duration: 0,
+                title: 'Persistent Toast'
+            });
+            toast.show();
+        }
+
+        function testToastWithTitle() {
+            log('Showing toast with title...');
+            AiondaWebUI.Toast.success(
+                'Your changes have been saved successfully.',
+                { title: 'Save Complete' }
+            );
+        }
+
+        function testMultipleToasts() {
+            log('Showing multiple toasts...');
+            AiondaWebUI.Toast.info('First toast message');
+            setTimeout(() => AiondaWebUI.Toast.success('Second toast message'), 500);
+            setTimeout(() => AiondaWebUI.Toast.warning('Third toast message'), 1000);
+        }
+
+        function testClearAllToasts() {
+            log('Clearing all toasts...');
+            AiondaWebUI.Toast.clear();
+        }
+
+        // Initialize
+        log('MessageBox & Toast Demo loaded successfully!');
+        log('Click the buttons above to test different features.');
+    </script>
+</body>
+</html>

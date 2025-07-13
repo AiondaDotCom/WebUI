@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Dark Mode Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+    <style>
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .theme-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            min-height: 600px;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .theme-panel {
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .theme-panel.light {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-color: #e2e8f0;
+            color: #1e293b;
+        }
+        
+        .theme-panel.dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+        
+        .theme-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .theme-badge.light {
+            background: #fbbf24;
+            color: #92400e;
+        }
+        
+        .theme-badge.dark {
+            background: #6366f1;
+            color: #e0e7ff;
+        }
+        
+        .component-showcase {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .customization-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .dark .customization-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .stats-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .stats-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 theme-transition">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header with Theme Controls -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                Aionda WebUI Dark Mode Demo
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                Experience all components in both light and dark themes with smooth transitions
+            </p>
+            
+            <!-- Theme Toggle Controls -->
+            <div class="flex justify-center items-center gap-4 mb-8">
+                <div class="flex bg-white dark:bg-gray-800 rounded-full p-1 shadow-lg border border-gray-200 dark:border-gray-700">
+                    <button id="lightMode" class="theme-btn px-6 py-2 rounded-full font-medium transition-all duration-200">
+                        ☀️ Light
+                    </button>
+                    <button id="darkMode" class="theme-btn px-6 py-2 rounded-full font-medium transition-all duration-200">
+                        🌙 Dark
+                    </button>
+                    <button id="systemMode" class="theme-btn px-6 py-2 rounded-full font-medium transition-all duration-200">
+                        💻 System
+                    </button>
+                </div>
+                
+                <div class="ml-4 text-sm text-gray-500 dark:text-gray-400">
+                    Current: <span id="currentTheme" class="font-semibold"></span>
+                </div>
+            </div>
+            
+            <!-- Theme Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
+                <div class="stats-card">
+                    <div class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="themeChanges">0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Theme Changes</div>
+                </div>
+                <div class="stats-card">
+                    <div class="text-2xl font-bold text-green-600 dark:text-green-400" id="timeInDark">0s</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Time in Dark</div>
+                </div>
+                <div class="stats-card">
+                    <div class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="systemPreference">Unknown</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">System Pref</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Side-by-Side Comparison -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Side-by-Side Theme Comparison</h2>
+            <div class="comparison-grid">
+                <!-- Light Theme Panel -->
+                <div class="theme-panel light">
+                    <div class="theme-badge light">Light Mode</div>
+                    <h3 class="text-xl font-bold mb-4">Light Theme</h3>
+                    <div class="component-showcase" id="lightComponents">
+                        <!-- Components will be rendered here -->
+                    </div>
+                </div>
+                
+                <!-- Dark Theme Panel -->
+                <div class="theme-panel dark">
+                    <div class="theme-badge dark">Dark Mode</div>
+                    <h3 class="text-xl font-bold mb-4">Dark Theme</h3>
+                    <div class="component-showcase" id="darkComponents">
+                        <!-- Components will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Theme Customization -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Interactive Theme Customization</h2>
+            <div class="customization-panel">
+                <h3 class="text-xl font-semibold mb-6">Customize Your Experience</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Accent Color Picker -->
+                    <div>
+                        <label class="block text-sm font-medium mb-3">Accent Color</label>
+                        <div class="flex gap-2 flex-wrap">
+                            <div class="color-swatch bg-blue-500" data-color="blue"></div>
+                            <div class="color-swatch bg-purple-500" data-color="purple"></div>
+                            <div class="color-swatch bg-green-500" data-color="green"></div>
+                            <div class="color-swatch bg-red-500" data-color="red"></div>
+                            <div class="color-swatch bg-yellow-500" data-color="yellow"></div>
+                            <div class="color-swatch bg-pink-500" data-color="pink"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Animation Speed -->
+                    <div>
+                        <label class="block text-sm font-medium mb-3">Transition Speed</label>
+                        <div id="speedControl"></div>
+                    </div>
+                    
+                    <!-- Border Radius -->
+                    <div>
+                        <label class="block text-sm font-medium mb-3">Border Radius</label>
+                        <div id="radiusControl"></div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <button id="resetCustomization" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors">
+                        Reset to Default
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Component Demo -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Live Component Demo</h2>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+                <div id="liveDemo" class="space-y-6">
+                    <!-- Live components will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Showcase -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8">Dark Mode Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="feature-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-center">
+                    <div class="text-4xl mb-4">🎨</div>
+                    <h3 class="font-bold mb-2">Smart Theming</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Automatic color adaptation for optimal contrast</p>
+                </div>
+                <div class="feature-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-center">
+                    <div class="text-4xl mb-4">💾</div>
+                    <h3 class="font-bold mb-2">Persistence</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Theme preference saved across sessions</p>
+                </div>
+                <div class="feature-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-center">
+                    <div class="text-4xl mb-4">🔄</div>
+                    <h3 class="font-bold mb-2">Smooth Transitions</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Seamless animations between themes</p>
+                </div>
+                <div class="feature-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-center">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="font-bold mb-2">System Sync</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Follows system preference automatically</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="../../dist/aionda-webui.js"></script>
+    <script>
+        class DarkModeDemo {
+            constructor() {
+                this.currentTheme = this.getStoredTheme() || 'system';
+                this.themeChanges = parseInt(localStorage.getItem('themeChanges') || '0');
+                this.darkModeStartTime = null;
+                this.totalDarkTime = parseInt(localStorage.getItem('totalDarkTime') || '0');
+                this.accentColor = localStorage.getItem('accentColor') || 'blue';
+                
+                this.init();
+                this.setupEventListeners();
+                this.applyTheme(this.currentTheme);
+                this.updateStats();
+                this.startDarkTimeTracking();
+                
+                // Initialize components
+                this.initializeComponents();
+            }
+            
+            init() {
+                this.detectSystemPreference();
+                this.setupCustomization();
+            }
+            
+            getStoredTheme() {
+                return localStorage.getItem('theme');
+            }
+            
+            setStoredTheme(theme) {
+                localStorage.setItem('theme', theme);
+            }
+            
+            detectSystemPreference() {
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.getElementById('systemPreference').textContent = systemPrefersDark ? 'Dark' : 'Light';
+                
+                // Listen for system theme changes
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    document.getElementById('systemPreference').textContent = e.matches ? 'Dark' : 'Light';
+                    if (this.currentTheme === 'system') {
+                        this.applyTheme('system', false);
+                    }
+                });
+            }
+            
+            setupEventListeners() {
+                document.getElementById('lightMode').addEventListener('click', () => this.setTheme('light'));
+                document.getElementById('darkMode').addEventListener('click', () => this.setTheme('dark'));
+                document.getElementById('systemMode').addEventListener('click', () => this.setTheme('system'));
+                document.getElementById('resetCustomization').addEventListener('click', () => this.resetCustomization());
+                
+                // Color swatch listeners
+                document.querySelectorAll('.color-swatch').forEach(swatch => {
+                    swatch.addEventListener('click', () => {
+                        this.setAccentColor(swatch.dataset.color);
+                    });
+                });
+            }
+            
+            setTheme(theme, trackChange = true) {
+                this.currentTheme = theme;
+                this.setStoredTheme(theme);
+                this.applyTheme(theme);
+                
+                if (trackChange) {
+                    this.themeChanges++;
+                    localStorage.setItem('themeChanges', this.themeChanges.toString());
+                    this.updateStats();
+                }
+                
+                this.updateThemeButtons();
+            }
+            
+            applyTheme(theme, animate = true) {
+                const isDark = theme === 'dark' || 
+                    (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                
+                if (animate) {
+                    document.body.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    setTimeout(() => {
+                        document.body.style.transition = '';
+                    }, 300);
+                }
+                
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    if (!this.darkModeStartTime) {
+                        this.darkModeStartTime = Date.now();
+                    }
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    if (this.darkModeStartTime) {
+                        this.totalDarkTime += Math.floor((Date.now() - this.darkModeStartTime) / 1000);
+                        localStorage.setItem('totalDarkTime', this.totalDarkTime.toString());
+                        this.darkModeStartTime = null;
+                    }
+                }
+                
+                document.getElementById('currentTheme').textContent = 
+                    theme.charAt(0).toUpperCase() + theme.slice(1);
+                
+                this.updateStats();
+            }
+            
+            updateThemeButtons() {
+                document.querySelectorAll('.theme-btn').forEach(btn => {
+                    btn.classList.remove('bg-blue-500', 'text-white', 'shadow-md');
+                    btn.classList.add('text-gray-600', 'dark:text-gray-300');
+                });
+                
+                const activeBtn = document.getElementById(this.currentTheme + 'Mode');
+                if (activeBtn) {
+                    activeBtn.classList.remove('text-gray-600', 'dark:text-gray-300');
+                    activeBtn.classList.add('bg-blue-500', 'text-white', 'shadow-md');
+                }
+            }
+            
+            updateStats() {
+                document.getElementById('themeChanges').textContent = this.themeChanges;
+                
+                let displayTime = this.totalDarkTime;
+                if (this.darkModeStartTime) {
+                    displayTime += Math.floor((Date.now() - this.darkModeStartTime) / 1000);
+                }
+                document.getElementById('timeInDark').textContent = displayTime + 's';
+            }
+            
+            startDarkTimeTracking() {
+                setInterval(() => {
+                    this.updateStats();
+                }, 1000);
+            }
+            
+            setupCustomization() {
+                // Speed control
+                const speedControl = new AiondaWebUI.ComboBox({
+                    width: '100%',
+                    data: [
+                        { value: 'slow', text: 'Slow (0.5s)' },
+                        { value: 'normal', text: 'Normal (0.3s)' },
+                        { value: 'fast', text: 'Fast (0.1s)' }
+                    ],
+                    value: 'normal',
+                    listeners: {
+                        change: (value) => this.setTransitionSpeed(value)
+                    }
+                });
+                speedControl.renderTo('#speedControl');
+                
+                // Radius control
+                const radiusControl = new AiondaWebUI.ComboBox({
+                    width: '100%',
+                    data: [
+                        { value: 'none', text: 'Sharp (0px)' },
+                        { value: 'small', text: 'Small (4px)' },
+                        { value: 'normal', text: 'Normal (8px)' },
+                        { value: 'large', text: 'Large (16px)' }
+                    ],
+                    value: 'normal',
+                    listeners: {
+                        change: (value) => this.setBorderRadius(value)
+                    }
+                });
+                radiusControl.renderTo('#radiusControl');
+            }
+            
+            setAccentColor(color) {
+                this.accentColor = color;
+                localStorage.setItem('accentColor', color);
+                
+                // Update color swatches selection
+                document.querySelectorAll('.color-swatch').forEach(swatch => {
+                    swatch.style.borderColor = swatch.dataset.color === color ? 
+                        'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.3)';
+                    swatch.style.transform = swatch.dataset.color === color ? 'scale(1.1)' : 'scale(1)';
+                });
+                
+                // Apply accent color to components
+                this.applyAccentColor(color);
+            }
+            
+            applyAccentColor(color) {
+                const colorMap = {
+                    blue: '#3b82f6',
+                    purple: '#8b5cf6',
+                    green: '#10b981',
+                    red: '#ef4444',
+                    yellow: '#f59e0b',
+                    pink: '#ec4899'
+                };
+                
+                document.documentElement.style.setProperty('--accent-color', colorMap[color]);
+            }
+            
+            setTransitionSpeed(speed) {
+                const speedMap = {
+                    slow: '0.5s',
+                    normal: '0.3s',
+                    fast: '0.1s'
+                };
+                
+                document.documentElement.style.setProperty('--transition-speed', speedMap[speed]);
+            }
+            
+            setBorderRadius(radius) {
+                const radiusMap = {
+                    none: '0px',
+                    small: '4px',
+                    normal: '8px',
+                    large: '16px'
+                };
+                
+                document.documentElement.style.setProperty('--border-radius', radiusMap[radius]);
+            }
+            
+            resetCustomization() {
+                this.setAccentColor('blue');
+                this.setTransitionSpeed('normal');
+                this.setBorderRadius('normal');
+                
+                // Reset combo boxes
+                document.querySelectorAll('.aionda-combobox').forEach(combo => {
+                    if (combo.textContent.includes('Speed')) {
+                        // Reset speed control
+                    } else if (combo.textContent.includes('Radius')) {
+                        // Reset radius control
+                    }
+                });
+            }
+            
+            initializeComponents() {
+                this.createComparisonComponents();
+                this.createLiveDemo();
+            }
+            
+            createComparisonComponents() {
+                const componentConfigs = [
+                    {
+                        type: 'Button',
+                        config: { text: 'Primary Button', variant: 'primary', width: '100%' }
+                    },
+                    {
+                        type: 'TextField',
+                        config: { label: 'Text Input', placeholder: 'Enter text...', width: '100%' }
+                    },
+                    {
+                        type: 'ComboBox',
+                        config: { 
+                            label: 'Dropdown',
+                            data: [
+                                { value: '1', text: 'Option 1' },
+                                { value: '2', text: 'Option 2' },
+                                { value: '3', text: 'Option 3' }
+                            ],
+                            width: '100%'
+                        }
+                    },
+                    {
+                        type: 'Checkbox',
+                        config: { label: 'Enable feature', checked: true }
+                    }
+                ];
+                
+                // Create components for both light and dark panels
+                ['lightComponents', 'darkComponents'].forEach(containerId => {
+                    const container = document.getElementById(containerId);
+                    componentConfigs.forEach(({ type, config }) => {
+                        const component = new AiondaWebUI[type](config);
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'mb-4';
+                        container.appendChild(wrapper);
+                        component.renderTo(wrapper);
+                    });
+                });
+            }
+            
+            createLiveDemo() {
+                const container = document.getElementById('liveDemo');
+                
+                // Create comprehensive demo
+                const demoGrid = new AiondaWebUI.Grid({
+                    title: 'Employee Data Grid',
+                    store: new AiondaWebUI.Store({
+                        data: [
+                            { id: 1, name: 'John Doe', email: 'john@example.com', department: 'Engineering', salary: 75000 },
+                            { id: 2, name: 'Jane Smith', email: 'jane@example.com', department: 'Design', salary: 68000 },
+                            { id: 3, name: 'Bob Johnson', email: 'bob@example.com', department: 'Marketing', salary: 62000 }
+                        ]
+                    }),
+                    columns: [
+                        { dataIndex: 'name', text: 'Name', width: 150, sortable: true },
+                        { dataIndex: 'email', text: 'Email', width: 200, sortable: true },
+                        { dataIndex: 'department', text: 'Department', width: 120, sortable: true },
+                        { dataIndex: 'salary', text: 'Salary', width: 100, sortable: true, renderer: (value) => '$' + value.toLocaleString() }
+                    ],
+                    height: 300,
+                    selectionMode: 'multi',
+                    filterable: true,
+                    resizable: true
+                });
+                
+                const demoForm = new AiondaWebUI.Form({
+                    title: 'Sample Form',
+                    items: [
+                        new AiondaWebUI.TextField({ 
+                            name: 'firstName', 
+                            label: 'First Name', 
+                            placeholder: 'Enter first name',
+                            allowBlank: false 
+                        }),
+                        new AiondaWebUI.TextField({ 
+                            name: 'lastName', 
+                            label: 'Last Name', 
+                            placeholder: 'Enter last name',
+                            allowBlank: false 
+                        }),
+                        new AiondaWebUI.ComboBox({
+                            name: 'country',
+                            label: 'Country',
+                            data: [
+                                { value: 'us', text: 'United States' },
+                                { value: 'ca', text: 'Canada' },
+                                { value: 'uk', text: 'United Kingdom' },
+                                { value: 'de', text: 'Germany' }
+                            ],
+                            allowBlank: false
+                        }),
+                        new AiondaWebUI.Checkbox({
+                            name: 'newsletter',
+                            label: 'Subscribe to newsletter',
+                            checked: true
+                        }),
+                        new AiondaWebUI.Button({
+                            text: 'Submit Form',
+                            variant: 'primary',
+                            listeners: {
+                                click: () => {
+                                    const formData = demoForm.getValues();
+                                    alert('Form Data: ' + JSON.stringify(formData, null, 2));
+                                }
+                            }
+                        })
+                    ]
+                });
+                
+                // Render demo components
+                const gridWrapper = document.createElement('div');
+                gridWrapper.className = 'mb-8';
+                container.appendChild(gridWrapper);
+                demoGrid.renderTo(gridWrapper);
+                
+                const formWrapper = document.createElement('div');
+                container.appendChild(formWrapper);
+                demoForm.renderTo(formWrapper);
+            }
+        }
+        
+        // Initialize the demo when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new DarkModeDemo();
+        });
+    </script>
+</body>
+</html>

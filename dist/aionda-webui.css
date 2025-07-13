@@ -1,0 +1,109 @@
+/* Aionda WebUI Base Styles */
+.aionda-component {
+  box-sizing: border-box;
+}
+
+.aionda-hidden {
+  display: none !important;
+}
+
+.aionda-disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.aionda-responsive {
+  max-width: 100%;
+}
+
+/* Panel Styles */
+.aionda-panel {
+  border-radius: 0.375rem;
+}
+
+.aionda-panel-header {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+}
+
+.aionda-panel-body {
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+/* Button Styles */
+.aionda-button {
+  border: 1px solid transparent;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.aionda-button:focus {
+  z-index: 1;
+}
+
+.aionda-button-pressed {
+  transform: scale(0.98);
+}
+
+.aionda-button-loading {
+  pointer-events: none;
+}
+
+.aionda-button-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .aionda-responsive {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  
+  .aionda-panel {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+/* Animation utilities */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus states for accessibility */
+.aionda-component:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Toast Animations */
+.toast-enter {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.3s ease-out;
+}
+
+.toast-exit {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease-in;
+}
+
+/* Toast Progress Bar */
+.toast-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.toast-progress-bar {
+  transition: width linear;
+}

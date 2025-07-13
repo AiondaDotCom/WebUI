@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Toolbar Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+    <style>
+        .demo-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Aionda WebUI - Toolbar Demo</h1>
+    
+    <div class="demo-section">
+        <div class="demo-title">Basic Horizontal Toolbar</div>
+        <div id="toolbar-basic"></div>
+    </div>
+
+    <div class="demo-section">
+        <div class="demo-title">Toolbar with Button Groups</div>
+        <div id="toolbar-groups"></div>
+    </div>
+
+    <div class="demo-section">
+        <div class="demo-title">Vertical Toolbar</div>
+        <div id="toolbar-vertical" style="height: 300px;"></div>
+    </div>
+
+    <div class="demo-section">
+        <div class="demo-title">Toolbar with Overflow</div>
+        <div id="toolbar-overflow" style="width: 400px; border: 1px solid #ccc;"></div>
+    </div>
+
+    <div class="demo-section">
+        <div class="demo-title">Event Log</div>
+        <div id="event-log" class="bg-gray-800 text-green-400 p-4 rounded font-mono text-sm h-48 overflow-y-auto"></div>
+    </div>
+
+    <script src="../../dist/aionda-webui.js"></script>
+    <script>
+        const { Toolbar } = AiondaWebUI;
+
+        function logEvent(message) {
+            const log = document.getElementById('event-log');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `[${timestamp}] ${message}\n`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Basic toolbar
+        const basicToolbar = new Toolbar({
+            items: [
+                { text: 'New', icon: '📄', handler: () => logEvent('New clicked') },
+                { text: 'Open', icon: '📂', handler: () => logEvent('Open clicked') },
+                { text: 'Save', icon: '💾', variant: 'primary', handler: () => logEvent('Save clicked') },
+                'separator',
+                { text: 'Cut', icon: '✂️', handler: () => logEvent('Cut clicked') },
+                { text: 'Copy', icon: '📋', handler: () => logEvent('Copy clicked') },
+                { text: 'Paste', icon: '📄', handler: () => logEvent('Paste clicked') },
+                'fill',
+                { text: 'Help', icon: '❓', outline: true, handler: () => logEvent('Help clicked') }
+            ]
+        });
+        basicToolbar.renderTo('#toolbar-basic');
+
+        // Toolbar with button groups
+        const groupsToolbar = new Toolbar({
+            items: [
+                {
+                    cmp: 'buttongroup',
+                    items: [
+                        { text: 'Bold', icon: 'B', handler: () => logEvent('Bold clicked') },
+                        { text: 'Italic', icon: 'I', handler: () => logEvent('Italic clicked') },
+                        { text: 'Underline', icon: 'U', handler: () => logEvent('Underline clicked') }
+                    ]
+                },
+                'separator',
+                {
+                    cmp: 'buttongroup',
+                    items: [
+                        { text: 'Left', icon: '⬅️', handler: () => logEvent('Align Left clicked') },
+                        { text: 'Center', icon: '↔️', handler: () => logEvent('Align Center clicked') },
+                        { text: 'Right', icon: '➡️', handler: () => logEvent('Align Right clicked') }
+                    ]
+                },
+                'spacer',
+                { text: 'Print', icon: '🖨️', handler: () => logEvent('Print clicked') }
+            ]
+        });
+        groupsToolbar.renderTo('#toolbar-groups');
+
+        // Vertical toolbar
+        const verticalToolbar = new Toolbar({
+            layout: 'vertical',
+            items: [
+                { text: 'Tool 1', icon: '🔧', handler: () => logEvent('Tool 1 clicked') },
+                { text: 'Tool 2', icon: '🔨', handler: () => logEvent('Tool 2 clicked') },
+                'separator',
+                { text: 'Settings', icon: '⚙️', handler: () => logEvent('Settings clicked') },
+                'fill',
+                { text: 'Exit', icon: '🚪', variant: 'danger', handler: () => logEvent('Exit clicked') }
+            ]
+        });
+        verticalToolbar.renderTo('#toolbar-vertical');
+
+        // Toolbar with overflow (many items to test overflow)
+        const overflowToolbar = new Toolbar({
+            enableOverflow: true,
+            items: [
+                { text: 'File', handler: () => logEvent('File clicked') },
+                { text: 'Edit', handler: () => logEvent('Edit clicked') },
+                { text: 'View', handler: () => logEvent('View clicked') },
+                { text: 'Insert', handler: () => logEvent('Insert clicked') },
+                { text: 'Format', handler: () => logEvent('Format clicked') },
+                { text: 'Tools', handler: () => logEvent('Tools clicked') },
+                { text: 'Data', handler: () => logEvent('Data clicked') },
+                { text: 'Window', handler: () => logEvent('Window clicked') },
+                { text: 'Help', handler: () => logEvent('Help clicked') },
+                { text: 'Extensions', handler: () => logEvent('Extensions clicked') }
+            ]
+        });
+        overflowToolbar.renderTo('#toolbar-overflow');
+
+        // Event listeners for all toolbars
+        [basicToolbar, groupsToolbar, verticalToolbar, overflowToolbar].forEach((toolbar, index) => {
+            toolbar.on('buttonclick', (data) => {
+                logEvent(`Toolbar ${index + 1}: Button "${data.item.text || 'Unknown'}" clicked`);
+            });
+        });
+
+        logEvent('Toolbar demo initialized successfully!');
+    </script>
+</body>
+</html>

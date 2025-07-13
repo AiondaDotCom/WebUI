@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+dist/
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Screenshots are now committed to repo for README display
+# screenshots/

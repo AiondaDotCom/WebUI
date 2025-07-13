@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Context Menu Test - Aionda WebUI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../dist/aionda-webui.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .aionda-filter-highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="demo-container">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Grid Context Menu Test</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Grid with Context Menu</h2>
+            <p class="text-gray-600 mb-4">Right-click on column headers to open the context menu with sorting, filtering, and column management options.</p>
+            
+            <div id="grid-container" class="w-full"></div>
+        </div>
+
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <h3 class="text-lg font-semibold text-blue-800 mb-2">Context Menu Features</h3>
+            <ul class="text-blue-700 text-sm space-y-1">
+                <li>• <strong>Sort Ascending/Descending:</strong> Sort column data</li>
+                <li>• <strong>Clear Sort:</strong> Remove sorting from column</li>
+                <li>• <strong>Clear Filter:</strong> Remove filter from column</li>
+                <li>• <strong>Clear All Filters:</strong> Remove all filters</li>
+                <li>• <strong>Hide Column:</strong> Hide/show column</li>
+                <li>• <strong>Resize to Fit:</strong> Auto-resize column to content</li>
+                <li>• <strong>Column Settings:</strong> Open column selector dialog</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../dist/aionda-webui.js"></script>
+    <script>
+        // Sample employee data
+        const employeeData = [
+            { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@company.com', department: 'Engineering', salary: 75000, joinDate: '2022-01-15', active: true },
+            { id: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane.smith@company.com', department: 'Marketing', salary: 68000, joinDate: '2021-11-20', active: true },
+            { id: 3, firstName: 'Mike', lastName: 'Johnson', email: 'mike.johnson@company.com', department: 'Sales', salary: 72000, joinDate: '2022-03-10', active: false },
+            { id: 4, firstName: 'Sarah', lastName: 'Williams', email: 'sarah.williams@company.com', department: 'Engineering', salary: 82000, joinDate: '2020-09-05', active: true },
+            { id: 5, firstName: 'David', lastName: 'Brown', email: 'david.brown@company.com', department: 'HR', salary: 65000, joinDate: '2023-01-08', active: true },
+            { id: 6, firstName: 'Lisa', lastName: 'Davis', email: 'lisa.davis@company.com', department: 'Engineering', salary: 78000, joinDate: '2021-07-12', active: true },
+            { id: 7, firstName: 'Tom', lastName: 'Wilson', email: 'tom.wilson@company.com', department: 'Marketing', salary: 71000, joinDate: '2022-05-18', active: true },
+            { id: 8, firstName: 'Amy', lastName: 'Garcia', email: 'amy.garcia@company.com', department: 'Sales', salary: 69000, joinDate: '2021-12-03', active: false },
+            { id: 9, firstName: 'Chris', lastName: 'Martinez', email: 'chris.martinez@company.com', department: 'Engineering', salary: 85000, joinDate: '2020-04-22', active: true },
+            { id: 10, firstName: 'Emma', lastName: 'Anderson', email: 'emma.anderson@company.com', department: 'HR', salary: 63000, joinDate: '2023-02-14', active: true }
+        ];
+
+        // Create data store
+        const store = new AiondaWebUI.Store({
+            data: employeeData
+        });
+
+        // Define grid columns
+        const columns = [
+            { field: 'id', text: 'ID', width: 60, type: 'number', sortable: true },
+            { field: 'firstName', text: 'First Name', width: 120, sortable: true },
+            { field: 'lastName', text: 'Last Name', width: 120, sortable: true },
+            { field: 'email', text: 'Email', width: 200, sortable: true },
+            { field: 'department', text: 'Department', width: 120, sortable: true },
+            { 
+                field: 'salary', 
+                text: 'Salary', 
+                width: 100, 
+                type: 'number', 
+                sortable: true,
+                renderer: (value) => `$${value.toLocaleString()}`
+            },
+            { field: 'joinDate', text: 'Join Date', width: 120, type: 'date', sortable: true },
+            { 
+                field: 'active', 
+                text: 'Active', 
+                width: 80, 
+                type: 'boolean', 
+                sortable: true,
+                renderer: (value) => value ? '<span class="text-green-600">✓</span>' : '<span class="text-red-600">✗</span>'
+            }
+        ];
+
+        // Create the grid
+        const grid = new AiondaWebUI.Grid({
+            store: store,
+            columns: columns,
+            selectionMode: 'multi',
+            editable: true,
+            sortable: true,
+            filterable: true,
+            resizable: true,
+            striped: true,
+            hover: true,
+            rowNumbers: true
+        });
+
+        // Render the grid
+        grid.renderTo('#grid-container');
+
+        // Add event listeners for demonstration
+        grid.on('selectionchange', (event) => {
+            console.log('Selection changed:', event.selections.length, 'rows selected');
+        });
+
+        grid.on('cellchange', (event) => {
+            console.log('Cell changed:', event.field, '=', event.value);
+        });
+
+        grid.on('columnreorder', (event) => {
+            console.log('Column reordered:', event.field, 'moved to index', event.newIndex);
+        });
+
+        grid.on('sort', (event) => {
+            console.log('Sort changed:', event.field, event.direction);
+        });
+
+        grid.on('columnresize', (event) => {
+            console.log('Column resized:', event.field, 'width:', event.width);
+        });
+
+        grid.on('columnvisibilitychange', (event) => {
+            console.log('Column visibility changed:', event.field, 'visible:', event.visible);
+        });
+
+        console.log('Grid with context menu ready! Right-click on column headers to test context menu functionality.');
+    </script>
+</body>
+</html>

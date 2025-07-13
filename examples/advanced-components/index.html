@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Advanced Components Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .demo-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        .demo-description {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        .demo-container {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f9fafb;
+        }
+        .feature-list {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            margin-top: 1rem;
+        }
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-tab.active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">🧩 Aionda WebUI - Advanced Components</h1>
+            <p class="text-gray-600 text-lg">Comprehensive demonstrations of advanced UI components</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs bg-white rounded-t-lg shadow-sm">
+            <div class="nav-tab active" data-tab="treepanel">🌳 Tree Panel</div>
+            <div class="nav-tab" data-tab="menu">📋 Menu System</div>
+            <div class="nav-tab" data-tab="toolbar">🔧 Toolbar</div>
+            <div class="nav-tab" data-tab="window">🪟 Windows</div>
+            <div class="nav-tab" data-tab="messagebox">💬 MessageBox</div>
+            <div class="nav-tab" data-tab="datefield">📅 DateField</div>
+            <div class="nav-tab" data-tab="textarea">📝 TextArea</div>
+            <div class="nav-tab" data-tab="radiogroup">📻 RadioGroup</div>
+        </div>
+
+        <!-- Tab Contents -->
+        <div class="bg-white rounded-b-lg shadow-sm p-6">
+            
+            <!-- Tree Panel Demo -->
+            <div id="treepanel" class="tab-content active">
+                <div class="demo-title">🌳 Tree Panel Component</div>
+                <div class="demo-description">
+                    Hierarchical data display with expand/collapse, selection, drag & drop, and context menus.
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Basic Tree -->
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">📁 File System Tree</h4>
+                        <div id="filesystem-tree" class="h-64 overflow-auto border rounded"></div>
+                    </div>
+                    
+                    <!-- Organization Tree -->
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">🏢 Organization Chart</h4>
+                        <div id="org-tree" class="h-64 overflow-auto border rounded"></div>
+                    </div>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 Tree Panel Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Hierarchical data with unlimited nesting</li>
+                        <li>✅ Expand/collapse nodes with smooth animations</li>
+                        <li>✅ Single and multiple selection modes</li>
+                        <li>✅ Drag & drop for reordering nodes</li>
+                        <li>✅ Context menus for node operations</li>
+                        <li>✅ Custom icons and node rendering</li>
+                        <li>✅ Lazy loading for large datasets</li>
+                        <li>✅ Search and filtering capabilities</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Menu System Demo -->
+            <div id="menu" class="tab-content">
+                <div class="demo-title">📋 Menu System</div>
+                <div class="demo-description">
+                    Context menus, menu bars, and dropdown menus with icons, shortcuts, and separators.
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Menu Bar -->
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">📋 Application Menu Bar</h4>
+                        <div id="menu-bar" class="border rounded"></div>
+                    </div>
+                    
+                    <!-- Context Menu -->
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">🖱️ Context Menu Demo</h4>
+                        <div id="context-area" class="h-32 bg-blue-50 border-2 border-dashed border-blue-300 rounded flex items-center justify-center cursor-pointer">
+                            Right-click here for context menu
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 Menu System Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Menu bars with dropdown submenus</li>
+                        <li>✅ Context menus with right-click activation</li>
+                        <li>✅ Icons, shortcuts, and menu separators</li>
+                        <li>✅ Disabled and checkable menu items</li>
+                        <li>✅ Nested submenus with hover activation</li>
+                        <li>✅ Keyboard navigation support</li>
+                        <li>✅ Custom styling and theming</li>
+                        <li>✅ Dynamic menu content updates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Toolbar Demo -->
+            <div id="toolbar" class="tab-content">
+                <div class="demo-title">🔧 Toolbar Component</div>
+                <div class="demo-description">
+                    Flexible toolbars with buttons, separators, overflow handling, and different layouts.
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Main Toolbar -->
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">🛠️ Main Application Toolbar</h4>
+                        <div id="main-toolbar" class="border rounded"></div>
+                    </div>
+                    
+                    <!-- Formatting Toolbar -->
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">✏️ Formatting Toolbar</h4>
+                        <div id="format-toolbar" class="border rounded"></div>
+                    </div>
+                    
+                    <!-- Vertical Toolbar -->
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">📏 Vertical Tool Palette</h4>
+                        <div class="flex">
+                            <div id="vertical-toolbar" class="border rounded mr-4"></div>
+                            <div class="flex-1 bg-gray-50 border rounded p-4 flex items-center justify-center">
+                                Canvas area - toolbar actions will affect this area
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 Toolbar Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Horizontal and vertical orientations</li>
+                        <li>✅ Button groups with separators</li>
+                        <li>✅ Toggle buttons and button states</li>
+                        <li>✅ Overflow handling with dropdown menus</li>
+                        <li>✅ Customizable button icons and tooltips</li>
+                        <li>✅ Responsive layout adaptation</li>
+                        <li>✅ Drag & drop toolbar customization</li>
+                        <li>✅ Integration with menu systems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Window Demo -->
+            <div id="window" class="tab-content">
+                <div class="demo-title">🪟 Window Dialogs</div>
+                <div class="demo-description">
+                    Modal and modeless windows with resizing, dragging, maximizing, and custom content.
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <button id="basic-window-btn" class="demo-btn">📄 Basic Window</button>
+                    <button id="modal-window-btn" class="demo-btn">🔒 Modal Dialog</button>
+                    <button id="form-window-btn" class="demo-btn">📝 Form Window</button>
+                    <button id="maximizable-window-btn" class="demo-btn">🗖️ Maximizable</button>
+                    <button id="resizable-window-btn" class="demo-btn">↔️ Resizable</button>
+                    <button id="custom-window-btn" class="demo-btn">🎨 Custom Styled</button>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 Window Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Modal and modeless window modes</li>
+                        <li>✅ Draggable title bars with constraints</li>
+                        <li>✅ Resizable windows with min/max limits</li>
+                        <li>✅ Maximize, minimize, and close buttons</li>
+                        <li>✅ Window manager for z-order handling</li>
+                        <li>✅ Custom window content and layouts</li>
+                        <li>✅ Animation effects for show/hide</li>
+                        <li>✅ Keyboard shortcuts and focus management</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MessageBox Demo -->
+            <div id="messagebox" class="tab-content">
+                <div class="demo-title">💬 MessageBox Component</div>
+                <div class="demo-description">
+                    Standard message dialogs for alerts, confirmations, prompts, and custom notifications.
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <button id="info-msg-btn" class="demo-btn">ℹ️ Information</button>
+                    <button id="warning-msg-btn" class="demo-btn">⚠️ Warning</button>
+                    <button id="error-msg-btn" class="demo-btn">❌ Error</button>
+                    <button id="confirm-msg-btn" class="demo-btn">❓ Confirm</button>
+                    <button id="prompt-msg-btn" class="demo-btn">✏️ Prompt</button>
+                    <button id="custom-msg-btn" class="demo-btn">🎨 Custom</button>
+                </div>
+                
+                <div class="demo-container mt-6">
+                    <h4 class="font-semibold mb-3">📋 Message Log</h4>
+                    <div id="message-log" class="h-32 overflow-auto border rounded p-2 bg-gray-50 text-sm font-mono"></div>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 MessageBox Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Standard message types (info, warning, error)</li>
+                        <li>✅ Confirmation dialogs with Yes/No/Cancel</li>
+                        <li>✅ Input prompts with validation</li>
+                        <li>✅ Custom icons and button configurations</li>
+                        <li>✅ Auto-dismiss timers for notifications</li>
+                        <li>✅ Sound notifications and animations</li>
+                        <li>✅ Queue management for multiple messages</li>
+                        <li>✅ Keyboard shortcuts (Enter, Escape)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DateField Demo -->
+            <div id="datefield" class="tab-content">
+                <div class="demo-title">📅 DateField Component</div>
+                <div class="demo-description">
+                    Date input with calendar picker, format validation, and internationalization support.
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">📅 Date Input Variants</h4>
+                        <div class="space-y-4">
+                            <div id="basic-date" class="field-container"></div>
+                            <div id="datetime-field" class="field-container"></div>
+                            <div id="daterange-field" class="field-container"></div>
+                            <div id="birthday-field" class="field-container"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">🌐 Localization Examples</h4>
+                        <div class="space-y-4">
+                            <div id="us-date" class="field-container"></div>
+                            <div id="eu-date" class="field-container"></div>
+                            <div id="iso-date" class="field-container"></div>
+                            <div id="custom-format" class="field-container"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 DateField Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Calendar popup with month/year navigation</li>
+                        <li>✅ Multiple date formats (MM/DD/YYYY, DD.MM.YYYY, ISO)</li>
+                        <li>✅ Date range selection and validation</li>
+                        <li>✅ Min/max date constraints</li>
+                        <li>✅ Keyboard input with format enforcement</li>
+                        <li>✅ Today/Clear buttons for quick actions</li>
+                        <li>✅ Internationalization and localization</li>
+                        <li>✅ Disabled dates and custom styling</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TextArea Demo -->
+            <div id="textarea" class="tab-content">
+                <div class="demo-title">📝 TextArea Component</div>
+                <div class="demo-description">
+                    Multi-line text input with auto-resize, character limits, and rich text features.
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">📝 Basic TextArea Variants</h4>
+                        <div class="space-y-4">
+                            <div id="basic-textarea" class="field-container"></div>
+                            <div id="autoresize-textarea" class="field-container"></div>
+                            <div id="limited-textarea" class="field-container"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">🎨 Advanced Features</h4>
+                        <div class="space-y-4">
+                            <div id="code-textarea" class="field-container"></div>
+                            <div id="markdown-textarea" class="field-container"></div>
+                            <div id="spell-textarea" class="field-container"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 TextArea Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Auto-resize based on content height</li>
+                        <li>✅ Character and word count limits</li>
+                        <li>✅ Syntax highlighting for code input</li>
+                        <li>✅ Markdown preview and formatting</li>
+                        <li>✅ Spell check and auto-complete</li>
+                        <li>✅ Tab key handling and indentation</li>
+                        <li>✅ Undo/redo functionality</li>
+                        <li>✅ Custom validation and formatting</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- RadioGroup Demo -->
+            <div id="radiogroup" class="tab-content">
+                <div class="demo-title">📻 RadioGroup Component</div>
+                <div class="demo-description">
+                    Radio button groups with various layouts, styling options, and custom rendering.
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">📻 Layout Variants</h4>
+                        <div class="space-y-6">
+                            <div id="vertical-radio" class="field-container"></div>
+                            <div id="horizontal-radio" class="field-container"></div>
+                            <div id="inline-radio" class="field-container"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-container">
+                        <h4 class="font-semibold mb-3">🎨 Style Variants</h4>
+                        <div class="space-y-6">
+                            <div id="button-radio" class="field-container"></div>
+                            <div id="card-radio" class="field-container"></div>
+                            <div id="icon-radio" class="field-container"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-list">
+                    <strong>🎯 RadioGroup Features:</strong>
+                    <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+                        <li>✅ Vertical, horizontal, and inline layouts</li>
+                        <li>✅ Button-style and card-style variants</li>
+                        <li>✅ Custom icons and rich content</li>
+                        <li>✅ Keyboard navigation (arrow keys)</li>
+                        <li>✅ Disabled options and validation</li>
+                        <li>✅ Custom value/display text mapping</li>
+                        <li>✅ Dynamic option updates</li>
+                        <li>✅ Integration with form validation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-gray-500 text-sm">
+            <p>🧩 Aionda WebUI Advanced Components Demo - Explore the full feature set</p>
+        </div>
+    </div>
+
+    <!-- Load Aionda WebUI -->
+    <script src="../../dist/aionda-webui.js"></script>
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Demo button styling
+        const style = document.createElement('style');
+        style.textContent = `
+            .demo-btn {
+                padding: 0.75rem 1rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                transition: all 0.2s;
+                font-weight: 500;
+            }
+            .demo-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            }
+            .field-container {
+                padding: 0.75rem;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.25rem;
+                background: white;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Tree Panel Demo Data (icons automatically handled by Tree component)
+        const filesystemData = [
+            {
+                id: 'root',
+                text: 'Project Root',
+                expanded: true,
+                children: [
+                    {
+                        id: 'src',
+                        text: 'src',
+                        expanded: true,
+                        children: [
+                            { id: 'components', text: 'components', children: [
+                                { id: 'button', text: 'Button.js' },
+                                { id: 'grid', text: 'Grid.js' },
+                                { id: 'form', text: 'Form.js' }
+                            ]},
+                            { id: 'core', text: 'core', children: [
+                                { id: 'component', text: 'Component.js' },
+                                { id: 'store', text: 'Store.js' }
+                            ]},
+                            { id: 'utils', text: 'utils', children: [
+                                { id: 'helpers', text: 'helpers.js' }
+                            ]}
+                        ]
+                    },
+                    {
+                        id: 'examples',
+                        text: 'examples',
+                        children: [
+                            { id: 'basic', text: 'basic' },
+                            { id: 'advanced', text: 'advanced-components' }
+                        ]
+                    },
+                    { id: 'package', text: 'package.json' },
+                    { id: 'readme', text: 'README.md' }
+                ]
+            }
+        ];
+
+        const orgData = [
+            {
+                id: 'ceo',
+                text: 'CEO - John Smith',
+                icon: '👔',
+                expanded: true,
+                children: [
+                    {
+                        id: 'cto',
+                        text: 'CTO - Sarah Johnson',
+                        icon: '💻',
+                        children: [
+                            { id: 'dev1', text: 'Developer - Alice Brown', icon: '👩‍💻' },
+                            { id: 'dev2', text: 'Developer - Bob Wilson', icon: '👨‍💻' },
+                            { id: 'qa', text: 'QA Lead - Carol Davis', icon: '🧪' }
+                        ]
+                    },
+                    {
+                        id: 'cfo',
+                        text: 'CFO - Michael Lee',
+                        icon: '💰',
+                        children: [
+                            { id: 'acc1', text: 'Accountant - Diana Miller', icon: '📊' },
+                            { id: 'acc2', text: 'Analyst - Frank Garcia', icon: '📈' }
+                        ]
+                    },
+                    {
+                        id: 'hr',
+                        text: 'HR Director - Lisa Anderson',
+                        icon: '👥',
+                        children: [
+                            { id: 'recruiter', text: 'Recruiter - Tom Martinez', icon: '🔍' }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Initialize Tree Panels (actual implementation)
+        function initTreePanels() {
+            try {
+                // Check if AiondaWebUI is loaded
+                if (typeof AiondaWebUI === 'undefined') {
+                    console.error('AiondaWebUI not loaded');
+                    return;
+                }
+
+                // File System Tree
+                const fsStore = new AiondaWebUI.Store({ data: filesystemData });
+                const fsTree = new AiondaWebUI.Tree({
+                    store: fsStore,
+                    selectionMode: 'single',
+                    expandable: true,
+                    rootVisible: true,
+                    animate: true
+                });
+                
+                const fsContainer = document.getElementById('filesystem-tree');
+                fsContainer.innerHTML = '';
+                fsContainer.appendChild(fsTree.render());
+
+                // Organization Tree
+                const orgStore = new AiondaWebUI.Store({ data: orgData });
+                const orgTree = new AiondaWebUI.Tree({
+                    store: orgStore,
+                    selectionMode: 'single',
+                    expandable: true,
+                    rootVisible: true,
+                    animate: true
+                });
+                
+                const orgContainer = document.getElementById('org-tree');
+                orgContainer.innerHTML = '';
+                orgContainer.appendChild(orgTree.render());
+
+                // Add event listeners for interaction feedback
+                fsTree.on('nodeclick', (data) => {
+                    console.log('File system node clicked:', data.node.text);
+                });
+
+                orgTree.on('nodeclick', (data) => {
+                    console.log('Organization node clicked:', data.node.text);
+                });
+
+                fsTree.on('expand', (data) => {
+                    console.log('Node expanded:', data.node.text);
+                });
+
+                orgTree.on('expand', (data) => {
+                    console.log('Node expanded:', data.node.text);
+                });
+
+            } catch (error) {
+                console.error('Error initializing tree panels:', error);
+                // Fallback to mock content
+                const fsTree = document.getElementById('filesystem-tree');
+                const orgTree = document.getElementById('org-tree');
+                
+                fsTree.innerHTML = '<div class="p-4 text-red-600">⚠️ Error loading Tree component. Check console for details.</div>';
+                orgTree.innerHTML = '<div class="p-4 text-red-600">⚠️ Error loading Tree component. Check console for details.</div>';
+            }
+        }
+
+        // Menu System Demo
+        function initMenuSystem() {
+            const menuBar = document.getElementById('menu-bar');
+            menuBar.innerHTML = `
+                <div class="p-2 bg-gray-100 border-b">
+                    <div class="flex space-x-4">
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">📁 File</div>
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">✏️ Edit</div>
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">👁️ View</div>
+                        <div class="px-3 py-1 hover:bg-gray-200 cursor-pointer">❓ Help</div>
+                    </div>
+                </div>
+            `;
+
+            const contextArea = document.getElementById('context-area');
+            contextArea.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                alert('🖱️ Context menu would appear here with options like Cut, Copy, Paste, etc.');
+            });
+        }
+
+        // Toolbar Demo
+        function initToolbars() {
+            const mainToolbar = document.getElementById('main-toolbar');
+            mainToolbar.innerHTML = `
+                <div class="p-2 bg-gray-50 flex items-center space-x-2">
+                    <button class="p-2 hover:bg-gray-200 rounded">📁</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">💾</button>
+                    <div class="w-px h-6 bg-gray-300"></div>
+                    <button class="p-2 hover:bg-gray-200 rounded">↩️</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">↪️</button>
+                    <div class="w-px h-6 bg-gray-300"></div>
+                    <button class="p-2 hover:bg-gray-200 rounded">🔍</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">⚙️</button>
+                </div>
+            `;
+
+            const formatToolbar = document.getElementById('format-toolbar');
+            formatToolbar.innerHTML = `
+                <div class="p-2 bg-gray-50 flex items-center space-x-2">
+                    <button class="p-2 hover:bg-gray-200 rounded font-bold">B</button>
+                    <button class="p-2 hover:bg-gray-200 rounded italic">I</button>
+                    <button class="p-2 hover:bg-gray-200 rounded underline">U</button>
+                    <div class="w-px h-6 bg-gray-300"></div>
+                    <button class="p-2 hover:bg-gray-200 rounded">🎨</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">📏</button>
+                </div>
+            `;
+
+            const verticalToolbar = document.getElementById('vertical-toolbar');
+            verticalToolbar.innerHTML = `
+                <div class="p-2 bg-gray-50 flex flex-col space-y-2">
+                    <button class="p-2 hover:bg-gray-200 rounded">✏️</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">🖌️</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">✂️</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">🔍</button>
+                    <button class="p-2 hover:bg-gray-200 rounded">📐</button>
+                </div>
+            `;
+        }
+
+        // Window Demo
+        function initWindowDemos() {
+            try {
+                // Check if AiondaWebUI is loaded
+                if (typeof AiondaWebUI === 'undefined' || !AiondaWebUI.Window) {
+                    console.error('AiondaWebUI.Window not available');
+                    return;
+                }
+
+                document.getElementById('basic-window-btn').addEventListener('click', () => {
+                    const window = new AiondaWebUI.Window({
+                        title: '📄 Basic Window',
+                        width: 400,
+                        height: 300,
+                        draggable: true,
+                        resizable: true,
+                        closable: true,
+                        modal: false,
+                        html: '<div class="p-4"><h3 class="font-semibold mb-2">Basic Window Demo</h3><p>This is a basic draggable and resizable window.</p><p>You can:</p><ul class="list-disc list-inside mt-2"><li>Drag the title bar to move</li><li>Resize from the bottom-right corner</li><li>Close with the X button</li></ul></div>'
+                    });
+                    window.show();
+                });
+
+                document.getElementById('modal-window-btn').addEventListener('click', () => {
+                    const window = new AiondaWebUI.Window({
+                        title: '🔒 Modal Dialog',
+                        width: 350,
+                        height: 200,
+                        modal: true,
+                        draggable: true,
+                        resizable: false,
+                        closable: true,
+                        html: '<div class="p-4"><h3 class="font-semibold mb-2">Modal Dialog</h3><p>This window blocks interaction with the background until closed.</p><p class="mt-3 text-sm text-gray-600">Click the backdrop or close button to dismiss.</p></div>'
+                    });
+                    window.show();
+                });
+
+                document.getElementById('form-window-btn').addEventListener('click', () => {
+                    const window = new AiondaWebUI.Window({
+                        title: '📝 Form Window',
+                        width: 450,
+                        height: 350,
+                        modal: true,
+                        draggable: true,
+                        resizable: false,
+                        closable: true,
+                        html: `<div class="p-4">
+                            <h3 class="font-semibold mb-4">User Information Form</h3>
+                            <form class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Name</label>
+                                    <input type="text" class="w-full border rounded px-3 py-2" placeholder="Enter your name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Email</label>
+                                    <input type="email" class="w-full border rounded px-3 py-2" placeholder="Enter your email">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Message</label>
+                                    <textarea class="w-full border rounded px-3 py-2 h-20" placeholder="Enter your message"></textarea>
+                                </div>
+                                <div class="flex space-x-2 pt-3">
+                                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
+                                    <button type="button" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" onclick="this.closest('.aionda-window').querySelector('.aionda-window-close').click()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>`
+                    });
+                    window.show();
+                });
+
+                document.getElementById('maximizable-window-btn').addEventListener('click', () => {
+                    const window = new AiondaWebUI.Window({
+                        title: '🗖️ Maximizable Window',
+                        width: 500,
+                        height: 400,
+                        draggable: true,
+                        resizable: true,
+                        closable: true,
+                        maximizable: true,
+                        modal: false,
+                        html: '<div class="p-4"><h3 class="font-semibold mb-2">Maximizable Window</h3><p>This window can be maximized to full screen.</p><p>Click the maximize button in the title bar to expand to full screen.</p><div class="mt-4 p-3 bg-blue-50 rounded"><p class="text-sm"><strong>Features:</strong></p><ul class="list-disc list-inside text-sm mt-1"><li>Maximize/restore button</li><li>Double-click title to maximize</li><li>Remembers previous size when restored</li><li>Full keyboard support</li></ul></div></div>'
+                    });
+                    window.show();
+                });
+
+                document.getElementById('resizable-window-btn').addEventListener('click', () => {
+                    const window = new AiondaWebUI.Window({
+                        title: '↔️ Resizable Window',
+                        width: 400,
+                        height: 300,
+                        minWidth: 250,
+                        minHeight: 200,
+                        maxWidth: 800,
+                        maxHeight: 600,
+                        draggable: true,
+                        resizable: true,
+                        closable: true,
+                        modal: false,
+                        html: '<div class="p-4"><h3 class="font-semibold mb-2">Resizable Window</h3><p>This window can be resized by dragging the edges and corners.</p><div class="mt-4 p-3 bg-green-50 rounded"><p class="text-sm"><strong>Resize Constraints:</strong></p><ul class="list-disc list-inside text-sm mt-1"><li>Min size: 250x200</li><li>Max size: 800x600</li><li>Drag corners and edges to resize</li><li>Maintains aspect ratio with Shift key</li></ul></div><div class="mt-4 h-20 bg-gray-100 rounded flex items-center justify-center text-gray-500">Resizable content area</div></div>'
+                    });
+                    window.show();
+                });
+
+                document.getElementById('custom-window-btn').addEventListener('click', () => {
+                    const window = new AiondaWebUI.Window({
+                        title: '🎨 Custom Styled Window',
+                        width: 450,
+                        height: 350,
+                        draggable: true,
+                        resizable: true,
+                        closable: true,
+                        modal: false,
+                        cls: 'custom-window-demo',
+                        html: `<div class="p-4">
+                            <h3 class="font-semibold mb-2 text-purple-700">Custom Styled Window</h3>
+                            <p>This window demonstrates custom styling capabilities.</p>
+                            <div class="mt-4 grid grid-cols-2 gap-3">
+                                <div class="p-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded">
+                                    <h4 class="font-semibold">Gradient Card</h4>
+                                    <p class="text-sm">Beautiful gradients</p>
+                                </div>
+                                <div class="p-3 bg-gradient-to-r from-blue-400 to-green-400 text-white rounded">
+                                    <h4 class="font-semibold">Another Card</h4>
+                                    <p class="text-sm">Custom content</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-3 border-2 border-dashed border-purple-300 rounded">
+                                <p class="text-center text-purple-600">Drop zone area</p>
+                            </div>
+                        </div>`
+                    });
+                    
+                    // Add custom styling to this window
+                    window.on('show', () => {
+                        const windowEl = window.el;
+                        if (windowEl) {
+                            const header = windowEl.querySelector('.aionda-window-header');
+                            if (header) {
+                                header.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                                header.style.color = 'white';
+                            }
+                        }
+                    });
+                    
+                    window.show();
+                });
+
+            } catch (error) {
+                console.error('Error initializing window demos:', error);
+                // Fallback to alert messages if Window component fails
+                document.getElementById('basic-window-btn').addEventListener('click', () => {
+                    alert('📄 Error: Window component not available. Check console for details.');
+                });
+                document.getElementById('modal-window-btn').addEventListener('click', () => {
+                    alert('🔒 Error: Window component not available. Check console for details.');
+                });
+                document.getElementById('form-window-btn').addEventListener('click', () => {
+                    alert('📝 Error: Window component not available. Check console for details.');
+                });
+                document.getElementById('maximizable-window-btn').addEventListener('click', () => {
+                    alert('🗖️ Error: Window component not available. Check console for details.');
+                });
+                document.getElementById('resizable-window-btn').addEventListener('click', () => {
+                    alert('↔️ Error: Window component not available. Check console for details.');
+                });
+                document.getElementById('custom-window-btn').addEventListener('click', () => {
+                    alert('🎨 Error: Window component not available. Check console for details.');
+                });
+            }
+        }
+
+        // MessageBox Demo
+        function initMessageBoxDemos() {
+            const messageLog = document.getElementById('message-log');
+            
+            function logMessage(message) {
+                const timestamp = new Date().toLocaleTimeString();
+                messageLog.innerHTML += `[${timestamp}] ${message}\n`;
+                messageLog.scrollTop = messageLog.scrollHeight;
+            }
+
+            document.getElementById('info-msg-btn').addEventListener('click', () => {
+                alert('ℹ️ Information: This is an informational message');
+                logMessage('INFO: Informational message displayed');
+            });
+
+            document.getElementById('warning-msg-btn').addEventListener('click', () => {
+                alert('⚠️ Warning: This action may have consequences');
+                logMessage('WARN: Warning message displayed');
+            });
+
+            document.getElementById('error-msg-btn').addEventListener('click', () => {
+                alert('❌ Error: Something went wrong');
+                logMessage('ERROR: Error message displayed');
+            });
+
+            document.getElementById('confirm-msg-btn').addEventListener('click', () => {
+                const result = confirm('❓ Are you sure you want to proceed?');
+                logMessage(`CONFIRM: User selected ${result ? 'Yes' : 'No'}`);
+            });
+
+            document.getElementById('prompt-msg-btn').addEventListener('click', () => {
+                const result = prompt('✏️ Please enter your name:');
+                logMessage(`PROMPT: User entered "${result || 'cancelled'}"`);
+            });
+
+            document.getElementById('custom-msg-btn').addEventListener('click', () => {
+                alert('🎨 Custom MessageBox would show here with custom buttons and styling');
+                logMessage('CUSTOM: Custom message box displayed');
+            });
+        }
+
+        // DateField Demo
+        function initDateFieldDemos() {
+            const basicDate = document.getElementById('basic-date');
+            basicDate.innerHTML = `
+                <label class="block text-sm font-medium mb-1">📅 Basic Date Picker</label>
+                <input type="date" class="w-full border rounded px-3 py-2" value="2024-01-15">
+            `;
+
+            const datetimeField = document.getElementById('datetime-field');
+            datetimeField.innerHTML = `
+                <label class="block text-sm font-medium mb-1">🕒 Date & Time</label>
+                <input type="datetime-local" class="w-full border rounded px-3 py-2" value="2024-01-15T14:30">
+            `;
+
+            const daterangeField = document.getElementById('daterange-field');
+            daterangeField.innerHTML = `
+                <label class="block text-sm font-medium mb-1">📅➡️📅 Date Range</label>
+                <div class="flex space-x-2">
+                    <input type="date" class="flex-1 border rounded px-3 py-2" value="2024-01-01">
+                    <span class="self-center">to</span>
+                    <input type="date" class="flex-1 border rounded px-3 py-2" value="2024-01-31">
+                </div>
+            `;
+
+            const birthdayField = document.getElementById('birthday-field');
+            birthdayField.innerHTML = `
+                <label class="block text-sm font-medium mb-1">🎂 Birthday (Limited Range)</label>
+                <input type="date" class="w-full border rounded px-3 py-2" min="1920-01-01" max="2010-12-31" value="1990-06-15">
+            `;
+
+            // Localization examples
+            const usDate = document.getElementById('us-date');
+            usDate.innerHTML = `
+                <label class="block text-sm font-medium mb-1">🇺🇸 US Format (MM/DD/YYYY)</label>
+                <input type="text" class="w-full border rounded px-3 py-2" placeholder="12/25/2024" value="01/15/2024">
+            `;
+
+            const euDate = document.getElementById('eu-date');
+            euDate.innerHTML = `
+                <label class="block text-sm font-medium mb-1">🇪🇺 EU Format (DD.MM.YYYY)</label>
+                <input type="text" class="w-full border rounded px-3 py-2" placeholder="25.12.2024" value="15.01.2024">
+            `;
+
+            const isoDate = document.getElementById('iso-date');
+            isoDate.innerHTML = `
+                <label class="block text-sm font-medium mb-1">🌐 ISO Format (YYYY-MM-DD)</label>
+                <input type="text" class="w-full border rounded px-3 py-2" placeholder="2024-12-25" value="2024-01-15">
+            `;
+
+            const customFormat = document.getElementById('custom-format');
+            customFormat.innerHTML = `
+                <label class="block text-sm font-medium mb-1">🎨 Custom Format (Mon, Jan 15, 2024)</label>
+                <input type="text" class="w-full border rounded px-3 py-2" placeholder="Mon, Jan 15, 2024" value="Mon, Jan 15, 2024">
+            `;
+        }
+
+        // TextArea Demo
+        function initTextAreaDemos() {
+            const basicTextarea = document.getElementById('basic-textarea');
+            basicTextarea.innerHTML = `
+                <label class="block text-sm font-medium mb-1">📝 Basic TextArea</label>
+                <textarea class="w-full border rounded px-3 py-2 h-20" placeholder="Enter your text here...">This is a basic textarea component with standard functionality.</textarea>
+            `;
+
+            const autoresizeTextarea = document.getElementById('autoresize-textarea');
+            autoresizeTextarea.innerHTML = `
+                <label class="block text-sm font-medium mb-1">📏 Auto-Resize TextArea</label>
+                <textarea class="w-full border rounded px-3 py-2 resize-none" placeholder="Start typing and watch it grow..." style="height: 60px; overflow: hidden;" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';">Type here and the height will automatically adjust as you add more lines of text.</textarea>
+            `;
+
+            const limitedTextarea = document.getElementById('limited-textarea');
+            limitedTextarea.innerHTML = `
+                <label class="block text-sm font-medium mb-1">🔢 Character Limited (100 chars)</label>
+                <textarea class="w-full border rounded px-3 py-2 h-20" maxlength="100" placeholder="Maximum 100 characters..." oninput="document.getElementById('char-count').textContent = this.value.length + '/100';">Limited to 100 characters max.</textarea>
+                <div class="text-sm text-gray-500 mt-1">Characters: <span id="char-count">29/100</span></div>
+            `;
+
+            const codeTextarea = document.getElementById('code-textarea');
+            codeTextarea.innerHTML = `
+                <label class="block text-sm font-medium mb-1">💻 Code Editor TextArea</label>
+                <textarea class="w-full border rounded px-3 py-2 h-24 font-mono text-sm bg-gray-900 text-green-400" placeholder="// Enter your code here">function hello() {
+    console.log('Hello, World!');
+    return true;
+}</textarea>
+            `;
+
+            const markdownTextarea = document.getElementById('markdown-textarea');
+            markdownTextarea.innerHTML = `
+                <label class="block text-sm font-medium mb-1">📄 Markdown TextArea</label>
+                <textarea class="w-full border rounded px-3 py-2 h-24" placeholder="Enter Markdown..."># Heading
+**Bold text** and *italic text*
+- List item 1
+- List item 2</textarea>
+            `;
+
+            const spellTextarea = document.getElementById('spell-textarea');
+            spellTextarea.innerHTML = `
+                <label class="block text-sm font-medium mb-1">✅ Spell Check TextArea</label>
+                <textarea class="w-full border rounded px-3 py-2 h-20" spellcheck="true" placeholder="Spell check enabled...">This textarea has spell checking enabled. Try typing some incorrectly spelled words.</textarea>
+            `;
+        }
+
+        // RadioGroup Demo
+        function initRadioGroupDemos() {
+            const verticalRadio = document.getElementById('vertical-radio');
+            verticalRadio.innerHTML = `
+                <label class="block text-sm font-medium mb-2">📋 Vertical Layout</label>
+                <div class="space-y-2">
+                    <label class="flex items-center"><input type="radio" name="vertical" value="option1" class="mr-2" checked> Option 1</label>
+                    <label class="flex items-center"><input type="radio" name="vertical" value="option2" class="mr-2"> Option 2</label>
+                    <label class="flex items-center"><input type="radio" name="vertical" value="option3" class="mr-2"> Option 3</label>
+                </div>
+            `;
+
+            const horizontalRadio = document.getElementById('horizontal-radio');
+            horizontalRadio.innerHTML = `
+                <label class="block text-sm font-medium mb-2">↔️ Horizontal Layout</label>
+                <div class="flex space-x-4">
+                    <label class="flex items-center"><input type="radio" name="horizontal" value="small" class="mr-2" checked> Small</label>
+                    <label class="flex items-center"><input type="radio" name="horizontal" value="medium" class="mr-2"> Medium</label>
+                    <label class="flex items-center"><input type="radio" name="horizontal" value="large" class="mr-2"> Large</label>
+                </div>
+            `;
+
+            const inlineRadio = document.getElementById('inline-radio');
+            inlineRadio.innerHTML = `
+                <label class="block text-sm font-medium mb-2">📦 Inline Compact</label>
+                <div class="flex flex-wrap gap-3">
+                    <label class="text-sm"><input type="radio" name="inline" value="red" class="mr-1"> 🔴 Red</label>
+                    <label class="text-sm"><input type="radio" name="inline" value="green" class="mr-1" checked> 🟢 Green</label>
+                    <label class="text-sm"><input type="radio" name="inline" value="blue" class="mr-1"> 🔵 Blue</label>
+                </div>
+            `;
+
+            const buttonRadio = document.getElementById('button-radio');
+            buttonRadio.innerHTML = `
+                <label class="block text-sm font-medium mb-2">🔘 Button Style</label>
+                <div class="flex rounded border overflow-hidden">
+                    <label class="flex-1 bg-blue-500 text-white text-center py-2 cursor-pointer">
+                        <input type="radio" name="button" value="daily" class="hidden" checked> Daily
+                    </label>
+                    <label class="flex-1 bg-gray-200 text-center py-2 cursor-pointer hover:bg-gray-300">
+                        <input type="radio" name="button" value="weekly" class="hidden"> Weekly
+                    </label>
+                    <label class="flex-1 bg-gray-200 text-center py-2 cursor-pointer hover:bg-gray-300">
+                        <input type="radio" name="button" value="monthly" class="hidden"> Monthly
+                    </label>
+                </div>
+            `;
+
+            const cardRadio = document.getElementById('card-radio');
+            cardRadio.innerHTML = `
+                <label class="block text-sm font-medium mb-2">💳 Card Style</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <label class="border rounded p-3 cursor-pointer hover:bg-blue-50 border-blue-500 bg-blue-50">
+                        <input type="radio" name="card" value="basic" class="hidden" checked>
+                        <div class="text-center">
+                            <div class="text-2xl">📦</div>
+                            <div class="text-sm">Basic</div>
+                        </div>
+                    </label>
+                    <label class="border rounded p-3 cursor-pointer hover:bg-blue-50">
+                        <input type="radio" name="card" value="pro" class="hidden">
+                        <div class="text-center">
+                            <div class="text-2xl">⭐</div>
+                            <div class="text-sm">Pro</div>
+                        </div>
+                    </label>
+                    <label class="border rounded p-3 cursor-pointer hover:bg-blue-50">
+                        <input type="radio" name="card" value="enterprise" class="hidden">
+                        <div class="text-center">
+                            <div class="text-2xl">🏢</div>
+                            <div class="text-sm">Enterprise</div>
+                        </div>
+                    </label>
+                </div>
+            `;
+
+            const iconRadio = document.getElementById('icon-radio');
+            iconRadio.innerHTML = `
+                <label class="block text-sm font-medium mb-2">🎨 Icon Variants</label>
+                <div class="flex space-x-4">
+                    <label class="flex flex-col items-center p-2 border rounded cursor-pointer hover:bg-gray-50 border-green-500 bg-green-50">
+                        <input type="radio" name="icon" value="success" class="hidden" checked>
+                        <div class="text-2xl">✅</div>
+                        <div class="text-sm">Success</div>
+                    </label>
+                    <label class="flex flex-col items-center p-2 border rounded cursor-pointer hover:bg-gray-50">
+                        <input type="radio" name="icon" value="warning" class="hidden">
+                        <div class="text-2xl">⚠️</div>
+                        <div class="text-sm">Warning</div>
+                    </label>
+                    <label class="flex flex-col items-center p-2 border rounded cursor-pointer hover:bg-gray-50">
+                        <input type="radio" name="icon" value="error" class="hidden">
+                        <div class="text-2xl">❌</div>
+                        <div class="text-sm">Error</div>
+                    </label>
+                </div>
+            `;
+
+            // Add interactive behavior to card and button radio groups
+            document.querySelectorAll('input[name="button"]').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    document.querySelectorAll('label[for], label:has(input[name="button"])').forEach(label => {
+                        label.classList.remove('bg-blue-500', 'text-white');
+                        label.classList.add('bg-gray-200');
+                    });
+                    e.target.closest('label').classList.remove('bg-gray-200');
+                    e.target.closest('label').classList.add('bg-blue-500', 'text-white');
+                });
+            });
+
+            document.querySelectorAll('input[name="card"]').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    document.querySelectorAll('label:has(input[name="card"])').forEach(label => {
+                        label.classList.remove('border-blue-500', 'bg-blue-50');
+                    });
+                    e.target.closest('label').classList.add('border-blue-500', 'bg-blue-50');
+                });
+            });
+
+            document.querySelectorAll('input[name="icon"]').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    document.querySelectorAll('label:has(input[name="icon"])').forEach(label => {
+                        label.classList.remove('border-green-500', 'bg-green-50');
+                    });
+                    e.target.closest('label').classList.add('border-green-500', 'bg-green-50');
+                });
+            });
+        }
+
+        // Initialize all demos
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait a bit for AiondaWebUI to fully load
+            setTimeout(() => {
+                initTreePanels();
+                initMenuSystem();
+                initToolbars();
+                initWindowDemos();
+                initMessageBoxDemos();
+                initDateFieldDemos();
+                initTextAreaDemos();
+                initRadioGroupDemos();
+
+                console.log('🧩 Advanced Components Demo loaded successfully!');
+                console.log('Features demonstrated: TreePanel, Menu, Toolbar, Window, MessageBox, DateField, TextArea, RadioGroup');
+                
+                // Check if Tree components loaded properly
+                if (typeof AiondaWebUI !== 'undefined' && AiondaWebUI.Tree) {
+                    console.log('✅ Tree components initialized successfully');
+                } else {
+                    console.warn('⚠️ Tree components not available');
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

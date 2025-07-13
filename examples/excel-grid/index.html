@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Excel-like Grid Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">📊 Aionda WebUI - Excel Grid Demo</h1>
+            <p class="text-gray-600">Vollständiges Excel-ähnliches Grid mit Sorting, Filtering, Editing & Selection</p>
+        </div>
+        
+        <!-- Toolbar -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+            <div class="flex flex-wrap gap-2 items-center">
+                <button id="addRowBtn" class="px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">
+                    ➕ Add Row
+                </button>
+                <button id="deleteRowBtn" class="px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
+                    🗑️ Delete Selected
+                </button>
+                <button id="selectAllBtn" class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                    ☑️ Select All
+                </button>
+                <button id="clearSelectionBtn" class="px-3 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm">
+                    ❌ Clear Selection
+                </button>
+                <button id="exportBtn" class="px-3 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm">
+                    📤 Export CSV
+                </button>
+                <div class="flex-1"></div>
+                <span id="statusText" class="text-sm text-gray-600"></span>
+            </div>
+        </div>
+        
+        <!-- Grid Container -->
+        <div id="grid-container" class="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+            <!-- Grid will be rendered here -->
+        </div>
+        
+        <!-- Info Panel -->
+        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="font-semibold text-blue-800 mb-2">🎯 Grid Features:</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-700">
+                <ul class="space-y-1">
+                    <li>✅ <strong>Sorting:</strong> Click column headers</li>
+                    <li>✅ <strong>Filtering:</strong> Type in filter boxes</li>
+                    <li>✅ <strong>Editing:</strong> Double-click cells</li>
+                    <li>✅ <strong>Selection:</strong> Single/Multi row selection</li>
+                </ul>
+                <ul class="space-y-1">
+                    <li>✅ <strong>Resizing:</strong> Drag column borders</li>
+                    <li>✅ <strong>Column Reordering:</strong> Drag column headers</li>
+                    <li>✅ <strong>Row Numbers:</strong> Excel-style numbering</li>
+                    <li>✅ <strong>Keyboard:</strong> Enter/Escape in edit mode</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Aionda WebUI -->
+    <script src="../../dist/aionda-webui.js"></script>
+
+    <script>
+        // Generate sample data
+        function generateSampleData(count = 100) {
+            const firstNames = ['John', 'Jane', 'Bob', 'Alice', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Henry'];
+            const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+            const departments = ['Engineering', 'Sales', 'Marketing', 'HR', 'Finance', 'Operations', 'IT', 'Legal'];
+            const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego'];
+            
+            const data = [];
+            for (let i = 1; i <= count; i++) {
+                data.push({
+                    id: i,
+                    firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
+                    lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
+                    email: `user${i}@company.com`,
+                    department: departments[Math.floor(Math.random() * departments.length)],
+                    salary: Math.floor(Math.random() * 100000) + 30000,
+                    startDate: new Date(2020 + Math.floor(Math.random() * 4), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)),
+                    active: Math.random() > 0.2,
+                    city: cities[Math.floor(Math.random() * cities.length)],
+                    phone: `+1-${Math.floor(Math.random() * 900 + 100)}-${Math.floor(Math.random() * 900 + 100)}-${Math.floor(Math.random() * 9000 + 1000)}`
+                });
+            }
+            return data;
+        }
+
+        // Create store with sample data
+        const employeeStore = new AiondaWebUI.Store({
+            data: generateSampleData(50)
+        });
+
+        // Define columns
+        const columns = [
+            { 
+                field: 'id', 
+                text: 'ID', 
+                width: 60, 
+                type: 'number'
+            },
+            { 
+                field: 'firstName', 
+                text: 'First Name', 
+                width: 120
+            },
+            { 
+                field: 'lastName', 
+                text: 'Last Name', 
+                width: 120
+            },
+            { 
+                field: 'email', 
+                text: 'Email', 
+                width: 200
+            },
+            { 
+                field: 'department', 
+                text: 'Department', 
+                width: 120
+            },
+            { 
+                field: 'salary', 
+                text: 'Salary', 
+                width: 100, 
+                type: 'number',
+                renderer: (value) => '$' + value.toLocaleString()
+            },
+            { 
+                field: 'startDate', 
+                text: 'Start Date', 
+                width: 110,
+                type: 'date',
+                renderer: (value) => value instanceof Date ? value.toLocaleDateString() : value
+            },
+            { 
+                field: 'active', 
+                text: 'Active', 
+                width: 70, 
+                type: 'boolean',
+                renderer: (value) => value ? '✅' : '❌'
+            },
+            { 
+                field: 'city', 
+                text: 'City', 
+                width: 120
+            },
+            { 
+                field: 'phone', 
+                text: 'Phone', 
+                width: 140
+            }
+        ];
+
+        // Create the Excel-like grid
+        const grid = new AiondaWebUI.Grid({
+            store: employeeStore,
+            columns: columns,
+            selectionMode: 'multi', // single, multi, cell
+            editable: true,
+            sortable: true,
+            filterable: true,
+            resizable: true,
+            striped: true,
+            rowNumbers: true
+        });
+
+        // Render grid
+        grid.renderTo('#grid-container');
+
+        // Event handlers
+        grid.on('selectionchange', (data) => {
+            const count = data.selectedRows.length;
+            const statusText = document.getElementById('statusText');
+            
+            if (count === 0) {
+                statusText.textContent = 'No rows selected';
+            } else if (count === 1) {
+                statusText.textContent = '1 row selected';
+            } else {
+                statusText.textContent = `${count} rows selected`;
+            }
+            
+            // Enable/disable toolbar buttons
+            document.getElementById('deleteRowBtn').disabled = count === 0;
+        });
+
+        grid.on('cellchange', (data) => {
+            console.log('Cell changed:', data);
+            // Could trigger save to server here
+        });
+
+        grid.on('columnreorder', (data) => {
+            console.log('Column reordered:', data);
+            const statusText = document.getElementById('statusText');
+            statusText.textContent = `Column "${data.field}" moved to position ${data.newIndex + 1}`;
+            setTimeout(() => {
+                statusText.textContent = `${employeeStore.getCount()} total records`;
+            }, 3000);
+        });
+
+        // Toolbar functionality
+        document.getElementById('addRowBtn').addEventListener('click', () => {
+            const newId = Math.max(...employeeStore.data.map(r => r.id)) + 1;
+            const newRecord = {
+                id: newId,
+                firstName: 'New',
+                lastName: 'Employee',
+                email: `new${newId}@company.com`,
+                department: 'Engineering',
+                salary: 50000,
+                startDate: new Date(),
+                active: true,
+                city: 'New York',
+                phone: '+1-555-0123'
+            };
+            
+            employeeStore.add(newRecord);
+            console.log('Added new employee:', newRecord);
+        });
+
+        document.getElementById('deleteRowBtn').addEventListener('click', () => {
+            const selectedRecords = grid.getSelectedRecords();
+            if (selectedRecords.length > 0) {
+                const confirmed = confirm(`Delete ${selectedRecords.length} selected record(s)?`);
+                if (confirmed) {
+                    selectedRecords.forEach(record => {
+                        employeeStore.remove(record);
+                    });
+                    grid.clearSelection();
+                    console.log('Deleted records:', selectedRecords);
+                }
+            }
+        });
+
+        document.getElementById('selectAllBtn').addEventListener('click', () => {
+            grid.selectAll();
+        });
+
+        document.getElementById('clearSelectionBtn').addEventListener('click', () => {
+            grid.clearSelection();
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            // Simple CSV export
+            const records = employeeStore.getRecords();
+            const headers = columns.map(col => col.text).join(',');
+            const rows = records.map(record => 
+                columns.map(col => {
+                    let value = record[col.field];
+                    if (value instanceof Date) {
+                        value = value.toLocaleDateString();
+                    }
+                    return `"${value}"`;
+                }).join(',')
+            );
+            
+            const csv = [headers, ...rows].join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'employees.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            console.log('Exported CSV with', records.length, 'records');
+        });
+
+        // Initialize status
+        document.getElementById('statusText').textContent = `${employeeStore.getCount()} total records`;
+
+        console.log('🎉 Excel Grid Demo loaded successfully!');
+        console.log('Grid features: sorting, filtering, editing, resizing, selection');
+        console.log('Try: Click headers to sort, type in filters, double-click cells to edit');
+    </script>
+</body>
+</html>

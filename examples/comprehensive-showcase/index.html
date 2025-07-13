@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Comprehensive Component Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold text-gray-900">🎯 Aionda WebUI Showcase</h1>
+                    <span class="text-sm text-gray-500">All Components Demo</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div id="theme-toggle-container"></div>
+                    <span id="component-count" class="text-sm text-gray-600"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Tab Navigation -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                    <button id="tabCore" class="tab-button active border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600">
+                        🔧 Core Components
+                    </button>
+                    <button id="tabForm" class="tab-button border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                        📝 Form Components
+                    </button>
+                    <button id="tabData" class="tab-button border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                        📊 Data Components
+                    </button>
+                    <button id="tabLayout" class="tab-button border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                        🏗️ Layout Components
+                    </button>
+                    <button id="tabDialog" class="tab-button border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                        💬 Dialog Components
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        
+        <!-- Core Components Tab -->
+        <div id="coreTab" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                
+                <!-- Button Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🔘 Button</h3>
+                    <div id="button-showcase" class="space-y-4">
+                        <!-- Buttons will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Multiple variants, sizes, loading states, icons, disabled state
+                    </div>
+                </div>
+
+                <!-- Panel Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📦 Panel</h3>
+                    <div id="panel-showcase">
+                        <!-- Panels will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Collapsible, header/body, tools, custom styling
+                    </div>
+                </div>
+
+                <!-- Theme Toggle -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🌙 Theme Toggle</h3>
+                    <div id="theme-showcase" class="space-y-4">
+                        <!-- Theme toggles will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Dark/light mode switching, system preference detection
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Components Tab -->
+        <div id="formTab" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                
+                <!-- TextField Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📝 TextField</h3>
+                    <div id="textfield-showcase" class="space-y-4">
+                        <!-- TextFields will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Validation, masking, max length, placeholder, focus events
+                    </div>
+                </div>
+
+                <!-- NumberField Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🔢 NumberField</h3>
+                    <div id="numberfield-showcase" class="space-y-4">
+                        <!-- NumberFields will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Spinners, min/max values, currency formatting, decimals
+                    </div>
+                </div>
+
+                <!-- DateField Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📅 DateField</h3>
+                    <div id="datefield-showcase" class="space-y-4">
+                        <!-- DateFields will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Date picker, format customization, validation
+                    </div>
+                </div>
+
+                <!-- ComboBox Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📋 ComboBox</h3>
+                    <div id="combobox-showcase" class="space-y-4">
+                        <!-- ComboBoxes will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Search, remote data, custom templates, keyboard navigation
+                    </div>
+                </div>
+
+                <!-- Checkbox Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">☑️ Checkbox</h3>
+                    <div id="checkbox-showcase" class="space-y-4">
+                        <!-- Checkboxes will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Standard & switch variants, sizes, custom labels
+                    </div>
+                </div>
+
+                <!-- RadioGroup Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🔘 RadioGroup</h3>
+                    <div id="radiogroup-showcase" class="space-y-4">
+                        <!-- RadioGroups will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Multiple options, validation, custom styling
+                    </div>
+                </div>
+
+                <!-- TextArea Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📄 TextArea</h3>
+                    <div id="textarea-showcase" class="space-y-4">
+                        <!-- TextAreas will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Multi-line text, resizable, word wrap, character count
+                    </div>
+                </div>
+
+                <!-- Form Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📋 Form</h3>
+                    <div id="form-showcase">
+                        <!-- Forms will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Validation, layouts, data binding, submission handling
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Components Tab -->
+        <div id="dataTab" class="tab-content hidden">
+            <div class="grid grid-cols-1 gap-6">
+                
+                <!-- Grid Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📊 Grid</h3>
+                    <div id="grid-showcase">
+                        <!-- Grid will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Sorting, filtering, editing, selection, resizing, column reordering
+                    </div>
+                </div>
+
+                <!-- Tree Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🌳 Tree</h3>
+                    <div id="tree-showcase">
+                        <!-- Tree will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Hierarchical data, expand/collapse, selection, custom icons
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layout Components Tab -->
+        <div id="layoutTab" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Toolbar Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🔧 Toolbar</h3>
+                    <div id="toolbar-showcase">
+                        <!-- Toolbar will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Button groups, separators, icons, responsive layout
+                    </div>
+                </div>
+
+                <!-- Menu Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📋 Menu</h3>
+                    <div id="menu-showcase">
+                        <!-- Menu will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Nested menus, icons, separators, keyboard navigation
+                    </div>
+                </div>
+
+                <!-- Window Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🪟 Window</h3>
+                    <div id="window-showcase">
+                        <!-- Window will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Modal dialogs, draggable, resizable, minimize/maximize
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dialog Components Tab -->
+        <div id="dialogTab" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- MessageBox Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">💬 MessageBox</h3>
+                    <div id="messagebox-showcase" class="space-y-4">
+                        <!-- MessageBox demos will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Alert, confirm, prompt dialogs, custom icons and buttons
+                    </div>
+                </div>
+
+                <!-- Toast Component -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🍞 Toast</h3>
+                    <div id="toast-showcase" class="space-y-4">
+                        <!-- Toast demos will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Success, error, warning, info toasts, auto-dismiss, positioning
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Log -->
+        <div class="mt-6 bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">📊 Component Events Log</h3>
+                <div class="flex gap-2">
+                    <button id="clearLog" class="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600">
+                        Clear Log
+                    </button>
+                    <button id="getAllValues" class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Get All Values
+                    </button>
+                </div>
+            </div>
+            <div id="eventLog" class="bg-gray-50 border border-gray-200 rounded p-3 h-64 overflow-auto text-sm font-mono"></div>
+        </div>
+
+        <!-- Component Summary -->
+        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="font-semibold text-blue-800 mb-2">🎯 Aionda WebUI Component Library:</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-blue-700">
+                <ul class="space-y-1">
+                    <li>✅ <strong>Core:</strong> EventEmitter, Component, Store, ThemeManager</li>
+                    <li>✅ <strong>Basic:</strong> Button, Panel, ThemeToggle</li>
+                </ul>
+                <ul class="space-y-1">
+                    <li>✅ <strong>Form:</strong> TextField, NumberField, DateField, TextArea</li>
+                    <li>✅ <strong>Input:</strong> ComboBox, Checkbox, RadioGroup, Form</li>
+                </ul>
+                <ul class="space-y-1">
+                    <li>✅ <strong>Data:</strong> Grid, Tree with hierarchical support</li>
+                    <li>✅ <strong>Layout:</strong> Toolbar, Menu, MenuItem, Window</li>
+                </ul>
+                <ul class="space-y-1">
+                    <li>✅ <strong>Dialog:</strong> MessageBox, Toast notifications</li>
+                    <li>✅ <strong>Features:</strong> Validation, theming, events, responsive</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Aionda WebUI -->
+    <script src="../../dist/aionda-webui.js"></script>
+
+    <script>
+        // Global variables
+        let eventCounter = 0;
+        let componentInstances = {};
+
+        // Sample data
+        const sampleData = {
+            departments: [
+                { value: 'eng', text: 'Engineering' },
+                { value: 'sales', text: 'Sales' },
+                { value: 'marketing', text: 'Marketing' },
+                { value: 'hr', text: 'Human Resources' },
+                { value: 'finance', text: 'Finance' }
+            ],
+            employees: [
+                { id: 1, name: 'John Doe', department: 'eng', salary: 75000, active: true },
+                { id: 2, name: 'Jane Smith', department: 'sales', salary: 65000, active: true },
+                { id: 3, name: 'Bob Johnson', department: 'marketing', salary: 60000, active: false },
+                { id: 4, name: 'Alice Brown', department: 'hr', salary: 55000, active: true },
+                { id: 5, name: 'Charlie Wilson', department: 'finance', salary: 70000, active: true }
+            ],
+            treeData: [
+                {
+                    id: 1,
+                    text: 'Documents',
+                    expanded: true,
+                    children: [
+                        { id: 2, text: 'Reports', leaf: true },
+                        { id: 3, text: 'Presentations', leaf: true },
+                        {
+                            id: 4,
+                            text: 'Projects',
+                            children: [
+                                { id: 5, text: 'Project A', leaf: true },
+                                { id: 6, text: 'Project B', leaf: true }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 7,
+                    text: 'Images',
+                    children: [
+                        { id: 8, text: 'Screenshots', leaf: true },
+                        { id: 9, text: 'Photos', leaf: true }
+                    ]
+                }
+            ]
+        };
+
+        // Initialize all components
+        function initializeComponents() {
+            updateComponentCount();
+            
+            // Initialize each tab's components
+            initCoreComponents();
+            initFormComponents();
+            initDataComponents();
+            initLayoutComponents();
+            initDialogComponents();
+            
+            logEvent('System', 'All components initialized successfully');
+        }
+
+        // Core Components
+        function initCoreComponents() {
+            // Buttons showcase
+            initButtons();
+            initPanels();
+            initThemeToggles();
+        }
+
+        function initButtons() {
+            const container = document.getElementById('button-showcase');
+            
+            // Different variants
+            const variants = ['primary', 'secondary', 'success', 'warning', 'danger', 'info'];
+            variants.forEach(variant => {
+                const button = new AiondaWebUI.Button({
+                    text: variant.charAt(0).toUpperCase() + variant.slice(1),
+                    variant: variant,
+                    handler: () => logEvent('Button', `${variant} button clicked`)
+                });
+                button.renderTo(container);
+                componentInstances[`button-${variant}`] = button;
+            });
+
+            // Different sizes
+            const sizeContainer = document.createElement('div');
+            sizeContainer.className = 'flex flex-wrap gap-2 items-center mt-4';
+            ['xs', 'sm', 'md', 'lg', 'xl'].forEach(size => {
+                const button = new AiondaWebUI.Button({
+                    text: size.toUpperCase(),
+                    size: size,
+                    variant: 'primary',
+                    outline: true,
+                    handler: () => logEvent('Button', `${size} size button clicked`)
+                });
+                const buttonEl = button.render();
+                sizeContainer.appendChild(buttonEl);
+                componentInstances[`button-size-${size}`] = button;
+            });
+            container.appendChild(sizeContainer);
+
+            // Loading state demo
+            const loadingButton = new AiondaWebUI.Button({
+                text: 'Loading Demo',
+                variant: 'info',
+                handler: function() {
+                    this.setLoading(true);
+                    this.setText('Loading...');
+                    logEvent('Button', 'Loading state activated');
+                    setTimeout(() => {
+                        this.setLoading(false);
+                        this.setText('Loading Demo');
+                        logEvent('Button', 'Loading state deactivated');
+                    }, 3000);
+                }
+            });
+            loadingButton.renderTo(container);
+            componentInstances['button-loading'] = loadingButton;
+        }
+
+        function initPanels() {
+            const container = document.getElementById('panel-showcase');
+            
+            // Basic panel
+            const panel1 = new AiondaWebUI.Panel({
+                title: 'Basic Panel',
+                html: '<p class="text-gray-600">This is a basic panel with a title and content.</p>',
+                collapsible: true
+            });
+            panel1.renderTo(container);
+            componentInstances['panel-basic'] = panel1;
+
+            // Panel with tools
+            const panel2 = new AiondaWebUI.Panel({
+                title: 'Panel with Tools',
+                html: '<p class="text-gray-600">This panel has custom tools in the header.</p>',
+                collapsible: true,
+                collapsed: true,
+                tools: [
+                    {
+                        type: 'refresh',
+                        handler: () => logEvent('Panel', 'Refresh tool clicked')
+                    },
+                    {
+                        type: 'help',
+                        handler: () => logEvent('Panel', 'Help tool clicked')
+                    }
+                ]
+            });
+            panel2.renderTo(container);
+            componentInstances['panel-tools'] = panel2;
+        }
+
+        function initThemeToggles() {
+            const container = document.getElementById('theme-showcase');
+            
+            // Theme toggle
+            const themeToggle = new AiondaWebUI.ThemeToggle({
+                size: 'md'
+            });
+            themeToggle.renderTo(container);
+            themeToggle.on('change', (theme) => {
+                logEvent('ThemeToggle', `Theme changed to: ${theme}`);
+            });
+            componentInstances['theme-toggle'] = themeToggle;
+
+            // Also add to navigation
+            const navThemeToggle = new AiondaWebUI.ThemeToggle({
+                size: 'sm'
+            });
+            navThemeToggle.renderTo('#theme-toggle-container');
+            componentInstances['nav-theme-toggle'] = navThemeToggle;
+        }
+
+        // Form Components
+        function initFormComponents() {
+            initTextFields();
+            initNumberFields();
+            initDateFields();
+            initComboBoxes();
+            initCheckboxes();
+            initRadioGroups();
+            initTextAreas();
+            initForms();
+        }
+
+        function initTextFields() {
+            const container = document.getElementById('textfield-showcase');
+            
+            // Basic text field
+            const textField1 = new AiondaWebUI.TextField({
+                name: 'basic-text',
+                fieldLabel: 'Basic Text',
+                placeholder: 'Enter text...',
+                value: 'Sample text'
+            });
+            textField1.renderTo(container);
+            setupFieldEvents(textField1, 'TextField Basic');
+            componentInstances['textfield-basic'] = textField1;
+
+            // Email field with validation
+            const textField2 = new AiondaWebUI.TextField({
+                name: 'email-text',
+                fieldLabel: 'Email',
+                placeholder: 'user@example.com',
+                validators: [
+                    { type: 'required' },
+                    { type: 'email' }
+                ]
+            });
+            textField2.renderTo(container);
+            setupFieldEvents(textField2, 'TextField Email');
+            componentInstances['textfield-email'] = textField2;
+
+            // Phone field with masking
+            const textField3 = new AiondaWebUI.TextField({
+                name: 'phone-text',
+                fieldLabel: 'Phone',
+                placeholder: '(555) 123-4567',
+                maxLength: 14,
+                maskRe: /[\d\s\(\)\-]/
+            });
+            textField3.renderTo(container);
+            setupFieldEvents(textField3, 'TextField Phone');
+            componentInstances['textfield-phone'] = textField3;
+        }
+
+        function initNumberFields() {
+            const container = document.getElementById('numberfield-showcase');
+            
+            // Basic number field
+            const numberField1 = new AiondaWebUI.NumberField({
+                name: 'basic-number',
+                fieldLabel: 'Basic Number',
+                value: 42,
+                minValue: 0,
+                maxValue: 100
+            });
+            numberField1.renderTo(container);
+            setupFieldEvents(numberField1, 'NumberField Basic');
+            componentInstances['numberfield-basic'] = numberField1;
+
+            // Currency field
+            const numberField2 = new AiondaWebUI.NumberField({
+                name: 'currency',
+                fieldLabel: 'Currency',
+                value: 1234.56,
+                decimalPrecision: 2,
+                thousandSeparator: ',',
+                currencySymbol: '$'
+            });
+            numberField2.renderTo(container);
+            setupFieldEvents(numberField2, 'NumberField Currency');
+            componentInstances['numberfield-currency'] = numberField2;
+
+            // Integer only
+            const numberField3 = new AiondaWebUI.NumberField({
+                name: 'integer',
+                fieldLabel: 'Integer Only',
+                value: 10,
+                allowDecimals: false,
+                step: 5
+            });
+            numberField3.renderTo(container);
+            setupFieldEvents(numberField3, 'NumberField Integer');
+            componentInstances['numberfield-integer'] = numberField3;
+        }
+
+        function initDateFields() {
+            const container = document.getElementById('datefield-showcase');
+            
+            // Basic date field
+            const dateField1 = new AiondaWebUI.DateField({
+                name: 'basic-date',
+                fieldLabel: 'Date',
+                value: new Date()
+            });
+            dateField1.renderTo(container);
+            setupFieldEvents(dateField1, 'DateField Basic');
+            componentInstances['datefield-basic'] = dateField1;
+
+            // Date range
+            const dateField2 = new AiondaWebUI.DateField({
+                name: 'birth-date',
+                fieldLabel: 'Birth Date',
+                minValue: new Date('1900-01-01'),
+                maxValue: new Date()
+            });
+            dateField2.renderTo(container);
+            setupFieldEvents(dateField2, 'DateField Range');
+            componentInstances['datefield-range'] = dateField2;
+        }
+
+        function initComboBoxes() {
+            const container = document.getElementById('combobox-showcase');
+            
+            // Basic combo
+            const comboBox1 = new AiondaWebUI.ComboBox({
+                name: 'basic-combo',
+                fieldLabel: 'Department',
+                data: sampleData.departments,
+                displayField: 'text',
+                valueField: 'value',
+                value: 'eng',
+                editable: false
+            });
+            comboBox1.renderTo(container);
+            setupFieldEvents(comboBox1, 'ComboBox Basic');
+            componentInstances['combobox-basic'] = comboBox1;
+
+            // Searchable combo
+            const comboBox2 = new AiondaWebUI.ComboBox({
+                name: 'searchable-combo',
+                fieldLabel: 'Employee',
+                data: sampleData.employees,
+                displayField: 'name',
+                valueField: 'id',
+                editable: true,
+                typeAhead: true,
+                emptyText: 'Search employees...'
+            });
+            comboBox2.renderTo(container);
+            setupFieldEvents(comboBox2, 'ComboBox Searchable');
+            componentInstances['combobox-searchable'] = comboBox2;
+        }
+
+        function initCheckboxes() {
+            const container = document.getElementById('checkbox-showcase');
+            
+            // Basic checkbox
+            const checkbox1 = new AiondaWebUI.Checkbox({
+                name: 'basic-check',
+                fieldLabel: 'Notifications',
+                boxLabel: 'Enable email notifications',
+                checked: true
+            });
+            checkbox1.renderTo(container);
+            setupFieldEvents(checkbox1, 'Checkbox Basic');
+            componentInstances['checkbox-basic'] = checkbox1;
+
+            // Switch variant
+            const checkbox2 = new AiondaWebUI.Checkbox({
+                name: 'switch-check',
+                fieldLabel: 'Dark Mode',
+                boxLabel: 'Enable dark theme',
+                variant: 'switch',
+                checked: false
+            });
+            checkbox2.renderTo(container);
+            setupFieldEvents(checkbox2, 'Checkbox Switch');
+            componentInstances['checkbox-switch'] = checkbox2;
+
+            // Different sizes
+            ['sm', 'md', 'lg'].forEach((size, index) => {
+                const checkbox = new AiondaWebUI.Checkbox({
+                    name: `size-check-${size}`,
+                    boxLabel: `${size.toUpperCase()} size checkbox`,
+                    size: size,
+                    checked: index === 1
+                });
+                checkbox.renderTo(container);
+                setupFieldEvents(checkbox, `Checkbox ${size.toUpperCase()}`);
+                componentInstances[`checkbox-${size}`] = checkbox;
+            });
+        }
+
+        function initRadioGroups() {
+            const container = document.getElementById('radiogroup-showcase');
+            
+            // Basic radio group
+            const radioGroup1 = new AiondaWebUI.RadioGroup({
+                name: 'priority',
+                fieldLabel: 'Priority Level',
+                items: [
+                    { value: 'low', boxLabel: 'Low Priority' },
+                    { value: 'medium', boxLabel: 'Medium Priority' },
+                    { value: 'high', boxLabel: 'High Priority' }
+                ],
+                value: 'medium'
+            });
+            radioGroup1.renderTo(container);
+            setupFieldEvents(radioGroup1, 'RadioGroup Priority');
+            componentInstances['radiogroup-priority'] = radioGroup1;
+
+            // Horizontal layout
+            const radioGroup2 = new AiondaWebUI.RadioGroup({
+                name: 'layout',
+                fieldLabel: 'Layout',
+                layout: 'horizontal',
+                items: [
+                    { value: 'list', boxLabel: 'List' },
+                    { value: 'grid', boxLabel: 'Grid' },
+                    { value: 'card', boxLabel: 'Card' }
+                ],
+                value: 'grid'
+            });
+            radioGroup2.renderTo(container);
+            setupFieldEvents(radioGroup2, 'RadioGroup Layout');
+            componentInstances['radiogroup-layout'] = radioGroup2;
+        }
+
+        function initTextAreas() {
+            const container = document.getElementById('textarea-showcase');
+            
+            // Basic textarea
+            const textArea1 = new AiondaWebUI.TextArea({
+                name: 'basic-textarea',
+                fieldLabel: 'Comments',
+                placeholder: 'Enter your comments...',
+                rows: 4,
+                value: 'Sample multi-line text content.'
+            });
+            textArea1.renderTo(container);
+            setupFieldEvents(textArea1, 'TextArea Basic');
+            componentInstances['textarea-basic'] = textArea1;
+
+            // Textarea with character limit
+            const textArea2 = new AiondaWebUI.TextArea({
+                name: 'limited-textarea',
+                fieldLabel: 'Description (Max 200 chars)',
+                maxLength: 200,
+                rows: 3,
+                showCharCount: true
+            });
+            textArea2.renderTo(container);
+            setupFieldEvents(textArea2, 'TextArea Limited');
+            componentInstances['textarea-limited'] = textArea2;
+        }
+
+        function initForms() {
+            const container = document.getElementById('form-showcase');
+            
+            // Simple form
+            const form = new AiondaWebUI.Form({
+                layout: 'vertical',
+                labelWidth: 120,
+                items: [
+                    {
+                        cmp: 'textfield',
+                        name: 'name',
+                        fieldLabel: 'Full Name',
+                        allowBlank: false
+                    },
+                    {
+                        cmp: 'textfield',
+                        name: 'email',
+                        fieldLabel: 'Email',
+                        validators: [
+                            { type: 'required' },
+                            { type: 'email' }
+                        ]
+                    },
+                    {
+                        cmp: 'combobox',
+                        name: 'department',
+                        fieldLabel: 'Department',
+                        data: sampleData.departments,
+                        displayField: 'text',
+                        valueField: 'value',
+                        allowBlank: false
+                    }
+                ]
+            });
+            form.renderTo(container);
+            
+            // Add form buttons
+            form.addButton({
+                text: 'Submit',
+                type: 'submit',
+                variant: 'primary',
+                handler: (form) => {
+                    if (form.isValid()) {
+                        logEvent('Form', `Form submitted: ${JSON.stringify(form.getValues())}`);
+                    } else {
+                        logEvent('Form', 'Form validation failed');
+                    }
+                }
+            });
+            
+            form.addButton({
+                text: 'Reset',
+                variant: 'secondary',
+                handler: (form) => {
+                    form.reset();
+                    logEvent('Form', 'Form reset');
+                }
+            });
+            
+            form.on('change', (data) => {
+                logEvent('Form', `Field changed: ${data.field} = ${JSON.stringify(data.value)}`);
+            });
+            
+            componentInstances['form-demo'] = form;
+        }
+
+        // Data Components
+        function initDataComponents() {
+            initGrid();
+            initTree();
+        }
+
+        function initGrid() {
+            const container = document.getElementById('grid-showcase');
+            
+            // Create store
+            const store = new AiondaWebUI.Store({
+                data: sampleData.employees
+            });
+            
+            // Create grid
+            const grid = new AiondaWebUI.Grid({
+                store: store,
+                columns: [
+                    { field: 'id', text: 'ID', width: 60 },
+                    { field: 'name', text: 'Name', width: 150 },
+                    { field: 'department', text: 'Department', width: 120 },
+                    { field: 'salary', text: 'Salary', width: 100, renderer: (value) => '$' + value.toLocaleString() },
+                    { field: 'active', text: 'Active', width: 80, renderer: (value) => value ? '✅' : '❌' }
+                ],
+                selectionMode: 'multi',
+                editable: true,
+                sortable: true,
+                filterable: true,
+                height: 300
+            });
+            grid.renderTo(container);
+            
+            grid.on('selectionchange', (data) => {
+                logEvent('Grid', `Selection changed: ${data.selectedRows.length} rows selected`);
+            });
+            
+            grid.on('cellchange', (data) => {
+                logEvent('Grid', `Cell changed: ${data.field} = ${data.value}`);
+            });
+            
+            componentInstances['grid-demo'] = grid;
+        }
+
+        function initTree() {
+            const container = document.getElementById('tree-showcase');
+            
+            // Create tree
+            const tree = new AiondaWebUI.Tree({
+                data: sampleData.treeData,
+                rootVisible: false,
+                checkboxes: true
+            });
+            tree.renderTo(container);
+            
+            tree.on('itemclick', (data) => {
+                logEvent('Tree', `Item clicked: ${data.text}`);
+            });
+            
+            tree.on('itemexpand', (data) => {
+                logEvent('Tree', `Item expanded: ${data.text}`);
+            });
+            
+            tree.on('itemcollapse', (data) => {
+                logEvent('Tree', `Item collapsed: ${data.text}`);
+            });
+            
+            componentInstances['tree-demo'] = tree;
+        }
+
+        // Layout Components
+        function initLayoutComponents() {
+            initToolbar();
+            initMenu();
+            initWindow();
+        }
+
+        function initToolbar() {
+            const container = document.getElementById('toolbar-showcase');
+            
+            const toolbar = new AiondaWebUI.Toolbar({
+                items: [
+                    {
+                        text: 'New',
+                        icon: '📄',
+                        handler: () => logEvent('Toolbar', 'New button clicked')
+                    },
+                    {
+                        text: 'Open',
+                        icon: '📂',
+                        handler: () => logEvent('Toolbar', 'Open button clicked')
+                    },
+                    { cmp: 'separator' },
+                    {
+                        text: 'Save',
+                        icon: '💾',
+                        handler: () => logEvent('Toolbar', 'Save button clicked')
+                    },
+                    { cmp: 'separator' },
+                    {
+                        text: 'Print',
+                        icon: '🖨️',
+                        handler: () => logEvent('Toolbar', 'Print button clicked')
+                    }
+                ]
+            });
+            toolbar.renderTo(container);
+            componentInstances['toolbar-demo'] = toolbar;
+        }
+
+        function initMenu() {
+            const container = document.getElementById('menu-showcase');
+            
+            const menuButton = new AiondaWebUI.Button({
+                text: 'Click for Menu',
+                variant: 'primary',
+                handler: () => {
+                    if (componentInstances['menu-demo']) {
+                        componentInstances['menu-demo'].show();
+                    }
+                }
+            });
+            menuButton.renderTo(container);
+            
+            const menu = new AiondaWebUI.Menu({
+                items: [
+                    {
+                        text: 'File',
+                        icon: '📁',
+                        menu: [
+                            { text: 'New', icon: '📄', handler: () => logEvent('Menu', 'File -> New') },
+                            { text: 'Open', icon: '📂', handler: () => logEvent('Menu', 'File -> Open') },
+                            { cmp: 'separator' },
+                            { text: 'Exit', icon: '🚪', handler: () => logEvent('Menu', 'File -> Exit') }
+                        ]
+                    },
+                    {
+                        text: 'Edit',
+                        icon: '✏️',
+                        menu: [
+                            { text: 'Copy', icon: '📋', handler: () => logEvent('Menu', 'Edit -> Copy') },
+                            { text: 'Paste', icon: '📄', handler: () => logEvent('Menu', 'Edit -> Paste') }
+                        ]
+                    },
+                    { cmp: 'separator' },
+                    {
+                        text: 'Help',
+                        icon: '❓',
+                        handler: () => logEvent('Menu', 'Help clicked')
+                    }
+                ]
+            });
+            
+            componentInstances['menu-demo'] = menu;
+        }
+
+        function initWindow() {
+            const container = document.getElementById('window-showcase');
+            
+            const windowButton = new AiondaWebUI.Button({
+                text: 'Open Window',
+                variant: 'primary',
+                handler: () => {
+                    const window = new AiondaWebUI.Window({
+                        title: 'Demo Window',
+                        width: 400,
+                        height: 300,
+                        modal: true,
+                        html: '<div class="p-4"><p>This is a demo window with modal behavior.</p><p>You can drag the title bar to move it around.</p></div>'
+                    });
+                    window.show();
+                    window.on('close', () => {
+                        logEvent('Window', 'Window closed');
+                    });
+                    logEvent('Window', 'Window opened');
+                }
+            });
+            windowButton.renderTo(container);
+        }
+
+        // Dialog Components
+        function initDialogComponents() {
+            initMessageBox();
+            initToast();
+        }
+
+        function initMessageBox() {
+            const container = document.getElementById('messagebox-showcase');
+            
+            // Alert button
+            const alertButton = new AiondaWebUI.Button({
+                text: 'Show Alert',
+                variant: 'info',
+                handler: () => {
+                    AiondaWebUI.MessageBox.alert('Information', 'This is an informational alert message.');
+                    logEvent('MessageBox', 'Alert shown');
+                }
+            });
+            alertButton.renderTo(container);
+
+            // Confirm button
+            const confirmButton = new AiondaWebUI.Button({
+                text: 'Show Confirm',
+                variant: 'warning',
+                handler: () => {
+                    AiondaWebUI.MessageBox.confirm('Confirmation', 'Are you sure you want to proceed?', (result) => {
+                        logEvent('MessageBox', `Confirm result: ${result}`);
+                    });
+                }
+            });
+            confirmButton.renderTo(container);
+
+            // Prompt button
+            const promptButton = new AiondaWebUI.Button({
+                text: 'Show Prompt',
+                variant: 'primary',
+                handler: () => {
+                    AiondaWebUI.MessageBox.prompt('Input Required', 'Please enter your name:', (result, value) => {
+                        if (result) {
+                            logEvent('MessageBox', `Prompt result: ${value}`);
+                        } else {
+                            logEvent('MessageBox', 'Prompt cancelled');
+                        }
+                    });
+                }
+            });
+            promptButton.renderTo(container);
+        }
+
+        function initToast() {
+            const container = document.getElementById('toast-showcase');
+            
+            // Success toast
+            const successButton = new AiondaWebUI.Button({
+                text: 'Success Toast',
+                variant: 'success',
+                handler: () => {
+                    AiondaWebUI.Toast.success('Operation completed successfully!');
+                    logEvent('Toast', 'Success toast shown');
+                }
+            });
+            successButton.renderTo(container);
+
+            // Error toast
+            const errorButton = new AiondaWebUI.Button({
+                text: 'Error Toast',
+                variant: 'danger',
+                handler: () => {
+                    AiondaWebUI.Toast.error('An error occurred while processing your request.');
+                    logEvent('Toast', 'Error toast shown');
+                }
+            });
+            errorButton.renderTo(container);
+
+            // Warning toast
+            const warningButton = new AiondaWebUI.Button({
+                text: 'Warning Toast',
+                variant: 'warning',
+                handler: () => {
+                    AiondaWebUI.Toast.warning('Please review your input before continuing.');
+                    logEvent('Toast', 'Warning toast shown');
+                }
+            });
+            warningButton.renderTo(container);
+
+            // Info toast
+            const infoButton = new AiondaWebUI.Button({
+                text: 'Info Toast',
+                variant: 'info',
+                handler: () => {
+                    AiondaWebUI.Toast.info('New features are available in the latest update.');
+                    logEvent('Toast', 'Info toast shown');
+                }
+            });
+            infoButton.renderTo(container);
+        }
+
+        // Utility functions
+        function setupFieldEvents(field, name) {
+            field.on('change', (data) => {
+                logEvent(name, `Value changed: ${JSON.stringify(data.value || data.checked)}`);
+            });
+
+            field.on('focus', () => {
+                logEvent(name, 'Focused');
+            });
+
+            field.on('blur', () => {
+                logEvent(name, 'Blurred');
+            });
+
+            if (field.on && typeof field.validate === 'function') {
+                field.on('valid', () => {
+                    logEvent(name, 'Validation: VALID');
+                });
+
+                field.on('invalid', (data) => {
+                    logEvent(name, `Validation: INVALID - ${data.message}`);
+                });
+            }
+        }
+
+        function logEvent(component, message) {
+            eventCounter++;
+            const timestamp = new Date().toLocaleTimeString();
+            const logEl = document.getElementById('eventLog');
+            
+            const entry = document.createElement('div');
+            entry.className = 'mb-1 p-1 border-b border-gray-200';
+            entry.innerHTML = `
+                <span class="text-gray-500 text-xs">[${eventCounter}] ${timestamp}</span>
+                <span class="font-medium text-blue-600">${component}:</span>
+                <span class="text-gray-700">${message}</span>
+            `;
+            
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+
+            // Keep only last 100 entries
+            while (logEl.children.length > 100) {
+                logEl.removeChild(logEl.firstChild);
+            }
+        }
+
+        function updateComponentCount() {
+            const availableComponents = Object.keys(AiondaWebUI).filter(key => 
+                typeof AiondaWebUI[key] === 'function' && 
+                key !== 'create' && 
+                key !== 'version'
+            );
+            document.getElementById('component-count').textContent = `${availableComponents.length} components available`;
+        }
+
+        function getAllValues() {
+            const values = {};
+            
+            Object.entries(componentInstances).forEach(([key, instance]) => {
+                if (instance.getValue) {
+                    values[key] = instance.getValue();
+                } else if (instance.isChecked) {
+                    values[key] = instance.isChecked();
+                } else if (instance.getValues) {
+                    values[key] = instance.getValues();
+                }
+            });
+            
+            logEvent('System', `All component values: ${JSON.stringify(values, null, 2)}`);
+            return values;
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.className = 'tab-button border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700';
+            });
+            
+            document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).className = 
+                'tab-button active border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600';
+
+            // Show/hide tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById(`${tabName}Tab`).classList.remove('hidden');
+            
+            logEvent('System', `Switched to ${tabName} tab`);
+        }
+
+        // Event listeners
+        document.getElementById('tabCore').addEventListener('click', () => switchTab('core'));
+        document.getElementById('tabForm').addEventListener('click', () => switchTab('form'));
+        document.getElementById('tabData').addEventListener('click', () => switchTab('data'));
+        document.getElementById('tabLayout').addEventListener('click', () => switchTab('layout'));
+        document.getElementById('tabDialog').addEventListener('click', () => switchTab('dialog'));
+
+        document.getElementById('clearLog').addEventListener('click', () => {
+            document.getElementById('eventLog').innerHTML = '';
+            eventCounter = 0;
+            logEvent('System', 'Event log cleared');
+        });
+
+        document.getElementById('getAllValues').addEventListener('click', () => {
+            getAllValues();
+        });
+
+        // Initialize everything
+        console.log('🎉 Aionda WebUI Comprehensive Showcase loaded!');
+        console.log('Available components:', Object.keys(AiondaWebUI));
+        
+        initializeComponents();
+        
+        logEvent('System', 'Comprehensive showcase initialized successfully');
+    </script>
+</body>
+</html>

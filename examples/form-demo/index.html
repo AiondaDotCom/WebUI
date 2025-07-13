@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aionda WebUI - Form System Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../dist/aionda-webui.css">
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">📝 Aionda WebUI - Form System Demo</h1>
+            <p class="text-gray-600">Comprehensive form components with validation, layouts, and data binding</p>
+        </div>
+        
+        <!-- Demo Controls -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+            <div class="flex flex-wrap gap-4 items-center">
+                <h3 class="font-semibold text-gray-900">Form Layout:</h3>
+                <div class="flex gap-2">
+                    <button id="layoutVertical" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Vertical
+                    </button>
+                    <button id="layoutHorizontal" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">
+                        Horizontal
+                    </button>
+                    <button id="layoutInline" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">
+                        Inline
+                    </button>
+                </div>
+                <div class="border-l border-gray-300 pl-4">
+                    <button id="loadData" class="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700">
+                        Load Sample Data
+                    </button>
+                    <button id="resetForm" class="px-3 py-1 text-sm bg-orange-600 text-white rounded hover:bg-orange-700">
+                        Reset Form
+                    </button>
+                    <button id="validateForm" class="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700">
+                        Validate
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                    <button id="tabForm" class="border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600">
+                        Complete Form
+                    </button>
+                    <button id="tabWidgets" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                        Individual Widgets
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="formTab" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Form Container -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Employee Registration Form</h2>
+                    <div id="form-container">
+                        <!-- Form will be rendered here -->
+                    </div>
+                </div>
+                
+                <!-- Output Panel -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Form Data & Events</h2>
+                    
+                    <!-- Current Values -->
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 mb-2">Current Values:</h3>
+                        <pre id="currentValues" class="bg-gray-50 border border-gray-200 rounded p-3 text-sm overflow-auto max-h-40"></pre>
+                    </div>
+                    
+                    <!-- Validation Status -->
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 mb-2">Validation Status:</h3>
+                        <div id="validationStatus" class="p-3 rounded border">
+                            <span class="text-gray-500">No validation performed yet</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Log -->
+                    <div>
+                        <h3 class="font-medium text-gray-700 mb-2">Event Log:</h3>
+                        <div id="eventLog" class="bg-gray-50 border border-gray-200 rounded p-3 h-48 overflow-auto text-sm"></div>
+                        <button id="clearLog" class="mt-2 px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600">
+                            Clear Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Widgets Tab -->
+        <div id="widgetsTab" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                
+                <!-- TextField Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📝 TextField</h3>
+                    <div id="textfield-container" class="space-y-4">
+                        <!-- TextFields will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Validation, masking, max length, focus events
+                    </div>
+                </div>
+
+                <!-- NumberField Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🔢 NumberField</h3>
+                    <div id="numberfield-container" class="space-y-4">
+                        <!-- NumberFields will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Spinners, min/max values, currency formatting, decimals
+                    </div>
+                </div>
+
+                <!-- ComboBox Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📋 ComboBox</h3>
+                    <div id="combobox-container" class="space-y-4">
+                        <!-- ComboBoxes will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Search, remote data, custom templates, keyboard navigation
+                    </div>
+                </div>
+
+                <!-- Checkbox Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">☑️ Checkbox</h3>
+                    <div id="checkbox-container" class="space-y-4">
+                        <!-- Checkboxes will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Standard & switch variants, sizes, custom labels
+                    </div>
+                </div>
+
+                <!-- Button Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🔘 Button</h3>
+                    <div id="button-container" class="space-y-4">
+                        <!-- Buttons will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Multiple variants, sizes, loading states, icons
+                    </div>
+                </div>
+
+                <!-- TextArea Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📄 TextArea</h3>
+                    <div id="textarea-container" class="space-y-4">
+                        <!-- TextAreas will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Multi-line text, resizable, character count, validation
+                    </div>
+                </div>
+
+                <!-- DateField Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📅 DateField</h3>
+                    <div id="datefield-container" class="space-y-4">
+                        <!-- DateFields will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Date picker, validation, min/max dates
+                    </div>
+                </div>
+
+                <!-- RadioGroup Demo -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🔘 RadioGroup</h3>
+                    <div id="radiogroup-container" class="space-y-4">
+                        <!-- RadioGroups will be rendered here -->
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded text-sm">
+                        <strong>Features:</strong> Single selection, validation, horizontal/vertical layout
+                    </div>
+                </div>
+
+                <!-- Widget Events Log -->
+                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📊 Widget Events</h3>
+                    <div id="widgetEventLog" class="bg-gray-50 border border-gray-200 rounded p-3 h-64 overflow-auto text-sm"></div>
+                    <div class="mt-4 flex gap-2">
+                        <button id="clearWidgetLog" class="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600">
+                            Clear Log
+                        </button>
+                        <button id="getWidgetValues" class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
+                            Get All Values
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features Info -->
+        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="font-semibold text-blue-800 mb-2">🎯 Form System Features:</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-blue-700">
+                <ul class="space-y-1">
+                    <li>✅ <strong>TextField:</strong> Text input with validation</li>
+                    <li>✅ <strong>NumberField:</strong> Numeric input with spinners</li>
+                    <li>✅ <strong>DateField:</strong> Date picker with validation</li>
+                    <li>✅ <strong>TextArea:</strong> Multi-line text input</li>
+                </ul>
+                <ul class="space-y-1">
+                    <li>✅ <strong>ComboBox:</strong> Dropdown with search</li>
+                    <li>✅ <strong>Checkbox:</strong> Boolean input & switches</li>
+                    <li>✅ <strong>RadioGroup:</strong> Single selection groups</li>
+                    <li>✅ <strong>Button:</strong> Multiple variants & states</li>
+                </ul>
+                <ul class="space-y-1">
+                    <li>✅ <strong>Validation:</strong> Built-in & custom validators</li>
+                    <li>✅ <strong>Layouts:</strong> Vertical, horizontal, inline</li>
+                    <li>✅ <strong>Data Binding:</strong> Two-way value sync</li>
+                    <li>✅ <strong>Events:</strong> Change, validation, submit</li>
+                </ul>
+                <ul class="space-y-1">
+                    <li>✅ <strong>Form State:</strong> Dirty tracking, reset</li>
+                    <li>✅ <strong>Submission:</strong> AJAX & standard forms</li>
+                    <li>✅ <strong>Responsive:</strong> Mobile-first design</li>
+                    <li>✅ <strong>Accessibility:</strong> ARIA support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Aionda WebUI -->
+    <script src="../../dist/aionda-webui.js"></script>
+
+    <script>
+        let currentForm = null;
+        let eventCounter = 0;
+        let widgetEventCounter = 0;
+        let widgets = {}; // Store widget instances
+
+        // Sample data for ComboBox
+        const departmentData = [
+            { value: 'eng', text: 'Engineering' },
+            { value: 'sales', text: 'Sales' },
+            { value: 'marketing', text: 'Marketing' },
+            { value: 'hr', text: 'Human Resources' },
+            { value: 'finance', text: 'Finance' },
+            { value: 'ops', text: 'Operations' }
+        ];
+
+        const countryData = [
+            { value: 'us', text: 'United States' },
+            { value: 'ca', text: 'Canada' },
+            { value: 'uk', text: 'United Kingdom' },
+            { value: 'de', text: 'Germany' },
+            { value: 'fr', text: 'France' },
+            { value: 'jp', text: 'Japan' }
+        ];
+
+        // Create form with different layouts
+        function createForm(layout = 'vertical') {
+            return new AiondaWebUI.Form({
+                layout: layout,
+                labelAlign: layout === 'horizontal' ? 'left' : 'top',
+                labelWidth: 140,
+                trackResetOnLoad: true,
+                
+                items: [
+                    {
+                        cmp: 'textfield',
+                        name: 'firstName',
+                        fieldLabel: 'First Name',
+                        allowBlank: false,
+                        maxLength: 50,
+                        validators: [
+                            { type: 'required', message: 'First name is required' },
+                            { type: 'minLength', min: 2, message: 'Must be at least 2 characters' }
+                        ]
+                    },
+                    {
+                        cmp: 'textfield',
+                        name: 'lastName',
+                        fieldLabel: 'Last Name',
+                        allowBlank: false,
+                        maxLength: 50
+                    },
+                    {
+                        cmp: 'textfield',
+                        name: 'email',
+                        fieldLabel: 'Email Address',
+                        allowBlank: false,
+                        validators: [
+                            { type: 'required' },
+                            { type: 'email' }
+                        ]
+                    },
+                    {
+                        cmp: 'numberfield',
+                        name: 'age',
+                        fieldLabel: 'Age',
+                        minValue: 18,
+                        maxValue: 99,
+                        step: 1,
+                        allowDecimals: false,
+                        allowBlank: false
+                    },
+                    {
+                        cmp: 'numberfield',
+                        name: 'salary',
+                        fieldLabel: 'Annual Salary',
+                        minValue: 0,
+                        step: 1000,
+                        decimalPrecision: 0,
+                        thousandSeparator: ',',
+                        currencySymbol: '$'
+                    },
+                    {
+                        cmp: 'combobox',
+                        name: 'department',
+                        fieldLabel: 'Department',
+                        data: departmentData,
+                        displayField: 'text',
+                        valueField: 'value',
+                        editable: false,
+                        forceSelection: true,
+                        allowBlank: false
+                    },
+                    {
+                        cmp: 'combobox',
+                        name: 'country',
+                        fieldLabel: 'Country',
+                        data: countryData,
+                        displayField: 'text',
+                        valueField: 'value',
+                        editable: true,
+                        typeAhead: true,
+                        emptyText: 'Select or type country...'
+                    },
+                    {
+                        cmp: 'checkbox',
+                        name: 'isActive',
+                        fieldLabel: 'Status',
+                        boxLabel: 'Active Employee',
+                        checked: true
+                    },
+                    {
+                        cmp: 'checkbox',
+                        name: 'notifications',
+                        fieldLabel: 'Preferences',
+                        boxLabel: 'Receive email notifications',
+                        variant: 'switch'
+                    },
+                    {
+                        cmp: 'checkbox',
+                        name: 'agreeTerms',
+                        fieldLabel: '',
+                        boxLabel: 'I agree to the terms and conditions',
+                        allowBlank: false
+                    }
+                ]
+            });
+        }
+
+        // Initialize form
+        function initForm(layout = 'vertical') {
+            if (currentForm) {
+                currentForm.destroy();
+            }
+            
+            currentForm = createForm(layout);
+            currentForm.renderTo('#form-container');
+            
+            // Add form buttons
+            currentForm.addButton({
+                text: 'Submit',
+                type: 'submit',
+                cls: 'bg-blue-600 text-white hover:bg-blue-700',
+                handler: (form) => {
+                    handleFormSubmit(form);
+                }
+            });
+            
+            currentForm.addButton({
+                text: 'Reset',
+                cls: 'bg-gray-600 text-white hover:bg-gray-700',
+                handler: (form) => {
+                    form.reset();
+                    logEvent('Form Reset', 'Form was reset to original values');
+                }
+            });
+            
+            // Setup form event listeners
+            setupFormEvents();
+            
+            // Update display
+            updateCurrentValues();
+            logEvent('Form Created', `New form created with ${layout} layout`);
+        }
+
+        function setupFormEvents() {
+            // Form-level events
+            currentForm.on('change', (data) => {
+                updateCurrentValues();
+                logEvent('Field Changed', `${data.field}: ${JSON.stringify(data.value)}`);
+            });
+            
+            currentForm.on('validitychange', (data) => {
+                updateValidationStatus(data.valid, data.errors);
+                logEvent('Validation Changed', `Form valid: ${data.valid}`);
+            });
+            
+            currentForm.on('submit', (data) => {
+                logEvent('Form Submitted', 'Form submission completed successfully');
+            });
+            
+            currentForm.on('beforesubmit', (data) => {
+                logEvent('Before Submit', 'Form validation passed, submitting...');
+            });
+            
+            currentForm.on('invalid', (data) => {
+                logEvent('Submit Failed', `Validation failed: ${data.errors.length} errors`);
+            });
+            
+            currentForm.on('dirtychange', (data) => {
+                logEvent('Dirty State', `Form dirty: ${data.dirty}`);
+            });
+        }
+
+        function handleFormSubmit(form) {
+            if (!form.isValid()) {
+                logEvent('Submit Error', 'Form validation failed');
+                return;
+            }
+            
+            const values = form.getValues();
+            
+            // Simulate form submission
+            logEvent('Submitting', 'Simulating form submission...');
+            
+            setTimeout(() => {
+                logEvent('Submit Success', `Form submitted successfully with data: ${JSON.stringify(values)}`);
+                
+                // Show success message
+                const status = document.getElementById('validationStatus');
+                status.innerHTML = '<span class="text-green-600 font-medium">✅ Form submitted successfully!</span>';
+                status.className = 'p-3 rounded border border-green-200 bg-green-50';
+            }, 1000);
+        }
+
+        function updateCurrentValues() {
+            if (!currentForm) return;
+            
+            const values = currentForm.getValues();
+            const dirty = currentForm.isDirty();
+            
+            const display = {
+                values: values,
+                isDirty: dirty,
+                fieldCount: currentForm.fields.size
+            };
+            
+            document.getElementById('currentValues').textContent = JSON.stringify(display, null, 2);
+        }
+
+        function updateValidationStatus(valid, errors = []) {
+            const statusEl = document.getElementById('validationStatus');
+            
+            if (valid) {
+                statusEl.innerHTML = '<span class="text-green-600 font-medium">✅ All fields are valid</span>';
+                statusEl.className = 'p-3 rounded border border-green-200 bg-green-50';
+            } else {
+                const errorList = errors.map(([field, message]) => `• ${field}: ${message}`).join('<br>');
+                statusEl.innerHTML = `<span class="text-red-600 font-medium">❌ Validation errors:</span><br><span class="text-sm">${errorList}</span>`;
+                statusEl.className = 'p-3 rounded border border-red-200 bg-red-50';
+            }
+        }
+
+        function logEvent(type, message) {
+            eventCounter++;
+            const timestamp = new Date().toLocaleTimeString();
+            const logEl = document.getElementById('eventLog');
+            
+            const entry = document.createElement('div');
+            entry.className = 'mb-1 p-1 border-b border-gray-200';
+            entry.innerHTML = `
+                <span class="text-gray-500 text-xs">[${eventCounter}] ${timestamp}</span>
+                <span class="font-medium text-blue-600">${type}:</span>
+                <span class="text-gray-700">${message}</span>
+            `;
+            
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        // Demo controls
+        document.getElementById('layoutVertical').addEventListener('click', () => {
+            updateLayoutButtons('vertical');
+            initForm('vertical');
+        });
+
+        document.getElementById('layoutHorizontal').addEventListener('click', () => {
+            updateLayoutButtons('horizontal');
+            initForm('horizontal');
+        });
+
+        document.getElementById('layoutInline').addEventListener('click', () => {
+            updateLayoutButtons('inline');
+            initForm('inline');
+        });
+
+        document.getElementById('loadData').addEventListener('click', () => {
+            const sampleData = {
+                firstName: 'John',
+                lastName: 'Doe',
+                email: 'john.doe@company.com',
+                age: 30,
+                salary: 75000,
+                department: 'eng',
+                country: 'us',
+                isActive: true,
+                notifications: false,
+                agreeTerms: true
+            };
+            
+            currentForm.setValues(sampleData);
+            logEvent('Data Loaded', 'Sample data loaded into form');
+        });
+
+        document.getElementById('resetForm').addEventListener('click', () => {
+            currentForm.reset();
+        });
+
+        document.getElementById('validateForm').addEventListener('click', () => {
+            const isValid = currentForm.isValid();
+            logEvent('Manual Validation', `Form validation result: ${isValid}`);
+        });
+
+        document.getElementById('clearLog').addEventListener('click', () => {
+            document.getElementById('eventLog').innerHTML = '';
+            eventCounter = 0;
+        });
+
+        function updateLayoutButtons(activeLayout) {
+            const buttons = ['layoutVertical', 'layoutHorizontal', 'layoutInline'];
+            const layouts = ['vertical', 'horizontal', 'inline'];
+            
+            buttons.forEach((buttonId, index) => {
+                const button = document.getElementById(buttonId);
+                if (layouts[index] === activeLayout) {
+                    button.className = 'px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700';
+                } else {
+                    button.className = 'px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700';
+                }
+            });
+        }
+
+        // Initialize individual widgets
+        function initWidgets() {
+            // Clear existing widgets
+            Object.values(widgets).forEach(widget => {
+                if (widget.destroy) widget.destroy();
+            });
+            widgets = {};
+
+            initTextFields();
+            initNumberFields();
+            initComboBoxes();
+            initCheckboxes();
+            initButtons();
+            initTextAreas();
+            initDateFields();
+            initRadioGroups();
+        }
+
+        function initTextFields() {
+            // Basic TextField
+            const textField1 = new AiondaWebUI.TextField({
+                name: 'basicText',
+                fieldLabel: 'Basic Text Field',
+                placeholder: 'Enter some text...',
+                value: 'Hello World'
+            });
+            textField1.renderTo('#textfield-container');
+            setupWidgetEvents(textField1, 'TextField Basic');
+            widgets.textField1 = textField1;
+
+            // Email TextField with validation
+            const textField2 = new AiondaWebUI.TextField({
+                name: 'emailText',
+                fieldLabel: 'Email Field',
+                placeholder: 'user@example.com',
+                validators: [
+                    { type: 'required' },
+                    { type: 'email' }
+                ]
+            });
+            textField2.renderTo('#textfield-container');
+            setupWidgetEvents(textField2, 'TextField Email');
+            widgets.textField2 = textField2;
+
+            // Masked TextField
+            const textField3 = new AiondaWebUI.TextField({
+                name: 'maskedText',
+                fieldLabel: 'Phone Number',
+                placeholder: '(555) 123-4567',
+                maxLength: 14,
+                maskRe: /[\d\s\(\)\-]/
+            });
+            textField3.renderTo('#textfield-container');
+            setupWidgetEvents(textField3, 'TextField Masked');
+            widgets.textField3 = textField3;
+        }
+
+        function initNumberFields() {
+            // Basic NumberField
+            const numberField1 = new AiondaWebUI.NumberField({
+                name: 'basicNumber',
+                fieldLabel: 'Basic Number',
+                value: 42,
+                minValue: 0,
+                maxValue: 100
+            });
+            numberField1.renderTo('#numberfield-container');
+            setupWidgetEvents(numberField1, 'NumberField Basic');
+            widgets.numberField1 = numberField1;
+
+            // Currency NumberField
+            const numberField2 = new AiondaWebUI.NumberField({
+                name: 'currency',
+                fieldLabel: 'Currency',
+                value: 1234.56,
+                decimalPrecision: 2,
+                thousandSeparator: ',',
+                currencySymbol: '$'
+            });
+            numberField2.renderTo('#numberfield-container');
+            setupWidgetEvents(numberField2, 'NumberField Currency');
+            widgets.numberField2 = numberField2;
+
+            // Integer-only NumberField
+            const numberField3 = new AiondaWebUI.NumberField({
+                name: 'integer',
+                fieldLabel: 'Integer Only',
+                value: 10,
+                allowDecimals: false,
+                step: 5,
+                minValue: 0,
+                maxValue: 1000
+            });
+            numberField3.renderTo('#numberfield-container');
+            setupWidgetEvents(numberField3, 'NumberField Integer');
+            widgets.numberField3 = numberField3;
+        }
+
+        function initComboBoxes() {
+            // Basic ComboBox
+            const comboBox1 = new AiondaWebUI.ComboBox({
+                name: 'basicCombo',
+                fieldLabel: 'Department',
+                data: departmentData,
+                displayField: 'text',
+                valueField: 'value',
+                value: 'eng',
+                editable: false
+            });
+            comboBox1.renderTo('#combobox-container');
+            setupWidgetEvents(comboBox1, 'ComboBox Basic');
+            widgets.comboBox1 = comboBox1;
+
+            // Searchable ComboBox
+            const comboBox2 = new AiondaWebUI.ComboBox({
+                name: 'searchableCombo',
+                fieldLabel: 'Country (Searchable)',
+                data: countryData,
+                displayField: 'text',
+                valueField: 'value',
+                editable: true,
+                typeAhead: true,
+                emptyText: 'Search countries...'
+            });
+            comboBox2.renderTo('#combobox-container');
+            setupWidgetEvents(comboBox2, 'ComboBox Searchable');
+            widgets.comboBox2 = comboBox2;
+
+            // Custom template ComboBox
+            const colorData = [
+                { value: 'red', text: 'Red', hex: '#ff0000' },
+                { value: 'green', text: 'Green', hex: '#00ff00' },
+                { value: 'blue', text: 'Blue', hex: '#0000ff' },
+                { value: 'yellow', text: 'Yellow', hex: '#ffff00' }
+            ];
+
+            const comboBox3 = new AiondaWebUI.ComboBox({
+                name: 'colorCombo',
+                fieldLabel: 'Color Picker',
+                data: colorData,
+                displayField: 'text',
+                valueField: 'value',
+                tpl: (record) => `
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full border" style="background-color: ${record.hex}"></div>
+                        <span>${record.text}</span>
+                    </div>
+                `,
+                editable: false
+            });
+            comboBox3.renderTo('#combobox-container');
+            setupWidgetEvents(comboBox3, 'ComboBox Custom');
+            widgets.comboBox3 = comboBox3;
+        }
+
+        function initCheckboxes() {
+            // Basic Checkbox
+            const checkbox1 = new AiondaWebUI.Checkbox({
+                name: 'basicCheck',
+                fieldLabel: 'Options',
+                boxLabel: 'Enable notifications',
+                checked: true
+            });
+            checkbox1.renderTo('#checkbox-container');
+            setupWidgetEvents(checkbox1, 'Checkbox Basic');
+            widgets.checkbox1 = checkbox1;
+
+            // Switch variant
+            const checkbox2 = new AiondaWebUI.Checkbox({
+                name: 'switchCheck',
+                fieldLabel: 'Toggle Switch',
+                boxLabel: 'Dark mode',
+                variant: 'switch',
+                checked: false
+            });
+            checkbox2.renderTo('#checkbox-container');
+            setupWidgetEvents(checkbox2, 'Checkbox Switch');
+            widgets.checkbox2 = checkbox2;
+
+            // Different sizes
+            const sizes = ['sm', 'md', 'lg'];
+            sizes.forEach((size, index) => {
+                const checkbox = new AiondaWebUI.Checkbox({
+                    name: `sizeCheck${size}`,
+                    boxLabel: `${size.toUpperCase()} size checkbox`,
+                    size: size,
+                    checked: index === 1
+                });
+                checkbox.renderTo('#checkbox-container');
+                setupWidgetEvents(checkbox, `Checkbox ${size.toUpperCase()}`);
+                widgets[`checkbox${size}`] = checkbox;
+            });
+        }
+
+        function initButtons() {
+            // Different variants
+            const variants = [
+                { variant: 'primary', text: 'Primary', icon: '🚀' },
+                { variant: 'secondary', text: 'Secondary', icon: '⚙️' },
+                { variant: 'success', text: 'Success', icon: '✅' },
+                { variant: 'warning', text: 'Warning', icon: '⚠️' },
+                { variant: 'danger', text: 'Danger', icon: '❌' }
+            ];
+
+            variants.forEach((config, index) => {
+                const button = new AiondaWebUI.Button({
+                    text: config.text,
+                    icon: config.icon,
+                    variant: config.variant,
+                    handler: (btn) => {
+                        logWidgetEvent(`Button ${config.variant}`, 'Button clicked');
+                    }
+                });
+                button.renderTo('#button-container');
+                widgets[`button${index}`] = button;
+            });
+
+            // Different sizes
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'];
+            const sizeContainer = document.createElement('div');
+            sizeContainer.className = 'flex flex-wrap gap-2 items-center';
+            
+            sizes.forEach(size => {
+                const button = new AiondaWebUI.Button({
+                    text: size.toUpperCase(),
+                    size: size,
+                    variant: 'primary',
+                    outline: true,
+                    handler: (btn) => {
+                        logWidgetEvent(`Button ${size}`, 'Size button clicked');
+                    }
+                });
+                const buttonEl = button.render();
+                sizeContainer.appendChild(buttonEl);
+                widgets[`buttonSize${size}`] = button;
+            });
+            
+            document.getElementById('button-container').appendChild(sizeContainer);
+
+            // Loading state demo
+            const loadingButton = new AiondaWebUI.Button({
+                text: 'Click for Loading Demo',
+                variant: 'info',
+                handler: (btn) => {
+                    btn.setLoading(true);
+                    btn.setText('Loading...');
+                    logWidgetEvent('Button Loading', 'Loading state activated');
+                    
+                    setTimeout(() => {
+                        btn.setLoading(false);
+                        btn.setText('Click for Loading Demo');
+                        logWidgetEvent('Button Loading', 'Loading state deactivated');
+                    }, 3000);
+                }
+            });
+            loadingButton.renderTo('#button-container');
+            widgets.loadingButton = loadingButton;
+        }
+
+        function initTextAreas() {
+            // Basic TextArea
+            const textArea1 = new AiondaWebUI.TextArea({
+                name: 'basicTextArea',
+                fieldLabel: 'Basic TextArea',
+                placeholder: 'Enter multi-line text...',
+                rows: 4,
+                value: 'Sample multi-line\ntext content.'
+            });
+            textArea1.renderTo('#textarea-container');
+            setupWidgetEvents(textArea1, 'TextArea Basic');
+            widgets.textArea1 = textArea1;
+
+            // TextArea with character limit
+            const textArea2 = new AiondaWebUI.TextArea({
+                name: 'limitedTextArea',
+                fieldLabel: 'Limited TextArea (200 chars)',
+                maxLength: 200,
+                rows: 3,
+                showCharCount: true
+            });
+            textArea2.renderTo('#textarea-container');
+            setupWidgetEvents(textArea2, 'TextArea Limited');
+            widgets.textArea2 = textArea2;
+
+            // Resizable TextArea
+            const textArea3 = new AiondaWebUI.TextArea({
+                name: 'resizableTextArea',
+                fieldLabel: 'Resizable TextArea',
+                placeholder: 'This textarea can be resized...',
+                resizable: true,
+                rows: 3
+            });
+            textArea3.renderTo('#textarea-container');
+            setupWidgetEvents(textArea3, 'TextArea Resizable');
+            widgets.textArea3 = textArea3;
+        }
+
+        function initDateFields() {
+            // Basic DateField
+            const dateField1 = new AiondaWebUI.DateField({
+                name: 'basicDate',
+                fieldLabel: 'Basic Date',
+                value: new Date()
+            });
+            dateField1.renderTo('#datefield-container');
+            setupWidgetEvents(dateField1, 'DateField Basic');
+            widgets.dateField1 = dateField1;
+
+            // DateField with range
+            const dateField2 = new AiondaWebUI.DateField({
+                name: 'birthDate',
+                fieldLabel: 'Birth Date',
+                minValue: new Date('1900-01-01'),
+                maxValue: new Date()
+            });
+            dateField2.renderTo('#datefield-container');
+            setupWidgetEvents(dateField2, 'DateField Range');
+            widgets.dateField2 = dateField2;
+
+            // DateField with custom format
+            const dateField3 = new AiondaWebUI.DateField({
+                name: 'customDate',
+                fieldLabel: 'Custom Format',
+                format: 'MM/dd/yyyy',
+                value: new Date('2024-01-15')
+            });
+            dateField3.renderTo('#datefield-container');
+            setupWidgetEvents(dateField3, 'DateField Custom');
+            widgets.dateField3 = dateField3;
+        }
+
+        function initRadioGroups() {
+            // Basic RadioGroup
+            const radioGroup1 = new AiondaWebUI.RadioGroup({
+                name: 'priority',
+                fieldLabel: 'Priority Level',
+                items: [
+                    { value: 'low', boxLabel: 'Low Priority' },
+                    { value: 'medium', boxLabel: 'Medium Priority' },
+                    { value: 'high', boxLabel: 'High Priority' }
+                ],
+                value: 'medium'
+            });
+            radioGroup1.renderTo('#radiogroup-container');
+            setupWidgetEvents(radioGroup1, 'RadioGroup Priority');
+            widgets.radioGroup1 = radioGroup1;
+
+            // Horizontal RadioGroup
+            const radioGroup2 = new AiondaWebUI.RadioGroup({
+                name: 'layout',
+                fieldLabel: 'Layout Preference',
+                layout: 'horizontal',
+                items: [
+                    { value: 'list', boxLabel: 'List View' },
+                    { value: 'grid', boxLabel: 'Grid View' },
+                    { value: 'card', boxLabel: 'Card View' }
+                ],
+                value: 'grid'
+            });
+            radioGroup2.renderTo('#radiogroup-container');
+            setupWidgetEvents(radioGroup2, 'RadioGroup Layout');
+            widgets.radioGroup2 = radioGroup2;
+
+            // RadioGroup with validation
+            const radioGroup3 = new AiondaWebUI.RadioGroup({
+                name: 'agreement',
+                fieldLabel: 'Terms Agreement',
+                items: [
+                    { value: 'agree', boxLabel: 'I agree to the terms' },
+                    { value: 'disagree', boxLabel: 'I disagree' }
+                ],
+                allowBlank: false
+            });
+            radioGroup3.renderTo('#radiogroup-container');
+            setupWidgetEvents(radioGroup3, 'RadioGroup Agreement');
+            widgets.radioGroup3 = radioGroup3;
+        }
+
+        function setupWidgetEvents(widget, name) {
+            // Common events for all widgets
+            widget.on('change', (data) => {
+                logWidgetEvent(name, `Value changed: ${JSON.stringify(data.value || data.checked)}`);
+            });
+
+            widget.on('focus', () => {
+                logWidgetEvent(name, 'Focused');
+            });
+
+            widget.on('blur', () => {
+                logWidgetEvent(name, 'Blurred');
+            });
+
+            // Validation events for form fields
+            if (widget.on && typeof widget.validate === 'function') {
+                widget.on('valid', () => {
+                    logWidgetEvent(name, 'Validation: VALID');
+                });
+
+                widget.on('invalid', (data) => {
+                    logWidgetEvent(name, `Validation: INVALID - ${data.message}`);
+                });
+            }
+        }
+
+        function logWidgetEvent(widget, message) {
+            widgetEventCounter++;
+            const timestamp = new Date().toLocaleTimeString();
+            const logEl = document.getElementById('widgetEventLog');
+            
+            const entry = document.createElement('div');
+            entry.className = 'mb-1 p-1 border-b border-gray-200';
+            entry.innerHTML = `
+                <span class="text-gray-500 text-xs">[${widgetEventCounter}] ${timestamp}</span>
+                <span class="font-medium text-purple-600">${widget}:</span>
+                <span class="text-gray-700">${message}</span>
+            `;
+            
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function getAllWidgetValues() {
+            const values = {};
+            
+            Object.entries(widgets).forEach(([key, widget]) => {
+                if (widget.getValue) {
+                    values[key] = widget.getValue();
+                } else if (widget.isChecked) {
+                    values[key] = widget.isChecked();
+                }
+            });
+            
+            logWidgetEvent('All Widgets', `Current values: ${JSON.stringify(values, null, 2)}`);
+            return values;
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.getElementById('tabForm').className = tabName === 'form' 
+                ? 'border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600'
+                : 'border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700';
+                
+            document.getElementById('tabWidgets').className = tabName === 'widgets'
+                ? 'border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600'
+                : 'border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700';
+
+            // Show/hide tab content
+            document.getElementById('formTab').classList.toggle('hidden', tabName !== 'form');
+            document.getElementById('widgetsTab').classList.toggle('hidden', tabName !== 'widgets');
+            
+            // Initialize widgets if switching to widgets tab
+            if (tabName === 'widgets') {
+                initWidgets();
+            }
+        }
+
+        // Tab event listeners
+        document.getElementById('tabForm').addEventListener('click', () => switchTab('form'));
+        document.getElementById('tabWidgets').addEventListener('click', () => switchTab('widgets'));
+
+        // Widget controls
+        document.getElementById('clearWidgetLog').addEventListener('click', () => {
+            document.getElementById('widgetEventLog').innerHTML = '';
+            widgetEventCounter = 0;
+        });
+
+        document.getElementById('getWidgetValues').addEventListener('click', () => {
+            getAllWidgetValues();
+        });
+
+        // Initialize demo
+        console.log('🎉 Form System Demo loaded successfully!');
+        console.log('Available components:', Object.keys(AiondaWebUI));
+        
+        initForm('vertical');
+        
+        logEvent('Demo Initialized', 'Form system demo is ready for testing');
+    </script>
+</body>
+</html>

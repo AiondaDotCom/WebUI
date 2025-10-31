@@ -46,7 +46,7 @@ Aionda WebUI is a modern, mobile-first WebUI library built with pure ES6 JavaScr
 
 ## File Structure
 ```
-/Users/saf/dev/TypeUI/
+/Users/saf/dev/webui/
 ├── src/
 │   ├── core/
 │   │   ├── EventEmitter.js     # Event system
@@ -157,9 +157,63 @@ Open `examples/form-demo/index.html` for the comprehensive form system demo with
 - **JSDoc Documentation**: Required for all components (see Documentation Standards below)
 - **No Inline Comments**: Code should be self-documenting, use JSDoc for API documentation
 
+## Migration to AiondaWebUI (CURRENT - October 2025)
+
+### ⚠️ WICHTIG: Umstellung auf AiondaWebUI Framework
+Das Projekt befindet sich in einer **aktiven Migration** von einer eigenständigen Bibliothek zum **AiondaWebUI Framework**. Diese Migration ist die oberste Priorität.
+
+### Migrationsstatus
+- **Phase**: Aktive Migration und Konsolidierung
+- **Fokus**: Integration mit dem AiondaWebUI-Ökosystem
+- **Priorität**: Alle anderen Features/Fixes sind sekundär zur Migration
+
+### Was sich ändert
+1. **Namespace**: Komponenten werden Teil des AiondaWebUI-Frameworks
+2. **Architektur**: Anpassung an AiondaWebUI-Standards und -Konventionen
+3. **Build-System**: Integration in das AiondaWebUI-Build-System
+4. **Paket-Struktur**: Umstrukturierung für Framework-Integration
+5. **API**: Mögliche API-Anpassungen für Framework-Kompatibilität
+
+### Was bleibt gleich
+- **ES6-Basis**: Weiterhin pure ES6 JavaScript
+- **Tailwind CSS**: Utility-first CSS-Ansatz bleibt erhalten
+- **Komponenten**: Alle bestehenden Komponenten bleiben verfügbar
+- **Test-Suite**: Bestehende Tests bleiben gültig (mit Anpassungen)
+- **Event-System**: EventEmitter-Architektur bleibt bestehen
+
+### Anweisungen für Claude
+**BEI ALLEN AUFGABEN:**
+1. **Prüfe zuerst**: Betrifft die Aufgabe die Migration?
+2. **Priorisiere Migration**: Migrationsaufgaben haben Vorrang
+3. **Keine Detail-Fixes**: Kleine Bugfixes/Features nur wenn nicht migrationskritisch
+4. **Dokumentiere Änderungen**: Alle Migrationsschritte in CLAUDE.md dokumentieren
+5. **Separate Kontexte**: Migration in eigenem Chat, Details in separaten Instanzen
+
+**MIGRATION WORKFLOW:**
+- Verwende separate Claude Code Instanzen für Migrations-Hauptaufgaben
+- Delegiere Detail-Tasks (Tests, kleine Fixes) an andere Instanzen
+- Halte diesen Kontext fokussiert auf Architektur und Migration
+
+### Bekannte Migrationsaufgaben
+- [ ] Integration mit AiondaWebUI-Build-System
+- [ ] Namespace-Anpassungen für Framework
+- [ ] Package.json Struktur für Framework-Paket
+- [ ] Distribution und Publishing für AiondaWebUI
+- [ ] Dokumentation für Framework-Nutzer
+- [ ] Beispiele für Framework-Kontext
+
 ## Recent Major Updates
 
-### Component Versioning and Backward Compatibility (Latest)
+### Security & Bug Fixes (Oktober 31, 2025)
+- **Playwright Security Fix**: Updated Playwright from 1.54.1 to 1.56.1 (GHSA-7mvr-c777-76hp SSL certificate vulnerability)
+- **DateField Navigation Fix**: Fixed month navigation bug where day overflow caused incorrect month changes
+  - Fixed `setupPickerEvents()` method name mismatch
+  - Added proper DOM element queries after picker creation
+  - Fixed date overflow bug (Oct 31 → Sept 31 → Oct 1)
+- **Test Suite**: All 1437 tests passing (28 test suites)
+- **Playwright Integration**: Added E2E test infrastructure with Playwright
+
+### Component Versioning and Backward Compatibility
 - **Version Tracking System**: Added version tracking to all components with individual version numbers
 - **API Compatibility Layer**: Implemented backward compatibility for deprecated methods with proper warnings
 - **Deprecation System**: Added systematic deprecation warnings that only show once per session
@@ -253,10 +307,11 @@ This project leverages **claude-parallel-runner** for complex development tasks 
 ## Testing Information
 
 ### Test Statistics
-- **Total Tests**: 367 tests across 11 test files
-- **Core Components**: 106/106 tests passing (EventEmitter, Component, Store)
-- **UI Components**: Test infrastructure complete for all components
+- **Total Tests**: 1437 tests across 28 test files ✅ (Stand: Oktober 2025)
+- **Core Components**: EventEmitter, Component, Store - vollständig getestet
+- **UI Components**: Alle Komponenten haben umfassende Test-Suites
 - **Coverage**: Comprehensive testing of public APIs, edge cases, and interactions
+- **Status**: Alle Tests passing nach Playwright Security Fix und DateField Bugfixes
 
 ### Test Categories
 - **Constructor Tests**: Component initialization and configuration

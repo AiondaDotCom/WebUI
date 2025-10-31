@@ -278,15 +278,15 @@ export class Grid extends Component {
         const value = this.getCellValue(record, col);
         const cellKey = `${rowIndex}-${col.field}`;
         const isEditing = this.editingCell === cellKey;
-        
+
         html += `
-          <td class="aionda-grid-cell aionda-grid-data-cell border-r border-gray-200 dark:border-gray-700 relative text-gray-900 dark:text-gray-100" 
-              data-row="${rowIndex}" 
+          <td class="aionda-grid-cell aionda-grid-data-cell border-r border-gray-200 dark:border-gray-700 relative text-gray-900 dark:text-gray-100"
+              data-row="${rowIndex}"
               data-field="${col.field}"
               aria-colindex="${this.showRowNumbers ? this.getVisibleOrderedColumns().indexOf(col) + 2 : this.getVisibleOrderedColumns().indexOf(col) + 1}"
               style="${rawWidth !== 'flex' ? `width: ${width}px; min-width: ${width}px;` : `flex-grow: ${col.flex || 1};`}">
             <div class="px-3 py-2">
-              ${isEditing ? this.createCellEditor(value, col) : this.formatCellValue(value, col)}
+              ${isEditing ? this.createCellEditor(value, col) : this.formatCellValue(value, col, record)}
             </div>
           </td>
         `;
@@ -310,11 +310,18 @@ export class Grid extends Component {
     `;
   }
 
-  formatCellValue(value, col) {
+  formatCellValue(value, col, record) {
     if (value == null) return '';
-    
+
     if (col.renderer && typeof col.renderer === 'function') {
-      return col.renderer(value);
+      try {
+        return col.renderer(value, record);
+      } catch (error) {
+        console.error(`Grid renderer error for column '${col.field || col.dataIndex}':`, error);
+        console.error('Record data:', record);
+        console.error('Value:', value);
+        return `<span class="text-red-500" title="Renderer error: ${error.message}">⚠️</span>`;
+      }
     }
     
     let formattedValue = '';
@@ -1089,7 +1096,7 @@ export class Grid extends Component {
       if (cell) {
         const cellDiv = cell.querySelector('div');
         if (cellDiv) {
-          cellDiv.innerHTML = this.formatCellValue(finalValue, col);
+          cellDiv.innerHTML = this.formatCellValue(finalValue, col, record);
         }
       }
     }
@@ -1133,17 +1140,17 @@ export class Grid extends Component {
       }
       
       this.emit('cellchange', { record, field, value: finalValue, rowIndex: parseInt(rowIndex), oldValue });
-      
+
       // Convert editor back to display cell in-place
       const cell = this.el.querySelector(`.aionda-grid-data-cell[data-row="${rowIndex}"][data-field="${field}"]`);
       if (cell) {
         const cellDiv = cell.querySelector('div');
         if (cellDiv) {
-          cellDiv.innerHTML = this.formatCellValue(finalValue, col);
+          cellDiv.innerHTML = this.formatCellValue(finalValue, col, record);
         }
       }
     }
-    
+
     this.editingCell = null;
   }
 
@@ -1171,7 +1178,7 @@ export class Grid extends Component {
         
         if (record && col) {
           const originalValue = this.getCellValue(record, col);
-          cellDiv.innerHTML = this.formatCellValue(originalValue, col);
+          cellDiv.innerHTML = this.formatCellValue(originalValue, col, record);
         }
       }
     }

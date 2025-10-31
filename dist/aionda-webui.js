@@ -4448,15 +4448,15 @@ class Grid extends Component {
         const value = this.getCellValue(record, col);
         const cellKey = `${rowIndex}-${col.field}`;
         const isEditing = this.editingCell === cellKey;
-        
+
         html += `
-          <td class="aionda-grid-cell aionda-grid-data-cell border-r border-gray-200 dark:border-gray-700 relative text-gray-900 dark:text-gray-100" 
-              data-row="${rowIndex}" 
+          <td class="aionda-grid-cell aionda-grid-data-cell border-r border-gray-200 dark:border-gray-700 relative text-gray-900 dark:text-gray-100"
+              data-row="${rowIndex}"
               data-field="${col.field}"
               aria-colindex="${this.showRowNumbers ? this.getVisibleOrderedColumns().indexOf(col) + 2 : this.getVisibleOrderedColumns().indexOf(col) + 1}"
               style="${rawWidth !== 'flex' ? `width: ${width}px; min-width: ${width}px;` : `flex-grow: ${col.flex || 1};`}">
             <div class="px-3 py-2">
-              ${isEditing ? this.createCellEditor(value, col) : this.formatCellValue(value, col)}
+              ${isEditing ? this.createCellEditor(value, col) : this.formatCellValue(value, col, record)}
             </div>
           </td>
         `;
@@ -4480,11 +4480,18 @@ class Grid extends Component {
     `;
   }
 
-  formatCellValue(value, col) {
+  formatCellValue(value, col, record) {
     if (value == null) return '';
-    
+
     if (col.renderer && typeof col.renderer === 'function') {
-      return col.renderer(value);
+      try {
+        return col.renderer(value, record);
+      } catch (error) {
+        console.error(`Grid renderer error for column '${col.field || col.dataIndex}':`, error);
+        console.error('Record data:', record);
+        console.error('Value:', value);
+        return `<span class="text-red-500" title="Renderer error: ${error.message}">⚠️</span>`;
+      }
     }
     
     let formattedValue = '';
@@ -5259,7 +5266,7 @@ class Grid extends Component {
       if (cell) {
         const cellDiv = cell.querySelector('div');
         if (cellDiv) {
-          cellDiv.innerHTML = this.formatCellValue(finalValue, col);
+          cellDiv.innerHTML = this.formatCellValue(finalValue, col, record);
         }
       }
     }
@@ -5303,17 +5310,17 @@ class Grid extends Component {
       }
       
       this.emit('cellchange', { record, field, value: finalValue, rowIndex: parseInt(rowIndex), oldValue });
-      
+
       // Convert editor back to display cell in-place
       const cell = this.el.querySelector(`.aionda-grid-data-cell[data-row="${rowIndex}"][data-field="${field}"]`);
       if (cell) {
         const cellDiv = cell.querySelector('div');
         if (cellDiv) {
-          cellDiv.innerHTML = this.formatCellValue(finalValue, col);
+          cellDiv.innerHTML = this.formatCellValue(finalValue, col, record);
         }
       }
     }
-    
+
     this.editingCell = null;
   }
 
@@ -5341,7 +5348,7 @@ class Grid extends Component {
         
         if (record && col) {
           const originalValue = this.getCellValue(record, col);
-          cellDiv.innerHTML = this.formatCellValue(originalValue, col);
+          cellDiv.innerHTML = this.formatCellValue(originalValue, col, record);
         }
       }
     }
@@ -15960,26 +15967,34 @@ class DateField extends TextField {
   }
 
   setupPickerEvents() {
+    // Query picker elements after picker is created
+    this.monthSelect = this.el.querySelector('.aionda-datefield-month-select');
+    this.yearSelect = this.el.querySelector('.aionda-datefield-year-select');
+    this.prevMonthBtn = this.el.querySelector('.picker-prev-month');
+    this.nextMonthBtn = this.el.querySelector('.picker-next-month');
+    this.daysContainer = this.el.querySelector('.aionda-datefield-days');
+    this.todayBtn = this.el.querySelector('.aionda-datefield-today');
+
     if (this.monthSelect) {
       this.monthSelect.addEventListener('change', () => this.onMonthYearChange());
     }
-    
+
     if (this.yearSelect) {
       this.yearSelect.addEventListener('change', () => this.onMonthYearChange());
     }
-    
+
     if (this.prevMonthBtn) {
       this.prevMonthBtn.addEventListener('click', () => this.navigateMonth(-1));
     }
-    
+
     if (this.nextMonthBtn) {
       this.nextMonthBtn.addEventListener('click', () => this.navigateMonth(1));
     }
-    
+
     if (this.todayBtn) {
       this.todayBtn.addEventListener('click', () => this.selectToday());
     }
-    
+
     if (this.picker) {
       this.picker.addEventListener('keydown', (e) => this.onDateKeyDown(e));
     }
@@ -16128,6 +16143,9 @@ class DateField extends TextField {
   }
 
   navigateMonth(direction) {
+    // Set day to 1 first to avoid month overflow issues
+    // (e.g., Oct 31 -> Sept 31 would become Oct 1)
+    this.currentViewDate.setDate(1);
     this.currentViewDate.setMonth(this.currentViewDate.getMonth() + direction);
     this.updateCalendar();
   }
@@ -16280,7 +16298,7 @@ class DateField extends TextField {
       if (pickerContainer) {
         pickerContainer.insertAdjacentHTML('beforeend', this.createPickerTemplate());
         this.picker = pickerContainer.querySelector('.aionda-datefield-picker');
-        this.setupPickerEventListeners();
+        this.setupPickerEvents();
       }
     }
     

@@ -165,6 +165,19 @@ fs.writeFileSync(minOutputPath, minifiedCode);
 console.log(`✅ Minified version: ${minOutputPath}`);
 console.log(`📦 Minified size: ${(fs.statSync(minOutputPath).size / 1024).toFixed(1)} KB`);
 
+// Auto-copy to TrashMail static directory if it exists
+const trashMailStaticDir = path.join(__dirname, '../../static/js/aionda-webui');
+if (fs.existsSync(trashMailStaticDir)) {
+  try {
+    fs.copyFileSync(outputPath, path.join(trashMailStaticDir, 'aionda-webui.js'));
+    fs.copyFileSync(minOutputPath, path.join(trashMailStaticDir, 'aionda-webui.min.js'));
+    fs.copyFileSync(path.join(distDir, 'aionda-webui.css'), path.join(trashMailStaticDir, 'aionda-webui.css'));
+    console.log(`✅ Auto-copied to TrashMail static directory: ${trashMailStaticDir}`);
+  } catch (err) {
+    console.warn(`⚠️  Could not auto-copy to static directory: ${err.message}`);
+  }
+}
+
 console.log('\n🚀 Ready to use:');
 console.log(`<script src="dist/aionda-webui.js"></script>`);
 console.log(`<script src="dist/aionda-webui.min.js"></script>`);

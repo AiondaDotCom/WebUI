@@ -192,24 +192,24 @@ describe('DateField', () => {
       testUtils.fireClickEvent(pickerButton);
     });
 
-    test('should navigate to previous month', () => {
+    test('should navigate to previous month', async () => {
       const monthSelect = dateField.el.querySelector('.aionda-datefield-month-select');
       const initialMonth = parseInt(monthSelect.value);
-      
+
       const prevButton = dateField.el.querySelector('.aionda-datefield-prev-month');
-      testUtils.fireClickEvent(prevButton);
-      
+      await testUtils.fireClickEvent(prevButton);
+
       const newMonth = parseInt(monthSelect.value);
       expect(newMonth).toBe((initialMonth - 1 + 12) % 12);
     });
 
-    test('should navigate to next month', () => {
+    test('should navigate to next month', async () => {
       const monthSelect = dateField.el.querySelector('.aionda-datefield-month-select');
       const initialMonth = parseInt(monthSelect.value);
-      
+
       const nextButton = dateField.el.querySelector('.aionda-datefield-next-month');
-      testUtils.fireClickEvent(nextButton);
-      
+      await testUtils.fireClickEvent(nextButton);
+
       const newMonth = parseInt(monthSelect.value);
       expect(newMonth).toBe((initialMonth + 1) % 12);
     });

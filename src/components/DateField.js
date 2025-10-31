@@ -286,26 +286,34 @@ export class DateField extends TextField {
   }
 
   setupPickerEvents() {
+    // Query picker elements after picker is created
+    this.monthSelect = this.el.querySelector('.aionda-datefield-month-select');
+    this.yearSelect = this.el.querySelector('.aionda-datefield-year-select');
+    this.prevMonthBtn = this.el.querySelector('.picker-prev-month');
+    this.nextMonthBtn = this.el.querySelector('.picker-next-month');
+    this.daysContainer = this.el.querySelector('.aionda-datefield-days');
+    this.todayBtn = this.el.querySelector('.aionda-datefield-today');
+
     if (this.monthSelect) {
       this.monthSelect.addEventListener('change', () => this.onMonthYearChange());
     }
-    
+
     if (this.yearSelect) {
       this.yearSelect.addEventListener('change', () => this.onMonthYearChange());
     }
-    
+
     if (this.prevMonthBtn) {
       this.prevMonthBtn.addEventListener('click', () => this.navigateMonth(-1));
     }
-    
+
     if (this.nextMonthBtn) {
       this.nextMonthBtn.addEventListener('click', () => this.navigateMonth(1));
     }
-    
+
     if (this.todayBtn) {
       this.todayBtn.addEventListener('click', () => this.selectToday());
     }
-    
+
     if (this.picker) {
       this.picker.addEventListener('keydown', (e) => this.onDateKeyDown(e));
     }
@@ -454,6 +462,9 @@ export class DateField extends TextField {
   }
 
   navigateMonth(direction) {
+    // Set day to 1 first to avoid month overflow issues
+    // (e.g., Oct 31 -> Sept 31 would become Oct 1)
+    this.currentViewDate.setDate(1);
     this.currentViewDate.setMonth(this.currentViewDate.getMonth() + direction);
     this.updateCalendar();
   }
@@ -606,7 +617,7 @@ export class DateField extends TextField {
       if (pickerContainer) {
         pickerContainer.insertAdjacentHTML('beforeend', this.createPickerTemplate());
         this.picker = pickerContainer.querySelector('.aionda-datefield-picker');
-        this.setupPickerEventListeners();
+        this.setupPickerEvents();
       }
     }
     
